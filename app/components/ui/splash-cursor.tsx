@@ -58,7 +58,7 @@ function SplashCursor({
     const canvas: HTMLCanvasElement | null = canvasRef.current;
     if (!canvas) return;
 
-    let config = {
+    const config = {
       SIM_RESOLUTION,
       DYE_RESOLUTION,
       CAPTURE_RESOLUTION,
@@ -76,7 +76,7 @@ function SplashCursor({
       TRANSPARENT,
     };
 
-    let pointers: Pointer[] = [{
+    const pointers: Pointer[] = [{
       id: -1,
       texcoordX: 0,
       texcoordY: 0,
@@ -232,7 +232,7 @@ function SplashCursor({
       setKeywords(keywords: string[]) {
         let hash = 0;
         for (let i = 0; i < keywords.length; i++) hash += hashCode(keywords[i]);
-        let program: WebGLProgram | undefined | null = this.programs[hash]; // Allow undefined/null initially
+        let program: WebGLProgram | undefined | null = this.programs[hash];
         if (program == null) {
           let fragmentShader = compileShader(
             (gl as WebGLRenderingContext | WebGL2RenderingContext).FRAGMENT_SHADER,
@@ -270,7 +270,7 @@ function SplashCursor({
     }
 
     function createProgram(vertexShader: WebGLShader, fragmentShader: WebGLShader): WebGLProgram | null {
-      let program = (gl as WebGLRenderingContext | WebGL2RenderingContext).createProgram();
+      const program = (gl as WebGLRenderingContext | WebGL2RenderingContext).createProgram();
       (gl as WebGLRenderingContext | WebGL2RenderingContext).attachShader(program, vertexShader);
       (gl as WebGLRenderingContext | WebGL2RenderingContext).attachShader(program, fragmentShader);
       (gl as WebGLRenderingContext | WebGL2RenderingContext).linkProgram(program);
@@ -280,10 +280,10 @@ function SplashCursor({
     }
 
     function getUniforms(program: WebGLProgram): { [key: string]: WebGLUniformLocation | null } {
-      let uniforms: { [key: string]: WebGLUniformLocation | null } = {};
-      let uniformCount = (gl as WebGLRenderingContext | WebGL2RenderingContext).getProgramParameter(program, (gl as WebGLRenderingContext | WebGL2RenderingContext).ACTIVE_UNIFORMS);
+      const uniforms: { [key: string]: WebGLUniformLocation | null } = {};
+      const uniformCount = (gl as WebGLRenderingContext | WebGL2RenderingContext).getProgramParameter(program, (gl as WebGLRenderingContext | WebGL2RenderingContext).ACTIVE_UNIFORMS);
       for (let i = 0; i < uniformCount; i++) {
-        let uniformName = (gl as WebGLRenderingContext | WebGL2RenderingContext).getActiveUniform(program, i)?.name;
+        const uniformName = (gl as WebGLRenderingContext | WebGL2RenderingContext).getActiveUniform(program, i)?.name;
         if (uniformName) {
           uniforms[uniformName] = (gl as WebGLRenderingContext | WebGL2RenderingContext).getUniformLocation(program, uniformName);
         }
@@ -668,9 +668,9 @@ function SplashCursor({
 
     function initFramebuffers() {
       const glAsserted = gl as WebGLRenderingContext | WebGL2RenderingContext;
-      let simRes = getResolution(config.SIM_RESOLUTION);
-      let dyeRes = getResolution(config.DYE_RESOLUTION);
-      const texType = ext.halfFloatTexType;
+      const simRes = getResolution(config.SIM_RESOLUTION);
+      const dyeRes = getResolution(config.DYE_RESOLUTION);
+      const texType = ext.halfFloatTexType ?? glAsserted.UNSIGNED_BYTE;
       const rgba = ext.formatRGBA;
       const rg = ext.formatRG;
       const r = ext.formatR;
@@ -751,7 +751,7 @@ function SplashCursor({
     function createFBO(w: number, h: number, internalFormat: number, format: number, type: number, param: number): FBO {
       const glAsserted = gl as WebGLRenderingContext | WebGL2RenderingContext;
       glAsserted.activeTexture(glAsserted.TEXTURE0);
-      let texture = glAsserted.createTexture();
+      const texture = glAsserted.createTexture();
       glAsserted.bindTexture(glAsserted.TEXTURE_2D, texture);
       glAsserted.texParameteri(glAsserted.TEXTURE_2D, glAsserted.TEXTURE_MIN_FILTER, param);
       glAsserted.texParameteri(glAsserted.TEXTURE_2D, glAsserted.TEXTURE_MAG_FILTER, param);
@@ -769,7 +769,7 @@ function SplashCursor({
         null
       );
 
-      let fbo = glAsserted.createFramebuffer();
+      const fbo = glAsserted.createFramebuffer();
       glAsserted.bindFramebuffer(glAsserted.FRAMEBUFFER, fbo);
       glAsserted.framebufferTexture2D(
         glAsserted.FRAMEBUFFER,
@@ -781,8 +781,8 @@ function SplashCursor({
       glAsserted.viewport(0, 0, w, h);
       glAsserted.clear(glAsserted.COLOR_BUFFER_BIT);
 
-      let texelSizeX = 1.0 / w;
-      let texelSizeY = 1.0 / h;
+      const texelSizeX = 1.0 / w;
+      const texelSizeY = 1.0 / h;
       return {
         texture,
         fbo,
@@ -819,7 +819,7 @@ function SplashCursor({
           fbo2 = value;
         },
         swap() {
-          let temp = fbo1;
+          const temp = fbo1;
           fbo1 = fbo2;
           fbo2 = temp;
         },
@@ -827,7 +827,7 @@ function SplashCursor({
     }
 
     function resizeFBO(target: FBO, w: number, h: number, internalFormat: number, format: number, type: number, param: number): FBO {
-      let newFBO = createFBO(w, h, internalFormat, format, type, param);
+      const newFBO = createFBO(w, h, internalFormat, format, type, param);
       copyProgram.bind();
       (gl as WebGLRenderingContext | WebGL2RenderingContext).uniform1i(copyProgram.uniforms.uTexture, target.attach(0));
       blit(newFBO);
