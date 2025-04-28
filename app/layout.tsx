@@ -4,7 +4,6 @@ import "./globals.css";
 import { ThemeProvider } from "@/app/components/ThemeProvider";
 import { cn } from '@/lib/utils';
 import { ThemeAwareCircuitBackground } from '@/app/components/ThemeAwareCircuitBackground';
-import { SplashCursor } from "@/app/components/ui/splash-cursor";
 
 const geistSans = Geist({
   variable: "--font-geist-sans",
