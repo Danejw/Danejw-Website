@@ -883,7 +883,7 @@ function SplashCursor({
     }
 
     function calcDeltaTime() {
-      let now = Date.now();
+      const now = Date.now();
       let dt = (now - lastUpdateTime) / 1000;
       dt = Math.min(dt, 0.016666);
       lastUpdateTime = now;
@@ -893,8 +893,8 @@ function SplashCursor({
     function resizeCanvas() {
       const canvas = canvasRef.current;
       if (!canvas) return false;
-      let width = scaleByPixelRatio(canvas.clientWidth);
-      let height = scaleByPixelRatio(canvas.clientHeight);
+      const width = scaleByPixelRatio(canvas.clientWidth);
+      const height = scaleByPixelRatio(canvas.clientHeight);
       if (canvas.width !== width || canvas.height !== height) {
         canvas.width = width;
         canvas.height = height;
