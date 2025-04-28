@@ -1,7 +1,6 @@
 'use client'
 
 import React, { useState } from 'react';
-import Link from 'next/link';
 import {
   Github,
   Linkedin,
@@ -16,9 +15,11 @@ import {
   Briefcase, // For Experience
   Gamepad2, // Using Gamepad2 for Itch.io
   Box, // Using Box for XR/Unity, replacing Cuboid
-  Terminal // Keep Terminal for now if used elsewhere, or remove if only for the old tech section design
 } from 'lucide-react'; // Assuming lucide-react is installed
 import clsx from 'clsx'; // Import clsx for conditional classes
+import { GlowingEffect } from '@/app/components/ui/glowing-effect';
+import { SplashCursor } from '@/app/components/ui/splash-cursor';
+import { motion } from 'framer-motion'; // Import motion
 
 // Helper component for icon links
 const IconLink = ({ href, Icon, label }: { href: string; Icon: React.ElementType; label: string }) => (
@@ -35,7 +36,7 @@ const IconLink = ({ href, Icon, label }: { href: string; Icon: React.ElementType
 
 // Helper component for project cards - Updated with hover scale
 const ProjectCard = ({ title, description, link, tags }: { title: string; description: string; link?: string; tags?: string[] }) => (
-  <div className="bg-card border border-border rounded-lg shadow-sm p-6 flex flex-col justify-between hover:shadow-md hover:border-accent hover:scale-[1.02] transition-all duration-150 h-full">
+  <div className="bg-card border border-border rounded-lg shadow-sm p-6 flex flex-col justify-between hover:shadow-md hover:border-accent/20 hover:scale-[1.02] transition-all duration-150 h-full">
     <div>
       <h3 className="text-xl font-semibold mb-2 text-card-foreground flex items-center gap-2">
           {title}
@@ -229,8 +230,16 @@ const PersonalLandingPage: React.FC = () => {
       },
   ];
 
+  // Animation variants for sections
+  const sectionVariants = {
+    hidden: { opacity: 0, y: 50 },
+    visible: { opacity: 1, y: 0, transition: { duration: 0.6, ease: "easeOut" } },
+  };
+
   return (
-    <div className="min-h-screen bg-background text-foreground font-sans">
+    <div className="min-h-screen text-foreground font-sans">
+
+      <SplashCursor />
       <div className="container mx-auto px-4 sm:px-6 lg:px-8 py-16 sm:py-24">
 
         {/* Header / Hero - Keep as is */}
@@ -238,13 +247,13 @@ const PersonalLandingPage: React.FC = () => {
           <h1 className="text-4xl sm:text-5xl lg:text-6xl font-bold tracking-tight mb-3">
             Dane Willacker
           </h1>
-           <p className="text-lg text-muted-foreground mb-3">(Danejw)</p>
+           <p className="text-lg text-muted-foreground mb-3">aka Danejw</p>
           <p className="text-xl sm:text-2xl text-primary mb-6 font-medium">
             AI + XR Developer
           </p>
           <p className="max-w-3xl mx-auto text-lg text-muted-foreground leading-relaxed">
             Based in Hawaii, Dane Willacker is an independent{' '}
-            <span className="text-foreground font-medium">XR + AI Developer</span> harnessing artificial
+            <span className="text-foreground font-medium">AI + XR Developer</span> harnessing artificial
             intelligence and virtual/augmented reality to create{' '}
             <span className="text-foreground font-medium">innovative immersive experiences and development tools</span>.
             With a background in XR development, a passion for human-computer interaction, and over a decade of software
@@ -263,29 +272,56 @@ const PersonalLandingPage: React.FC = () => {
           </div>
         </header>
 
-        {/* Skills Section - Updated with hover interactions */}
-        <section id="skills" className="mb-16 sm:mb-20 scroll-mt-20">
+        {/* Skills Section - Animate in/out based on visibility */}
+        <motion.section
+          id="skills"
+          className="mb-16 sm:mb-20 scroll-mt-20"
+          variants={sectionVariants}
+          initial="hidden"
+          whileInView="visible"
+          viewport={{ amount: 0.4 }} // Animate when 40% is visible, allow reverse animation
+        >
           <h2 className="text-3xl font-bold text-center mb-10 sm:mb-12">Skills & Technical Proficiencies</h2>
           <div className="grid grid-cols-1 md:grid-cols-2 gap-8">
             {skills.map((skill) => (
               <div
                 key={skill.name}
-                className="flex items-start gap-4 p-6 bg-card border border-border rounded-lg shadow-sm transition-all duration-200 ease-in-out hover:shadow-xl hover:scale-[1.02] hover:border-accent cursor-pointer"
+                className="relative list-none rounded-lg"
                 onMouseEnter={() => setHoveredSkill(skill.skillId)}
                 onMouseLeave={() => setHoveredSkill(null)}
               >
-                <skill.icon className="w-8 h-8 text-primary mt-1 flex-shrink-0 transition-transform duration-200 ease-in-out group-hover:scale-110" />
-                <div>
-                  <h3 className="text-lg font-semibold mb-1 text-card-foreground">{skill.name}</h3>
-                  <p className="text-sm text-muted-foreground leading-relaxed">{skill.desc}</p>
+                <GlowingEffect
+                  spread={40}
+                  glow={true}
+                  disabled={false}
+                  proximity={64}
+                  inactiveZone={0.01}
+                  borderWidth={3}
+                  className="rounded-lg"
+                />
+                <div
+                  className="flex items-start gap-4 p-6 bg-card border border-border rounded-lg shadow-sm transition-all duration-200 ease-in-out hover:shadow-xl hover:scale-[1.02] h-full"
+                >
+                  <skill.icon className="w-8 h-8 text-primary mt-1 flex-shrink-0 transition-transform duration-200 ease-in-out group-hover:scale-110" />
+                  <div>
+                    <h3 className="text-lg font-semibold mb-1 text-card-foreground">{skill.name}</h3>
+                    <p className="text-sm text-muted-foreground leading-relaxed">{skill.desc}</p>
+                  </div>
                 </div>
               </div>
             ))}
           </div>
-        </section>
+        </motion.section>
 
-        {/* Technologies & Tools Section - Updated with dimming effect */}
-        <section id="technologies" className="mb-16 sm:mb-20 scroll-mt-20">
+        {/* Technologies & Tools Section - Animate in/out based on visibility */}
+        <motion.section
+          id="technologies"
+          className="mb-16 sm:mb-20 scroll-mt-20"
+          variants={sectionVariants}
+          initial="hidden"
+          whileInView="visible"
+          viewport={{ amount: 0.4 }}
+        >
           <h2 className="text-3xl font-bold text-center mb-10 sm:mb-12">Technologies & Tools</h2>
           <div className="max-w-4xl mx-auto text-center">
             {technologies.map((techCategory) => (
@@ -315,34 +351,57 @@ const PersonalLandingPage: React.FC = () => {
               </div>
             ))}
           </div>
-        </section>
+        </motion.section>
 
-        {/* Project Sections - Updated with dimming effect */}
-        <section id="projects" className="mb-16 sm:mb-20 scroll-mt-20">
+        {/* Project Sections - Animate in/out based on visibility */}
+        <motion.section
+          id="projects"
+          className="mb-16 sm:mb-20 scroll-mt-20"
+          variants={sectionVariants}
+          initial="hidden"
+          whileInView="visible"
+          viewport={{ amount: 0.2 }} // Use smaller amount for grids to trigger sooner
+        >
           <h2 className="text-3xl font-bold text-center mb-10 sm:mb-12">Major Projects</h2>
           <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6 sm:gap-8">
             {projects.map((project) => {
               const relatedSkills = getSkillsForProject(project.tags);
               const isDimmed = hoveredSkill !== null && !relatedSkills.includes(hoveredSkill);
-               const isHighlighted = hoveredSkill !== null && relatedSkills.includes(hoveredSkill); // Optional: Add highlight style
+              const isHighlighted = hoveredSkill !== null && relatedSkills.includes(hoveredSkill); // Optional: Add highlight style
 
               return (
                 <div
                   key={project.title + '-major'}
                   className={clsx(
-                      "transition-all duration-200 ease-in-out",
-                      isDimmed ? 'opacity-30 scale-95' : 'opacity-100 scale-100', // Dimming effect
-                       isHighlighted ? 'ring-2 ring-accent ring-offset-2 ring-offset-background rounded-lg' : '' // Optional highlight on wrapper
+                      "relative list-none transition-all duration-200 ease-in-out rounded-lg",
+                      isDimmed ? 'opacity-30 scale-95' : 'opacity-100 scale-100',
+                      isHighlighted ? 'ring-2 ring-accent ring-offset-2 ring-offset-background rounded-lg' : ''
                   )}
                  >
-                  <ProjectCard {...project} />
+                   <GlowingEffect
+                     spread={40}
+                     glow={true}
+                     disabled={false}
+                     proximity={64}
+                     inactiveZone={0.01}
+                     borderWidth={3}
+                     className="rounded-lg"
+                   />
+                   <ProjectCard {...project} />
                  </div>
               );
             })}
           </div>
-        </section>
+        </motion.section>
 
-        <section id="vr-projects" className="mb-16 sm:mb-20 scroll-mt-20">
+        <motion.section
+          id="vr-projects"
+          className="mb-16 sm:mb-20 scroll-mt-20"
+          variants={sectionVariants}
+          initial="hidden"
+          whileInView="visible"
+          viewport={{ amount: 0.2 }} // Use smaller amount for grids
+        >
           <h2 className="text-3xl font-bold text-center mb-10 sm:mb-12">Fun VR Projects</h2>
           <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6 sm:gap-8">
             {funVrProjects.map((project) => {
@@ -354,63 +413,112 @@ const PersonalLandingPage: React.FC = () => {
                  <div
                    key={project.title + '-vr'}
                    className={clsx(
-                       "transition-all duration-200 ease-in-out",
-                       isDimmed ? 'opacity-30 scale-95' : 'opacity-100 scale-100', // Dimming effect
-                        isHighlighted ? 'ring-2 ring-accent ring-offset-2 ring-offset-background rounded-lg' : '' // Optional highlight on wrapper
+                       "relative list-none transition-all duration-200 ease-in-out rounded-lg",
+                       isDimmed ? 'opacity-30 scale-95' : 'opacity-100 scale-100',
+                        isHighlighted ? 'ring-2 ring-accent ring-offset-2 ring-offset-background rounded-lg' : ''
                    )}
                   >
+                     <GlowingEffect
+                       spread={40}
+                       glow={true}
+                       disabled={false}
+                       proximity={64}
+                       inactiveZone={0.01}
+                       borderWidth={3}
+                       className="rounded-lg"
+                     />
                    <ProjectCard {...project} />
                   </div>
               );
             })}
           </div>
-        </section>
+        </motion.section>
 
-        {/* Experience Section */}
-        <section id="experience" className="mb-16 sm:mb-20 scroll-mt-20">
+        {/* Experience Section - Animate in/out based on visibility */}
+        <motion.section
+          id="experience"
+          className="mb-16 sm:mb-20 scroll-mt-20"
+          variants={sectionVariants}
+          initial="hidden"
+          whileInView="visible"
+          viewport={{ amount: 0.4 }}
+        >
            <h2 className="text-3xl font-bold text-center mb-10 sm:mb-12">Experience</h2>
            <div className="max-w-4xl mx-auto space-y-8">
-             {/* Bad Golf Hawaii */}
-             <div className="bg-card border border-border rounded-lg shadow-sm p-6 sm:p-8 transition-all duration-150 hover:shadow-md hover:border-accent hover:scale-[1.02] cursor-pointer">
-                <div className="flex items-start gap-4">
-                  <Briefcase className="w-8 h-8 text-primary mt-1 flex-shrink-0"/>
-                  <div>
-                     <h3 className="text-xl font-semibold text-card-foreground">XR Developer</h3>
-                     <p className="text-sm text-muted-foreground mb-2">Remote</p>
-                     <p className="text-sm text-muted-foreground leading-relaxed">Leads the design and development of VR applications and games. Delivers multiple prototypes and immersive experiences, integrating advanced AI where applicable. Involves full-stack game development (Unity/C#), VR hardware optimization, and project oversight from concept to release.</p>
-                  </div>
-                </div>
-             </div>
-
-             {/* Universe VR Entry */}
-             <div className="bg-card border border-border rounded-lg shadow-sm p-6 sm:p-8 transition-all duration-150 hover:shadow-md hover:border-accent hover:scale-[1.02] cursor-pointer">
-                <div className="flex items-start gap-4">
-                  <Briefcase className="w-8 h-8 text-primary mt-1 flex-shrink-0"/>
-                  <div>
-                     <h3 className="text-xl font-semibold text-card-foreground mb-1">
-                       <a href="https://www.linkedin.com/company/joinuniversevr/" target="_blank" rel="noopener noreferrer" className="hover:text-primary/80 transition-colors inline-flex items-center gap-1.5">
-                         Lead Developer – Universe VR
-                      <ExternalLink className="w-4 h-4 text-accent/50 hover:text-accent transition-colors" />
-                       </a>
-                     </h3>
-                  <p className="text-sm text-muted-foreground leading-relaxed">Headed the development of internal tools and simulation systems for Universe VR, an organization dedicated to advancing VR game development education. Focused on building scalable solutions to support K–12 learning initiatives across Newark, NJ and Mexico, enabling accessible, high-quality VR experiences in educational environments.</p>
-                  </div>
-                </div>
-             </div>
-
-             {/* Independent Developer */}
-             <div className="bg-card border border-border rounded-lg shadow-sm p-6 sm:p-8 transition-all duration-150 hover:shadow-md hover:border-accent hover:scale-[1.02] cursor-pointer">
-               <div className="flex items-start gap-4">
-                  <Users className="w-8 h-8 text-primary mt-1 flex-shrink-0"/>
-                   <div>
-                      <h3 className="text-xl font-semibold text-card-foreground">Independent Developer & Collaborator</h3>
-                      <p className="text-sm text-muted-foreground mb-2">Remote / Various Teams</p>
-                      <p className="text-sm text-muted-foreground leading-relaxed">Frequently collaborates on external projects and game jam teams (e.g., Eunoia Collab, EmpressVR, Bad Golf Hawaii, Sockoe, VR jam entries). Self-driven learning background and contributor to open communities. Adept at teamwork in remote, cross-functional groups and mentoring others in XR development.</p>
+             {/* Wrap Bad Golf Hawaii */}
+             <div className="relative list-none rounded-lg">
+                <GlowingEffect
+                  spread={40}
+                  glow={true}
+                  disabled={false}
+                  proximity={64}
+                  inactiveZone={0.01}
+                  borderWidth={3}
+                  className="rounded-lg"
+                />
+                <div className="bg-card border border-border rounded-lg shadow-sm p-6 sm:p-8 transition-all duration-150 hover:shadow-md hover:border-accent/20 hover:scale-[1.02] cursor-pointer">
+                   <div className="flex items-start gap-4">
+                     <Briefcase className="w-8 h-8 text-primary mt-1 flex-shrink-0"/>
+                     <div>
+                        <h3 className="text-xl font-semibold text-card-foreground">XR Developer</h3>
+                        <p className="text-sm text-muted-foreground mb-2">Remote</p>
+                        <p className="text-sm text-muted-foreground leading-relaxed">Leads the design and development of VR applications and games. Delivers multiple prototypes and immersive experiences, integrating advanced AI where applicable. Involves full-stack game development (Unity/C#), VR hardware optimization, and project oversight from concept to release.</p>
+                     </div>
                    </div>
-               </div>
+                </div>
+             </div>
+
+             {/* Wrap Universe VR Entry */}
+              <div className="relative list-none rounded-lg">
+                 <GlowingEffect
+                   spread={40}
+                   glow={true}
+                   disabled={false}
+                   proximity={64}
+                   inactiveZone={0.01}
+                   borderWidth={3}
+                   className="rounded-lg"
+                 />
+                 <div className="bg-card border border-border rounded-lg shadow-sm p-6 sm:p-8 transition-all duration-150 hover:shadow-md hover:border-accent/20 hover:scale-[1.02] cursor-pointer">
+                    <div className="flex items-start gap-4">
+                      <Briefcase className="w-8 h-8 text-primary mt-1 flex-shrink-0"/>
+                      <div>
+                         <h3 className="text-xl font-semibold text-card-foreground mb-1">
+                           <a href="https://www.linkedin.com/company/joinuniversevr/" target="_blank" rel="noopener noreferrer" className="hover:text-primary/80 transition-colors inline-flex items-center gap-1.5">
+                             Lead Developer – Universe VR
+                          <ExternalLink className="w-4 h-4 text-accent/50 hover:text-accent transition-colors" />
+                           </a>
+                         </h3>
+                      <p className="text-sm text-muted-foreground leading-relaxed">Headed the development of internal tools and simulation systems for Universe VR, an organization dedicated to advancing VR game development education. Focused on building scalable solutions to support K–12 learning initiatives across Newark, NJ and Mexico, enabling accessible, high-quality VR experiences in educational environments.</p>
+                      </div>
+                    </div>
+                 </div>
+              </div>
+
+             {/* Wrap Independent Developer */}
+             <div className="relative list-none rounded-lg">
+                <GlowingEffect
+                  spread={40}
+                  glow={true}
+                  disabled={false}
+                  proximity={64}
+                  inactiveZone={0.01}
+                  borderWidth={3}
+                  className="rounded-lg"
+                />
+                <div className="bg-card border border-border rounded-lg shadow-sm p-6 sm:p-8 transition-all duration-150 hover:shadow-md hover:border-accent/20 hover:scale-[1.02] cursor-pointer">
+                   <div className="flex items-start gap-4">
+                      <Users className="w-8 h-8 text-primary mt-1 flex-shrink-0"/>
+                       <div>
+                          <h3 className="text-xl font-semibold text-card-foreground">Independent Developer & Collaborator</h3>
+                          <p className="text-sm text-muted-foreground mb-2">Remote / Various Teams</p>
+                          <p className="text-sm text-muted-foreground leading-relaxed">Frequently collaborates on external projects and game jam teams (e.g., Eunoia Collab, EmpressVR, Bad Golf Hawaii, Sockoe, VR jam entries). Self-driven learning background and contributor to open communities. Adept at teamwork in remote, cross-functional groups and mentoring others in XR development.</p>
+                       </div>
+                   </div>
+                 </div>
              </div>
            </div>
-        </section>
+        </motion.section>
 
          {/* Footer - Updated Links */}
          <footer className="mt-16 border-t border-border pt-8 text-center">
