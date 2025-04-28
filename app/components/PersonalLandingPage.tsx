@@ -1,7 +1,6 @@
 'use client'
 
 import React from 'react';
-import Link from 'next/link';
 import {
   Github,
   Linkedin,
@@ -12,12 +11,9 @@ import {
   Code, // Represents Web/Software Engineering & Tools
   Cpu, // New: Using Cpu for AI Integration, replacing Brain
   Package, // New: Using Package for Game/Tool Development, replacing Wrench
-  Palette, // New: Using Palette for Open Brush/Art Tool
   Users, // For Community / Independent Collaborator
   Briefcase, // For Experience
   Gamepad2, // New: Using Gamepad2 for Itch.io
-  Music, // For SongTailor
-  Heart, // For Knolia
   Box, // New: Using Box for XR/Unity, replacing Cuboid
 } from 'lucide-react'; // Assuming lucide-react is installed
 
