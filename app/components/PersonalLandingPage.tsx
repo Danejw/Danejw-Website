@@ -9,12 +9,12 @@ import {
   Globe, // For websites
   ExternalLink,
   Code, // Represents Web/Software Engineering & Tools
-  Cpu, // New: Using Cpu for AI Integration, replacing Brain
-  Package, // New: Using Package for Game/Tool Development, replacing Wrench
+  Cpu, // Using Cpu for AI Integration, replacing Brain
+  Package, // Using Package for Game/Tool Development, replacing Wrench
   Users, // For Community / Independent Collaborator
   Briefcase, // For Experience
-  Gamepad2, // New: Using Gamepad2 for Itch.io
-  Box, // New: Using Box for XR/Unity, replacing Cuboid
+  Gamepad2, // Using Gamepad2 for Itch.io
+  Box, // Using Box for XR/Unity, replacing Cuboid
 } from 'lucide-react'; // Assuming lucide-react is installed
 
 // Helper component for icon links
@@ -143,7 +143,7 @@ const PersonalLandingPage: React.FC = () => {
     { category: 'Languages', items: ['C#', 'Python', 'TypeScript'] },
     { category: 'Frameworks', items: ['.Net', 'React', 'Next.js', 'Node.js', '.Net', 'FastAPI', 'Vite.js', 'HTML', 'CSS', 'SQL', 'NoSQL', 'PostgreSQL', 'SQLite'] },
     { category: 'SDKs & APIs', items: ['Oculus SDK', 'OpenXR', 'OpenAI', 'Android', 'Web'] },
-    { category: 'Tools', items: ['Git', 'GitHub', 'Unity', 'Blender', 'Visual Studio', 'Cursor', 'Supabase', 'Adobe Creative Suite', 'Ableton Live'] },
+    { category: 'Tools', items: ['Git', 'GitHub', 'Unity', 'Visual Studio', 'Cursor', 'Supabase', 'Adobe Creative Suite', 'Ableton Live'] },
     // Add more categories/items as needed
   ];
 
