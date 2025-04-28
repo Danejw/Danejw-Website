@@ -42,7 +42,7 @@ const ProjectCard = ({ title, description, link, tags }: { title: string; descri
           {title}
           {link && (
              <a href={link} target="_blank" rel="noopener noreferrer" title={`Visit ${title}`} className="text-primary hover:text-primary/80 transition-colors">
-                 <ExternalLink className="w-4 h-4" />
+                 <ExternalLink className="w-4 h-4 text-accent/50 hover:text-accent transition-colors" />
              </a>
           )}
       </h3>
@@ -173,7 +173,7 @@ const PersonalLandingPage: React.FC = () => {
       {
           title: "Knolia",
           description: "Creator of an AI-driven companion application (Knolia.org) designed to combat loneliness. A personal AI that learns over time, available 24/7 to listen without judgment. Focuses on social good through empathetic conversational AI.",
-          link: "https://knolia.org",
+          link: "https://knolia.org/welcome",
           tags: ["Founder", "AI", "Social Good", "Web App", "Conversational AI", "Voice Agent"]
       },
       {
@@ -302,7 +302,7 @@ const PersonalLandingPage: React.FC = () => {
                 <div
                   className="flex items-start gap-4 p-6 bg-card border border-border rounded-lg shadow-sm transition-all duration-200 ease-in-out hover:shadow-xl hover:scale-[1.02] h-full"
                 >
-                  <skill.icon className="w-8 h-8 text-primary mt-1 flex-shrink-0 transition-transform duration-200 ease-in-out group-hover:scale-110" />
+                  <skill.icon className="w-8 h-8 text-accent mt-1 flex-shrink-0 transition-transform duration-200 ease-in-out group-hover:scale-110" />
                   <div>
                     <h3 className="text-lg font-semibold mb-1 text-card-foreground">{skill.name}</h3>
                     <p className="text-sm text-muted-foreground leading-relaxed">{skill.desc}</p>
@@ -362,7 +362,7 @@ const PersonalLandingPage: React.FC = () => {
           whileInView="visible"
           viewport={{ amount: 0.2 }} // Use smaller amount for grids to trigger sooner
         >
-          <h2 className="text-3xl font-bold text-center mb-10 sm:mb-12">Major Projects</h2>
+          <h2 className="text-3xl font-bold text-center mb-10 sm:mb-12">Projects</h2>
           <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6 sm:gap-8">
             {projects.map((project) => {
               const relatedSkills = getSkillsForProject(project.tags);
@@ -445,7 +445,8 @@ const PersonalLandingPage: React.FC = () => {
         >
            <h2 className="text-3xl font-bold text-center mb-10 sm:mb-12">Experience</h2>
            <div className="max-w-4xl mx-auto space-y-8">
-             {/* Wrap Bad Golf Hawaii */}
+
+              {/* XR Developer */}
              <div className="relative list-none rounded-lg">
                 <GlowingEffect
                   spread={40}
@@ -458,7 +459,7 @@ const PersonalLandingPage: React.FC = () => {
                 />
                 <div className="bg-card border border-border rounded-lg shadow-sm p-6 sm:p-8 transition-all duration-150 hover:shadow-md hover:border-accent/20 hover:scale-[1.02] cursor-pointer">
                    <div className="flex items-start gap-4">
-                     <Briefcase className="w-8 h-8 text-primary mt-1 flex-shrink-0"/>
+                     {/* <Briefcase className="w-8 h-8 text-primary mt-1 flex-shrink-0"/> */}
                      <div>
                         <h3 className="text-xl font-semibold text-card-foreground">XR Developer</h3>
                         <p className="text-sm text-muted-foreground mb-2">Remote</p>
@@ -468,7 +469,7 @@ const PersonalLandingPage: React.FC = () => {
                 </div>
              </div>
 
-             {/* Wrap Universe VR Entry */}
+              {/* Universe VR */}
               <div className="relative list-none rounded-lg">
                  <GlowingEffect
                    spread={40}
@@ -481,13 +482,14 @@ const PersonalLandingPage: React.FC = () => {
                  />
                  <div className="bg-card border border-border rounded-lg shadow-sm p-6 sm:p-8 transition-all duration-150 hover:shadow-md hover:border-accent/20 hover:scale-[1.02] cursor-pointer">
                     <div className="flex items-start gap-4">
-                      <Briefcase className="w-8 h-8 text-primary mt-1 flex-shrink-0"/>
+                      {/* <Briefcase className="w-8 h-8 text-primary mt-1 flex-shrink-0 text-accent"/> */}
                       <div>
                          <h3 className="text-xl font-semibold text-card-foreground mb-1">
                            <a href="https://www.linkedin.com/company/joinuniversevr/" target="_blank" rel="noopener noreferrer" className="hover:text-primary/80 transition-colors inline-flex items-center gap-1.5">
                              Lead Developer – Universe VR
-                          <ExternalLink className="w-4 h-4 text-accent/50 hover:text-accent transition-colors" />
+                          <ExternalLink className="w-4 h-4 text-accent/50 hover:text-accent transition-colors" />      
                            </a>
+                          <p className="text-sm text-muted-foreground mb-2">Remote</p>
                          </h3>
                       <p className="text-sm text-muted-foreground leading-relaxed">Headed the development of internal tools and simulation systems for Universe VR, an organization dedicated to advancing VR game development education. Focused on building scalable solutions to support K–12 learning initiatives across Newark, NJ and Mexico, enabling accessible, high-quality VR experiences in educational environments.</p>
                       </div>
@@ -495,7 +497,7 @@ const PersonalLandingPage: React.FC = () => {
                  </div>
               </div>
 
-             {/* Wrap Independent Developer */}
+             {/* Independent Developer */}
              <div className="relative list-none rounded-lg">
                 <GlowingEffect
                   spread={40}
@@ -508,7 +510,7 @@ const PersonalLandingPage: React.FC = () => {
                 />
                 <div className="bg-card border border-border rounded-lg shadow-sm p-6 sm:p-8 transition-all duration-150 hover:shadow-md hover:border-accent/20 hover:scale-[1.02] cursor-pointer">
                    <div className="flex items-start gap-4">
-                      <Users className="w-8 h-8 text-primary mt-1 flex-shrink-0"/>
+                      {/* <Users className="w-8 h-8 text-primary mt-1 flex-shrink-0 text-accent"/> */}
                        <div>
                           <h3 className="text-xl font-semibold text-card-foreground">Independent Developer & Collaborator</h3>
                           <p className="text-sm text-muted-foreground mb-2">Remote / Various Teams</p>
