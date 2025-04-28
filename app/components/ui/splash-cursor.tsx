@@ -234,7 +234,7 @@ function SplashCursor({
         for (let i = 0; i < keywords.length; i++) hash += hashCode(keywords[i]);
         let program: WebGLProgram | undefined | null = this.programs[hash];
         if (program == null) {
-          let fragmentShader = compileShader(
+          const fragmentShader = compileShader(
             (gl as WebGLRenderingContext | WebGL2RenderingContext).FRAGMENT_SHADER,
             this.fragmentShaderSource,
             keywords
@@ -862,7 +862,7 @@ function SplashCursor({
     }
 
     function updateKeywords() {
-      let displayKeywords = [];
+      const displayKeywords = [];
       if (config.SHADING) displayKeywords.push("SHADING");
       displayMaterial.setKeywords(displayKeywords);
     }
@@ -1021,7 +1021,7 @@ function SplashCursor({
           velocity!.texelSizeX,
           velocity!.texelSizeY
         );
-      let velocityId = velocity!.read.attach(0);
+      const velocityId = velocity!.read.attach(0);
       glAsserted.uniform1i(advectionProgram.uniforms.uVelocity, velocityId);
       glAsserted.uniform1i(advectionProgram.uniforms.uSource, velocityId);
       glAsserted.uniform1f(advectionProgram.uniforms.dt, dt);
@@ -1060,8 +1060,8 @@ function SplashCursor({
 
     function drawDisplay(target: FBO | null) {
       const glAsserted = gl as WebGLRenderingContext | WebGL2RenderingContext;
-      let width = target == null ? glAsserted.drawingBufferWidth : target.width;
-      let height = target == null ? glAsserted.drawingBufferHeight : target.height;
+      const width = target == null ? glAsserted.drawingBufferWidth : target.width;
+      const height = target == null ? glAsserted.drawingBufferHeight : target.height;
       displayMaterial.bind();
       if (config.SHADING)
         glAsserted.uniform2f(
@@ -1074,8 +1074,8 @@ function SplashCursor({
     }
 
     function splatPointer(pointer: Pointer) {
-      let dx = pointer.deltaX * config.SPLAT_FORCE;
-      let dy = pointer.deltaY * config.SPLAT_FORCE;
+      const dx = pointer.deltaX * config.SPLAT_FORCE;
+      const dy = pointer.deltaY * config.SPLAT_FORCE;
       splat(pointer.texcoordX, pointer.texcoordY, dx, dy, pointer.color);
     }
 
@@ -1084,8 +1084,8 @@ function SplashCursor({
       color.r *= 10.0;
       color.g *= 10.0;
       color.b *= 10.0;
-      let dx = 10 * (Math.random() - 0.5);
-      let dy = 30 * (Math.random() - 0.5);
+      const dx = 10 * (Math.random() - 0.5);
+      const dy = 30 * (Math.random() - 0.5);
       splat(pointer.texcoordX, pointer.texcoordY, dx, dy, color);
     }
 
@@ -1164,7 +1164,7 @@ function SplashCursor({
     }
 
     function generateColor(): { r: number, g: number, b: number } {
-      let c = HSVtoRGB(Math.random(), 1.0, 1.0);
+      const c = HSVtoRGB(Math.random(), 1.0, 1.0);
       c.r = (c.r ?? 0) * 0.15;
       c.g = (c.g ?? 0) * 0.15;
       c.b = (c.b ?? 0) * 0.15;
@@ -1172,12 +1172,12 @@ function SplashCursor({
     }
 
     function HSVtoRGB(h: number, s: number, v: number): { r: number, g: number, b: number } {
-      let r = 0, g = 0, b = 0, i: number, f: number, p: number, q: number, t: number;
-      i = Math.floor(h * 6);
-      f = h * 6 - i;
-      p = v * (1 - s);
-      q = v * (1 - f * s);
-      t = v * (1 - (1 - f) * s);
+      let r = 0, g = 0, b = 0;
+      const i = Math.floor(h * 6);
+      const f = h * 6 - i;
+      const p = v * (1 - s);
+      const q = v * (1 - f * s);
+      const t = v * (1 - (1 - f) * s);
       switch (i % 6) {
         case 0:
           r = v;
@@ -1246,7 +1246,7 @@ function SplashCursor({
     }
 
     window.addEventListener("mousedown", (e) => {
-      let pointer = pointers[0];
+      const pointer = pointers[0];
       const posX = scaleByPixelRatio(e.clientX);
       const posY = scaleByPixelRatio(e.clientY);
       updatePointerDownData(pointer, -1, posX, posY);

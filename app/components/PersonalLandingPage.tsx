@@ -11,8 +11,6 @@ import {
   Code, // Represents Web/Software Engineering & Tools
   Cpu, // Using Cpu for AI Integration, replacing Brain
   Package, // Using Package for Game/Tool Development, replacing Wrench
-  Users, // For Community / Independent Collaborator
-  Briefcase, // For Experience
   Gamepad2, // Using Gamepad2 for Itch.io
   Box, // Using Box for XR/Unity, replacing Cuboid
 } from 'lucide-react'; // Assuming lucide-react is installed
