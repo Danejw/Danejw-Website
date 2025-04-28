@@ -153,7 +153,7 @@ const PersonalLandingPage: React.FC = () => {
 
   return (
     <div className="min-h-screen bg-background text-foreground font-sans">
-      <div className="container mx-auto">
+      <div className="container mx-auto px-4 sm:px-6 lg:px-8 py-16 sm:py-24">
 
         {/* Header / Hero */}
         <header className="text-center mb-16 sm:mb-20">
@@ -258,6 +258,22 @@ const PersonalLandingPage: React.FC = () => {
                 </div>
              </div>
              
+             {/* New Universe VR Entry */}
+             <div className="bg-card border border-border rounded-lg shadow-sm p-6 sm:p-8 transition-shadow hover:shadow-md">
+                <div className="flex items-start gap-4">
+                  <Briefcase className="w-8 h-8 text-primary mt-1 flex-shrink-0"/>
+                  <div>
+                     <h3 className="text-xl font-semibold text-card-foreground mb-1">
+                       <a href="https://www.linkedin.com/company/joinuniversevr/" target="_blank" rel="noopener noreferrer" className="hover:text-primary/80 transition-colors inline-flex items-center gap-1.5">
+                         Lead  Developer – Universe VR
+                      <ExternalLink className="w-4 h-4 text-accent/50 hover:text-accent transition-colors" />
+                       </a>
+                     </h3>
+                  <p className="text-sm text-muted-foreground leading-relaxed">Headed the development of internal tools and simulation systems for Universe VR, an organization dedicated to advancing VR game development education. Focused on building scalable solutions to support K–12 learning initiatives across Newark, NJ and Mexico, enabling accessible, high-quality VR experiences in educational environments.</p>
+                  </div>
+                </div>
+             </div>
+
              {/* Independent Developer */}
              <div className="bg-card border border-border rounded-lg shadow-sm p-6 sm:p-8 transition-shadow hover:shadow-md">
                <div className="flex items-start gap-4">
