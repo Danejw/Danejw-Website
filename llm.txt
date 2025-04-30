@@ -1,0 +1,42 @@
+# Dane Willacker - llms.txt
+
+> Dane Willacker (aka Danejw) is an independent AI + XR developer based in Hawai'i. He creates immersive applications and tools that blend artificial intelligence, extended reality, and human-centered design. His projects span VR games, AI companions, open-source tools, and creative software for indie developers.
+
+## Documentation Overview
+
+- Portfolio Site: https://yourindie.dev
+- Featured Projects:
+  - [AI Companion Toolkit](https://aicompaniontoolkit.com) – Toolkit for building voice-enabled AI companions
+  - [Knolia](https://knolia.org) – Production example of a voice companion app
+  - [SongTailor](https://songtailor.app) – AI music generator
+  - [Assistance for Unity](https://assetstore.unity.com/packages/tools/ai-ml-integration/assistance-293407) – AI assistant inside the Unity Editor
+  - [VR Game Jam Projects](https://dangerdano.itch.io) – Fireside, Swapno, The Phantom Delivery, and more
+
+## Technical Focus
+
+- XR Development: Unity, C#, Oculus SDK, OpenXR
+- AI Systems: GPT, Whisper, FastAPI, Unity ML-Agents
+- Web & Tooling: Next.js, React, FastAPI, Vite, Node.js, TypeScript
+- Creative Coding: Open Brush, VR art tools, immersive storytelling
+
+## Skills
+
+- XR (VR/AR) Interaction & Simulation
+- Conversational & Voice AI
+- Generative Media Tools
+- Game Jams & Rapid Prototyping
+- Developer Productivity Tools
+- Full-Stack Web Deployment
+
+## Online Presence
+
+- LinkedIn: https://www.linkedin.com/in/danejw
+- GitHub: https://github.com/Danejw
+- YouTube: https://www.youtube.com/channel/UCYnBPlKf3iqmaLcBC8maYYw
+- X (Twitter): https://twitter.com/Djw_learn
+- itch.io: https://dangerdano.itch.io
+
+## Contact
+
+Reach out via [LinkedIn](https://www.linkedin.com/in/danejw) or through any project site above.
+
