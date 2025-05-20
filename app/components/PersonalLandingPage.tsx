@@ -26,6 +26,8 @@ const IconLink = ({ href, Icon, label }: { href: string; Icon: React.ElementType
     target="_blank"
     rel="noopener noreferrer"
     className="inline-flex items-center gap-2 text-accent/50 hover:text-accent transition-colors duration-150 group"
+    aria-label={label}
+    title={label}
   >
     <Icon className="w-5 h-5 group-hover:scale-110 transition-transform" />
     <span className="hidden sm:inline">{label}</span>
