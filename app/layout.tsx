@@ -16,8 +16,46 @@ const geistMono = Geist_Mono({
 });
 
 export const metadata: Metadata = {
-  title: "Danejw",
-  description: "Danejw's Personal Website",
+  metadataBase: new URL("https://yourindie.dev"),
+  title: "Dane Willacker | AI + XR Developer",
+  description:
+    "Portfolio of Dane Willacker (Danejw), an independent AI + XR developer based in Hawai'i.",
+  keywords: [
+    "Dane Willacker",
+    "Danejw",
+    "AI",
+    "XR",
+    "Unity",
+    "Game Development",
+    "Next.js",
+    "Portfolio",
+    "Hawaii",
+  ],
+  openGraph: {
+    title: "Dane Willacker | AI + XR Developer",
+    description:
+      "Portfolio of Dane Willacker (Danejw), an independent AI + XR developer based in Hawai'i.",
+    url: "https://yourindie.dev",
+    siteName: "Danejw",
+    images: [
+      {
+        url: "/favicon_io/android-chrome-192x192.png",
+        width: 192,
+        height: 192,
+        alt: "Dane Willacker Logo",
+      },
+    ],
+    locale: "en_US",
+    type: "website",
+  },
+  twitter: {
+    card: "summary_large_image",
+    site: "@Djw_learn",
+    title: "Dane Willacker | AI + XR Developer",
+    description:
+      "Portfolio of Dane Willacker (Danejw), an independent AI + XR developer based in Hawai'i.",
+    images: ["/favicon_io/android-chrome-192x192.png"],
+  },
 };
 
 export default function RootLayout({
