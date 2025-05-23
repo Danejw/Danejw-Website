@@ -19,7 +19,7 @@ export const metadata: Metadata = {
   metadataBase: new URL("https://danejw.com"),
   title: "Dane Willacker | AI + XR Developer",
   description:
-    "Portfolio of Dane Willacker (Danejw), an independent AI + XR developer based in Hawai'i.",
+    "Portfolio of Dane Willacker (Danejw), an independent AI + XR developer based in Hawai&#39;i.",
   keywords: [
     "Dane Willacker",
     "Danejw",
@@ -34,7 +34,7 @@ export const metadata: Metadata = {
   openGraph: {
     title: "Dane Willacker | AI + XR Developer",
     description:
-      "Portfolio of Dane Willacker (Danejw), an independent AI + XR developer based in Hawai'i.",
+      "Portfolio of Dane Willacker (Danejw), an independent AI + XR developer based in Hawai&#39;i.",
     url: "https://danejw.com",
     siteName: "Danejw",
     images: [
@@ -53,7 +53,7 @@ export const metadata: Metadata = {
     site: "@Djw_learn",
     title: "Dane Willacker | AI + XR Developer",
     description:
-      "Portfolio of Dane Willacker (Danejw), an independent AI + XR developer based in Hawai'i.",
+      "Portfolio of Dane Willacker (Danejw), an independent AI + XR developer based in Hawai&#39;i.",
     images: ["/favicon_io/android-chrome-192x192.png"],
   },
 };
