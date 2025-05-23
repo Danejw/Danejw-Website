@@ -18,6 +18,7 @@ import clsx from 'clsx'; // Import clsx for conditional classes
 import { GlowingEffect } from '@/app/components/ui/glowing-effect';
 import { SplashCursor } from '@/app/components/ui/splash-cursor';
 import { motion } from 'framer-motion'; // Import motion
+import Link from 'next/link'
 
 // Helper component for icon links
 const IconLink = ({ href, Icon, label }: { href: string; Icon: React.ElementType; label: string }) => (
@@ -539,6 +540,12 @@ const PersonalLandingPage: React.FC = () => {
                 <IconLink href="https://dangerdano.itch.io/" Icon={Gamepad2} label="itch.io" />
                 <IconLink href="https://yourindie.dev" Icon={Globe} label="YourIndie.dev" />
                 <IconLink href="https://aicompaniontoolkit.com" Icon={Cpu} label="AI Toolkit" />
+             </div>
+             <div className="flex justify-center flex-wrap gap-x-6 gap-y-4 mt-4 text-accent/50">
+                <Link href="/contact" className="hover:text-accent">Contact Us</Link>
+                <Link href="/customer-feedback" className="hover:text-accent">Customer Feedback</Link>
+                <Link href="/newsletter-signup" className="hover:text-accent">Newsletter Sign Up</Link>
+                <Link href="/hire-me" className="hover:text-accent">Hire Me</Link>
              </div>
              <p className="mt-8 text-sm text-muted-foreground">&copy; {new Date().getFullYear()} Dane Willacker. All rights reserved.</p>
          </footer>
