@@ -10,7 +10,7 @@ const NotFoundPage: FC = () => {
         <h1 className="text-6xl font-bold text-primary">404</h1>
         <h2 className="text-2xl font-semibold text-card-foreground">Page Not Found</h2>
         <p className="text-muted-foreground max-w-md mx-auto">
-          Oops! The page you're looking for seems to have wandered off into the digital void.
+          Oops! The page you&#39;re looking for seems to have wandered off into the digital void.
         </p>
         <Link 
           href="/"
