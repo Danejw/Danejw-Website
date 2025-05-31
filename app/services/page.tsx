@@ -5,7 +5,7 @@ const ServicesPage: FC = () => {
     <div className="max-w-3xl mx-auto px-4 py-12 space-y-8">
       <h1 className="text-3xl sm:text-4xl font-bold text-center text-primary">Transform Your Business Documents Into an AI-Powered Knowledge Base</h1>
       <p className="text-muted-foreground text-center text-lg">
-        Stop wasting time searching for information. I build custom AI agents that give your team instant access to your company's knowledge.
+        Stop wasting time searching for information. I build custom AI agents that give your team instant access to your company&apos;s knowledge.
       </p>
 
       <h2 className="text-2xl font-semibold mt-8">The Challenge Your Business Faces</h2>
@@ -44,7 +44,7 @@ const ServicesPage: FC = () => {
 
       <h2 className="text-2xl font-semibold mt-8">Ready to Transform Your Business?</h2>
       <p>
-        Let's discuss how an AI knowledge base can streamline your operations and boost productivity. I'll analyze your current document workflow and show you exactly how much time and money you can save.
+        Let&apos;s discuss how an AI knowledge base can streamline your operations and boost productivity. I&apos;ll analyze your current document workflow and show you exactly how much time and money you can save.
       </p>
     </div>
   )

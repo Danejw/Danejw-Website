@@ -6,7 +6,6 @@ import {
   Linkedin,
   Twitter, // Represents X
   Youtube,
-  Globe, // For websites
   ExternalLink,
   Code, // Represents Web/Software Engineering & Tools
   Cpu, // Using Cpu for AI Integration, replacing Brain
@@ -18,7 +17,7 @@ import clsx from 'clsx'; // Import clsx for conditional classes
 import { GlowingEffect } from '@/app/components/ui/glowing-effect';
 import { SplashCursor } from '@/app/components/ui/splash-cursor';
 import { motion } from 'framer-motion'; // Import motion
-import Link from 'next/link'
+
 
 // Helper component for icon links
 const IconLink = ({ href, Icon, label }: { href: string; Icon: React.ElementType; label: string }) => (
