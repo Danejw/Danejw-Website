@@ -4,6 +4,8 @@ import "./globals.css";
 import { ThemeProvider } from "@/app/components/ThemeProvider";
 import { cn } from '@/lib/utils';
 import { ThemeAwareCircuitBackground } from '@/app/components/ThemeAwareCircuitBackground';
+import { Header } from '@/app/components/Header';
+import { Footer } from '@/app/components/Footer';
 
 const geistSans = Geist({
   variable: "--font-geist-sans",
@@ -67,7 +69,7 @@ export default function RootLayout({
     <html lang="en" className="dark" suppressHydrationWarning>
       <body
         className={cn(
-          'min-h-screen bg-background font-sans antialiased relative',
+          'min-h-screen bg-background font-sans antialiased relative flex flex-col',
           geistSans.variable,
           geistMono.variable
         )}
@@ -75,7 +77,9 @@ export default function RootLayout({
         <ThemeAwareCircuitBackground />
 
         <ThemeProvider attribute="class" defaultTheme="dark" enableSystem={false} disableTransitionOnChange>
-          <main className="relative z-10">{children}</main>
+          <Header />
+          <main className="relative z-10 flex-1">{children}</main>
+          <Footer />
         </ThemeProvider>
       </body>
     </html>
