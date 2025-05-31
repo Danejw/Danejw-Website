@@ -6,7 +6,6 @@ import {
   Linkedin,
   Twitter, // Represents X
   Youtube,
-  Globe, // For websites
   ExternalLink,
   Code, // Represents Web/Software Engineering & Tools
   Cpu, // Using Cpu for AI Integration, replacing Brain
@@ -18,7 +17,7 @@ import clsx from 'clsx'; // Import clsx for conditional classes
 import { GlowingEffect } from '@/app/components/ui/glowing-effect';
 import { SplashCursor } from '@/app/components/ui/splash-cursor';
 import { motion } from 'framer-motion'; // Import motion
-import Link from 'next/link'
+
 
 // Helper component for icon links
 const IconLink = ({ href, Icon, label }: { href: string; Icon: React.ElementType; label: string }) => (
@@ -528,27 +527,6 @@ const PersonalLandingPage: React.FC = () => {
              </div>
            </div>
         </motion.section>
-
-         {/* Footer - Updated Links */}
-         <footer className="mt-16 border-t border-border pt-8 text-center">
-            <p className="text-muted-foreground mb-6">Connect with me:</p>
-             <div className="flex justify-center flex-wrap gap-x-6 gap-y-4">
-                <IconLink href="https://www.linkedin.com/in/danejw" Icon={Linkedin} label="LinkedIn" />
-                <IconLink href="https://github.com/Danejw" Icon={Github} label="GitHub" />
-                <IconLink href="https://twitter.com/Djw_learn" Icon={Twitter} label="X" />
-                <IconLink href="https://www.youtube.com/channel/UCYnBPlKf3iqmaLcBC8maYYw" Icon={Youtube} label="YouTube" />
-                <IconLink href="https://dangerdano.itch.io/" Icon={Gamepad2} label="itch.io" />
-                <IconLink href="https://yourindie.dev" Icon={Globe} label="YourIndie.dev" />
-                <IconLink href="https://aicompaniontoolkit.com" Icon={Cpu} label="AI Toolkit" />
-             </div>
-             <div className="flex justify-center flex-wrap gap-x-6 gap-y-4 mt-4 text-accent/50">
-                <Link href="/contact" className="hover:text-accent">Contact Us</Link>
-                <Link href="/customer-feedback" className="hover:text-accent">Customer Feedback</Link>
-                <Link href="/newsletter-signup" className="hover:text-accent">Newsletter Sign Up</Link>
-                <Link href="/hire-me" className="hover:text-accent">Hire Me</Link>
-             </div>
-             <p className="mt-8 text-sm text-muted-foreground">&copy; {new Date().getFullYear()} Dane Willacker. All rights reserved.</p>
-         </footer>
 
       </div>
     </div>
