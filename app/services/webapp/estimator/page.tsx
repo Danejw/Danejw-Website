@@ -9,9 +9,27 @@ interface Estimate {
 }
 
 const tiers = {
-  starter: { label: 'Starter', min: 750, max: 1500 },
-  growth: { label: 'Growth', min: 2500, max: 5000 },
-  scale: { label: 'Scale', min: 5000, max: 10000 },
+  starter: {
+    label: 'Starter',
+    min: 750,
+    max: 1500,
+    description:
+      'Ideal for landing pages, calculators, interactive demos, or user interfaces that do not require login or saved data.',
+  },
+  growth: {
+    label: 'Growth',
+    min: 2500,
+    max: 5000,
+    description:
+      'Ideal for platforms requiring user authentication, saved content, dashboards, or business logic.',
+  },
+  scale: {
+    label: 'Scale',
+    min: 5000,
+    max: 10000,
+    description:
+      'Ideal for intelligent applications requiring automation, third-party integrations, or advanced data capabilities.',
+  },
 } as const
 
 type Tier = keyof typeof tiers
@@ -33,12 +51,42 @@ const maintenancePlans = {
 type Maintenance = keyof typeof maintenancePlans
 
 const featureList = [
-  { id: 'auth', label: 'User Login', cost: 300 },
-  { id: 'admin', label: 'Admin Panel', cost: 400 },
-  { id: 'payment', label: 'Stripe or Payment System', cost: 500 },
-  { id: 'ai', label: 'AI Chat or Analysis', cost: 800 },
-  { id: 'api', label: 'Integrate with another platform', cost: 600 },
-  { id: 'notifications', label: 'Email or Push Notifications', cost: 300 },
+  {
+    id: 'auth',
+    label: 'User Login',
+    cost: 300,
+    description: 'User authentication and access control',
+  },
+  {
+    id: 'admin',
+    label: 'Admin Panel',
+    cost: 400,
+    description: 'Admin panel or content management tools',
+  },
+  {
+    id: 'payment',
+    label: 'Stripe or Payment System',
+    cost: 500,
+    description: 'Integration with payment providers like Stripe',
+  },
+  {
+    id: 'ai',
+    label: 'AI Chat or Analysis',
+    cost: 800,
+    description: 'AI capabilities such as chat assistants or analysis',
+  },
+  {
+    id: 'api',
+    label: 'Integrate with another platform',
+    cost: 600,
+    description: 'Connect your app to an external service or API',
+  },
+  {
+    id: 'notifications',
+    label: 'Email or Push Notifications',
+    cost: 300,
+    description: 'Background processing and notifications',
+  },
 ] as const
 
 type FeatureId = (typeof featureList)[number]['id']
@@ -90,16 +138,19 @@ const EstimatorPage = () => {
       <fieldset className="space-y-2">
         <legend className="font-medium">What type of app do you need?</legend>
         {Object.entries(tiers).map(([key, val]) => (
-          <label key={key} className="flex items-center gap-2">
+          <label key={key} className="flex items-start gap-2">
             <input
               type="radio"
               name="tier"
               value={key}
               checked={tier === key}
               onChange={() => setTier(key as Tier)}
-              className="accent-accent"
+              className="accent-accent mt-1"
             />
-            {val.label}
+            <span>
+              <span className="font-medium">{val.label}</span>
+              <span className="block text-sm text-muted-foreground">{val.description}</span>
+            </span>
           </label>
         ))}
       </fieldset>
@@ -145,14 +196,21 @@ const EstimatorPage = () => {
       <fieldset className="space-y-2">
         <legend className="font-medium">Which features do you need?</legend>
         {featureList.map((feat) => (
-          <label key={feat.id} className="flex items-center gap-2">
+          <label key={feat.id} className="flex items-start gap-2">
             <input
               type="checkbox"
               checked={features[feat.id]}
               onChange={() => toggleFeature(feat.id)}
-              className="accent-accent"
+              className="accent-accent mt-1"
             />
-            {feat.label}
+            <span>
+              <span className="font-medium">
+                {feat.label} (+${feat.cost})
+              </span>
+              <span className="block text-sm text-muted-foreground">
+                {feat.description}
+              </span>
+            </span>
           </label>
         ))}
       </fieldset>
