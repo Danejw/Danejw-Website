@@ -1,5 +1,6 @@
 import { type FC } from 'react'
 import Link from 'next/link'
+import Testimonials from '@/app/components/Testimonials'
 
 const ServicesIndexPage: FC = () => {
   return (
@@ -25,6 +26,7 @@ const ServicesIndexPage: FC = () => {
           </Link>
         </div>
       </div>
+      <Testimonials />
     </div>
   )
 }
