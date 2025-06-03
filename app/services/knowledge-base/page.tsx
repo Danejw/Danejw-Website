@@ -1,5 +1,11 @@
 import { type FC } from 'react'
+import type { Metadata } from 'next'
 import ExamplesCarousel from '@/app/components/ExamplesCarousel'
+
+export const metadata: Metadata = {
+  title: 'AI Knowledge Base Service - Dane Willacker',
+  description: 'Details on building AI-powered knowledge bases for businesses.',
+}
 
 const ServicesPage: FC = () => {
   return (
