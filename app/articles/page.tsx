@@ -12,6 +12,18 @@ const articles = [
     slug: 'enhancing-customer-interaction-and-support',
     description:
       'Design AI agents to draft empathetic responses and standardize communication.'
+  },
+  {
+    title: 'Accelerating Proposal and Grant Writing',
+    slug: 'accelerating-proposal-and-grant-writing',
+    description:
+      'AI copilot for quickly drafting compliant proposals and RFP responses.'
+  },
+  {
+    title: 'Making Sense of Company-Wide Survey Feedback',
+    slug: 'making-sense-of-company-wide-survey-feedback',
+    description:
+      'Summarize and cluster open-ended feedback to surface actionable insights.'
   }
 ]
 
