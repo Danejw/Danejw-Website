@@ -1,4 +1,10 @@
 import { type FC } from 'react'
+import type { Metadata } from 'next'
+
+export const metadata: Metadata = {
+  title: 'Hire Me - Dane Willacker',
+  description: 'Submit a request to hire Dane Willacker for AI or XR development work.',
+}
 
 const HireMePage: FC = () => {
   return (

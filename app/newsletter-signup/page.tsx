@@ -1,4 +1,10 @@
 import { type FC } from 'react'
+import type { Metadata } from 'next'
+
+export const metadata: Metadata = {
+  title: 'Newsletter Signup - Dane Willacker',
+  description: 'Join the newsletter to receive updates from Dane Willacker.',
+}
 
 const NewsletterSignupPage: FC = () => {
   return (

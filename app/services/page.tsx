@@ -1,6 +1,12 @@
 import { type FC } from 'react'
+import type { Metadata } from 'next'
 import Link from 'next/link'
 import Testimonials from '@/app/components/Testimonials'
+
+export const metadata: Metadata = {
+  title: 'Services - Dane Willacker',
+  description: 'Overview of consulting services offered by Dane Willacker.',
+}
 
 const ServicesIndexPage: FC = () => {
   return (

@@ -1,4 +1,10 @@
 import PersonalLandingPage from "@/app/components/PersonalLandingPage";
+import type { Metadata } from "next";
+
+export const metadata: Metadata = {
+  title: "Home - Dane Willacker",
+  description: "Homepage for Dane Willacker, showcasing AI and XR development projects.",
+};
 
 export default function Home() {
   return (
