@@ -1,4 +1,5 @@
 import { type FC } from 'react'
+import ExamplesCarousel from '@/app/components/ExamplesCarousel'
 
 const ServicesPage: FC = () => {
   return (
@@ -43,11 +44,14 @@ const ServicesPage: FC = () => {
       </p>
 
       <h2 className="text-2xl font-semibold mt-8">Ready to Transform Your Business?</h2>
-      <p>
-        Let&apos;s discuss how an AI knowledge base can streamline your operations and boost productivity. I&apos;ll analyze your current document workflow and show you exactly how much time and money you can save.
-      </p>
-    </div>
-  )
-}
+        <p>
+          Let&apos;s discuss how an AI knowledge base can streamline your operations and boost productivity. I&apos;ll analyze your current document workflow and show you exactly how much time and money you can save.
+        </p>
+
+        <h2 className="text-2xl font-semibold mt-12">Industry Examples</h2>
+        <ExamplesCarousel />
+      </div>
+    )
+  }
 
 export default ServicesPage
