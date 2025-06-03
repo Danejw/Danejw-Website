@@ -28,6 +28,7 @@ export const Footer: FC = () => {
             <Link href="/contact" className="hover:text-accent">Contact Us</Link>
             <Link href="/customer-feedback" className="hover:text-accent">Customer Feedback</Link>
             <Link href="/newsletter-signup" className="hover:text-accent">Newsletter Sign Up</Link>
+            <Link href="/articles" className="hover:text-accent">Articles</Link>
             <Link href="/services" className="hover:text-accent">Services</Link>
             <Link href="/hire-me" className="hover:text-accent">Hire Me</Link>
         </div>
