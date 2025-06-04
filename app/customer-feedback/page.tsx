@@ -1,4 +1,10 @@
 import { type FC } from 'react'
+import type { Metadata } from 'next'
+
+export const metadata: Metadata = {
+  title: 'Customer Feedback - Dane Willacker',
+  description: 'Share your thoughts and experiences working with Dane Willacker.',
+}
 
 const CustomerFeedbackPage: FC = () => {
   return (
