@@ -12,6 +12,12 @@ const articles = [
     slug: 'enhancing-customer-interaction-and-support',
     description:
       'Design AI agents to draft empathetic responses and standardize communication.'
+  },
+  {
+    title: 'Improving Bid Accuracy and Turnaround',
+    slug: 'improving-bid-accuracy-and-turnaround',
+    description:
+      'Analyze historical bids and materials pricing with AI to produce fast, accurate estimates.'
   }
 ]
 
