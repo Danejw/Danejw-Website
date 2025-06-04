@@ -18,6 +18,18 @@ const articles = [
     slug: 'improving-bid-accuracy-and-turnaround',
     description:
       'Analyze historical bids and materials pricing with AI to produce fast, accurate estimates.'
+  },
+  {
+    title: 'Accelerating Proposal and Grant Writing',
+    slug: 'accelerating-proposal-and-grant-writing',
+    description:
+      'Use AI to draft proposals quickly, tailor content, and flag compliance issues.'
+  },
+  {
+    title: 'Making Sense of Company-Wide Survey Feedback',
+    slug: 'making-sense-of-company-wide-survey-feedback',
+    description:
+      'Summarize survey responses and generate reports with sentiment and themes.'
   }
 ]
 
