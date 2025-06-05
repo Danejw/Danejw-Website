@@ -30,7 +30,7 @@ export default function AICustomerSupportArticle() {
       </p>
       <ul className="list-disc list-inside ml-4 space-y-2">
         <li><strong>Email Agent:</strong> Responds to technical questions using vector search through repository knowledge, generating human-like responses with appropriate Unity Asset Store links</li>
-        <li><strong>Feature Agent:</strong> Identifies feature requests that don't exist in the current asset, automatically logging them to Google Sheets for development tracking</li>
+        <li><strong>Feature Agent:</strong> Identifies feature requests that don&#39;t exist in the current asset, automatically logging them to Google Sheets for development tracking</li>
       </ul>
 
       <h3 className="text-xl font-semibold">4. Feature Request Management</h3>
@@ -43,9 +43,9 @@ export default function AICustomerSupportArticle() {
         The system operates through a seamless integration of Gmail API monitoring, OpenAI embeddings, Supabase vector storage, and Google Sheets automation. Each component works together to create a comprehensive customer support ecosystem that scales automatically with user growth.
       </p>
 
-      <h2 className="text-2xl font-semibold text-primary">Quality Assurance & Brand Consistency</h2>
+      <h2 className="text-2xl font-semibold text-primary">Quality Assurance &amp; Brand Consistency</h2>
       <p>
-        All automated responses maintain the distinctive "Aloha" greeting and "Mahalo, Your Indie!" signature, ensuring consistent brand voice across all customer interactions. For sensitive or complex inquiries, the system routes responses through a human approval process via email, maintaining quality while preserving automation efficiency.
+        All automated responses maintain the distinctive &quot;Aloha&quot; greeting and &quot;Mahalo, Your Indie!&quot; signature, ensuring consistent brand voice across all customer interactions. For sensitive or complex inquiries, the system routes responses through a human approval process via email, maintaining quality while preserving automation efficiency.
       </p>
 
       <h2 className="text-2xl font-semibold text-primary">Business Impact</h2>
