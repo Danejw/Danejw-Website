@@ -18,6 +18,12 @@ const articles = [
     slug: 'improving-bid-accuracy-and-turnaround',
     description:
       'Analyze historical bids and materials pricing with AI to produce fast, accurate estimates.'
+  },
+  {
+    title: 'AI Customer Support for Supabase Integration',
+    slug: 'ai-customer-support-for-supabase-integration',
+    description:
+      'Automated email replies and feature logging for the Supabase Integration Unity asset.'
   }
 ]
 
