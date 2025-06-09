@@ -24,6 +24,12 @@ const articles = [
     slug: 'ai-customer-support-for-supabase-integration',
     description:
       'Automated email replies and feature logging for the Supabase Integration Unity asset.'
+  },
+  {
+    title: 'Automating AI Music Video Publishing to Save Time and Effort',
+    slug: 'automating-ai-music-video-publishing',
+    description:
+      'Automate the entire pipeline from audio and cover art to scheduled YouTube videos.'
   }
 ]
 
