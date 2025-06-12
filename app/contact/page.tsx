@@ -1,4 +1,10 @@
 import { type FC } from 'react'
+import type { Metadata } from 'next'
+
+export const metadata: Metadata = {
+  title: 'Contact - Dane Willacker',
+  description: 'Get in touch with Dane Willacker to discuss projects or collaborations.',
+}
 
 const ContactPage: FC = () => {
   return (

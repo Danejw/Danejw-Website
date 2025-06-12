@@ -1,5 +1,11 @@
 import { type FC } from 'react'
+import type { Metadata } from 'next'
 import Link from 'next/link'
+
+export const metadata: Metadata = {
+  title: 'Web App Development - Dane Willacker',
+  description: 'Professional web app development services with clear tiers and pricing.',
+}
 
 const WebAppDevelopmentPage: FC = () => {
   return (
