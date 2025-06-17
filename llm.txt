@@ -9,6 +9,7 @@
   - [AI Companion Toolkit](https://aicompaniontoolkit.com) – Toolkit for building voice-enabled AI companions
   - [Knolia](https://knolia.org) – Production example of a voice companion app
   - [SongTailor](https://songtailor.app) – AI music generator
+  - [Custom Golf Club Builder](https://iron-golfclub-builder.vercel.app/) – Shopify-based iron set configurator for client Oriekhalkos
   - [Assistance for Unity](https://assetstore.unity.com/packages/tools/ai-ml-integration/assistance-293407) – AI assistant inside the Unity Editor
   - [VR Game Jam Projects](https://dangerdano.itch.io) – Fireside, Swapno, The Phantom Delivery, and more
 

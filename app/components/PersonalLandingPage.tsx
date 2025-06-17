@@ -200,6 +200,12 @@ const PersonalLandingPage: React.FC = () => {
           link: "https://songtailor.app",
           tags: ["Creator", "AI", "Music", "Generative Media", "Web App", "Product Hunt"]
       },
+      {
+          title: "Custom Golf Club Builder",
+          description: "Built for client Oriekhalkos, this app lets golfers design custom iron sets and purchase them. It retrieves all product data and images through Shopify's Storefront API, with checkout handled directly by Shopify.",
+          link: "https://iron-golfclub-builder.vercel.app/",
+          tags: ["Client Work", "Web App", "Shopify", "Custom Product", "E-commerce"]
+      },
   ];
 
   // Fun VR Projects Data (keep structure, add items from previous step)
