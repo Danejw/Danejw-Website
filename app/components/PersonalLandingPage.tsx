@@ -206,6 +206,12 @@ const PersonalLandingPage: React.FC = () => {
           link: "https://iron-golfclub-builder.vercel.app/",
           tags: ["Client Work", "Web App", "Shopify", "Custom Product", "E-commerce"]
       },
+      {
+          title: "Your Prompt Refiner",
+          description: "AI-powered tool that iteratively critiques and suggests improvements to help you craft more effective prompts, starting from a simple idea and refining it step-by-step.",
+          link: "https://refine-your-prompt.vercel.app/",
+          tags: ["Creator", "AI", "Tool", "Web App", "Prompt Engineering"]
+      },
   ];
 
   // Fun VR Projects Data (keep structure, add items from previous step)
