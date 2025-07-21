@@ -212,6 +212,12 @@ const PersonalLandingPage: React.FC = () => {
           link: "https://JustBuildNow.com",
           tags: ["Creator", "Web App", "Analytics", "Community"]
       },
+      {
+          title: "Your Prompt Refiner",
+          description: "Iteratively refine AI prompts with automated critique and suggestions. Start with a simple prompt and improve it step by step to better achieve your goal.",
+          link: "https://refine-your-prompt.vercel.app/",
+          tags: ["Creator", "AI", "Tool", "Web App", "Prompt Engineering"]
+      },
   ];
 
   // Fun VR Projects Data (keep structure, add items from previous step)
