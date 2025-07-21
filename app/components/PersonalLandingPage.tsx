@@ -206,6 +206,12 @@ const PersonalLandingPage: React.FC = () => {
           link: "https://iron-golfclub-builder.vercel.app/",
           tags: ["Client Work", "Web App", "Shopify", "Custom Product", "E-commerce"]
       },
+      {
+          title: "Just Build Now",
+          description: "JustBuildNow.com is a platform built for solo founders and developers who want to share their progress \u2013 aka \"building in public\" \u2013 and get actionable feedback along the way. Users sign in with GitHub to track growth, learn what's working, and build momentum with a progress-focused dashboard.",
+          link: "https://JustBuildNow.com",
+          tags: ["Creator", "Web App", "Analytics", "Community"]
+      },
   ];
 
   // Fun VR Projects Data (keep structure, add items from previous step)
