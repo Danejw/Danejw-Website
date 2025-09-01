@@ -12,6 +12,7 @@ import {
   Package, // Using Package for Game/Tool Development, replacing Wrench
   Gamepad2, // Using Gamepad2 for Itch.io
   Box, // Using Box for XR/Unity, replacing Cuboid
+  Cog, // Using Cog for Automation, representing efficiency and control
 } from 'lucide-react'; // Assuming lucide-react is installed
 import clsx from 'clsx'; // Import clsx for conditional classes
 import { GlowingEffect } from '@/app/components/ui/glowing-effect';
@@ -69,6 +70,7 @@ const SKILL_IDS = {
   AI: 'ai',
   GAME_TOOL: 'game_tool',
   WEB: 'web',
+  AUTOMATION: 'automation',
 } as const;
 
 // --- Mappings to link skills, technologies, and projects ---
@@ -79,6 +81,7 @@ const skillTechnologyMapping: Record<typeof SKILL_IDS[keyof typeof SKILL_IDS], s
   [SKILL_IDS.AI]: ['Python', 'OpenAI API', 'Unity ML-Agents', 'AI', 'GPT', 'Voice AI', 'FastAPI', 'Conversational AI', 'Voice Agent'],
   [SKILL_IDS.GAME_TOOL]: ['C#', 'Unity', 'Git', 'GitHub', 'Game Jam', 'Tool', 'SDK', 'Open Source', 'Open AI', 'OpenXR', 'Visual Studio', 'Android', 'Game Development', 'VFX', 'Developer Productivity'],
   [SKILL_IDS.WEB]: ['JavaScript', 'TypeScript', 'Python', 'React', 'Next.js', 'Node.js', '.Net', 'FastAPI', 'Vite.js', 'HTML', 'CSS', 'Git', 'GitHub', 'Web App', 'Platform', 'Cursor'],
+  [SKILL_IDS.AUTOMATION]: ['Python', 'Node.js', 'FastAPI', 'Automation', 'Systems', 'Robotics', 'Process Control', 'Monitoring'],
 };
 
 // Function to get skills related to a technology item
@@ -152,6 +155,7 @@ const PersonalLandingPage: React.FC = () => {
     { skillId: SKILL_IDS.AI, icon: Cpu, name: 'Artificial Intelligence Integration', desc: 'Proven ability to ship real-time AI systems in XR, voice, and companion apps. Integrates ML agents (Unity ML-Agents), conversational AI (OpenAI GPT), voice recognition (Whisper), and develops AI companions & generative content tools.' },
     { skillId: SKILL_IDS.GAME_TOOL, icon: Package, name: 'Game & Tool Development', desc: 'Skilled in rapid prototyping & game jams (entertainment & serious apps). Develops custom Unity tools/plugins/editor extensions. Contributor to open-source projects like Open Brush (Google Tilt Brush fork).' },
     { skillId: SKILL_IDS.WEB, icon: Code, name: 'Web & Software Engineering', desc: 'Full-stack deployment of web applications and services (e.g., SongTailor web app, community sites). Proficient in Git/GitHub (44+ repositories) and collaborative development.' },
+    { skillId: SKILL_IDS.AUTOMATION, icon: Cog, name: 'Automation Expert', desc: 'Designs, develops, and implements technology to monitor and control processes, products, and services, improving efficiency and operations. They possess strong technical skills in areas like programming, systems analysis, and robotics, alongside soft skills such as problem-solving and collaboration. These experts work in various fields, including IT, manufacturing, and other sectors, and are essential for integrating new technologies and optimizing automated systems.' },
   ];
 
   // Technologies Data (keep structure, add items from previous step)
