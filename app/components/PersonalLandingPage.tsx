@@ -211,10 +211,22 @@ const PersonalLandingPage: React.FC = () => {
           tags: ["Client Work", "Web App", "Shopify", "Custom Product", "E-commerce"]
       },
       {
+          title: "Its Memory",
+          description: "Its Memory is an AI-powered knowledge management platform with Profiles, Dashboards, and collaborative Brains that keep personal knowledge organized. Users can sign in, explore pricing plans, and manage productivity, memories, and accounts in one place.",
+          link: "https://itsmemory.com",
+          tags: ["Creator", "AI", "Knowledge Management", "Productivity", "Platform"]
+      },
+      {
           title: "Just Build Now",
-          description: "JustBuildNow.com is a platform built for solo founders and developers who want to share their progress \u2013 aka \"building in public\" \u2013 and get actionable feedback along the way. Users sign in with GitHub to track growth, learn what's working, and build momentum with a progress-focused dashboard.",
+          description: "JustBuildNow makes building in public effortless for creators. Sign up with GitHub to launch a public profile automatically, share project updates, and collaborate transparently with a progress-focused dashboard.",
           link: "https://JustBuildNow.com",
-          tags: ["Creator", "Web App", "Analytics", "Community"]
+          tags: ["Creator", "Web App", "Community", "Open Building", "GitHub"]
+      },
+      {
+          title: "GoodLooks",
+          description: "GoodLooks is an AI-powered beauty consultation platform for clients and stylists. Upload a selfie to preview photorealistic hairstyles, experiment with infinite cuts and colors, and share detailed notes to compare before-and-after transformations.",
+          link: "https://goodlooks.me",
+          tags: ["Creator", "AI", "Beauty", "Computer Vision", "Consultation"]
       },
       {
           title: "Your Prompt Refiner",
