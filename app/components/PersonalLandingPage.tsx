@@ -452,6 +452,33 @@ const PersonalLandingPage: React.FC = () => {
            <h2 className="text-3xl font-bold text-center mb-10 sm:mb-12">Experience</h2>
            <div className="max-w-4xl mx-auto space-y-8">
 
+              {/* Your Indie LLC - Founder */}
+             <div className="relative list-none rounded-lg">
+                <GlowingEffect
+                  spread={40}
+                  glow={true}
+                  disabled={false}
+                  proximity={64}
+                  inactiveZone={0.01}
+                  borderWidth={3}
+                  className="rounded-lg"
+                />
+                <div className="bg-card border border-border rounded-lg shadow-sm p-6 sm:p-8 transition-all duration-150 hover:shadow-md hover:border-accent/20 hover:scale-[1.02] cursor-pointer">
+                   <div className="flex items-start gap-4">
+                     <div>
+                        <h3 className="text-xl font-semibold text-card-foreground mb-1">
+                          <a href="https://yourindie.llc" target="_blank" rel="noopener noreferrer" className="hover:text-primary/80 transition-colors inline-flex items-center gap-1.5">
+                            Founder – Your Indie LLC
+                         <ExternalLink className="w-4 h-4 text-accent/50 hover:text-accent transition-colors" />      
+                          </a>
+                         <p className="text-sm text-muted-foreground mb-2">Remote</p>
+                        </h3>
+                     <p className="text-sm text-muted-foreground leading-relaxed">Leads Your Indie LLC, an independent studio building personal software for creators. Focuses on product vision and delivery of automation and developer tooling that help indie teams ship faster and turn rough ideas into polished experiences.</p>
+                     </div>
+                   </div>
+                </div>
+             </div>
+
               {/* XR Developer */}
              <div className="relative list-none rounded-lg">
                 <GlowingEffect
