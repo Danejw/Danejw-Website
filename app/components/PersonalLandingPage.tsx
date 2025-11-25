@@ -35,10 +35,15 @@ const IconLink = ({ href, Icon, label }: { href: string; Icon: React.ElementType
   </a>
 );
 
-// Helper component for project cards - Updated with hover scale
-const ProjectCard = ({ title, description, link, tags }: { title: string; description: string; link?: string; tags?: string[] }) => (
+// Helper component for project cards - Updated with hover scale and optional thumbnail
+const ProjectCard = ({ title, description, link, tags, thumbnail }: { title: string; description: string; link?: string; tags?: string[]; thumbnail?: string }) => (
   <div className="bg-card border border-border rounded-lg shadow-sm p-6 flex flex-col justify-between hover:shadow-md hover:border-accent/20 hover:scale-[1.02] transition-all duration-150 h-full">
     <div>
+      {thumbnail && (
+        <div className="mb-4 rounded-lg overflow-hidden">
+          <img src={thumbnail} alt={`${title} preview`} className="w-full h-48 object-cover" />
+        </div>
+      )}
       <h3 className="text-xl font-semibold mb-2 text-card-foreground flex items-center gap-2">
           {title}
           {link && (
@@ -270,6 +275,17 @@ const PersonalLandingPage: React.FC = () => {
       },
   ];
 
+  // Experiments Data - Fun bite-sized interactive experiments
+  const experiments = [
+      {
+          title: "Neural Architect",
+          description: "An interactive neural network visualization tool that helps you learn about neural networks and how they work. Build, train, and visualize neural networks in real-time to understand the fundamentals of deep learning through hands-on experimentation.",
+          link: "https://ai.studio/apps/drive/119r3q-g-oZ7h0TCG809qm-Y4L_006EVG?fullscreenApplet=true",
+          thumbnail: "/videos/NeuralNexus/neural-architect-thumbnail.jpg",
+          tags: ["AI", "Education", "Visualization", "Machine Learning", "Interactive", "Web App"]
+      },
+  ];
+
   // Animation variants for sections
   const sectionVariants = {
     hidden: { opacity: 0, y: 50 },
@@ -468,6 +484,50 @@ const PersonalLandingPage: React.FC = () => {
                        className="rounded-lg"
                      />
                    <ProjectCard {...project} />
+                  </div>
+              );
+            })}
+          </div>
+        </motion.section>
+
+        {/* Experiments Section - Animate in/out based on visibility */}
+        <motion.section
+          id="experiments"
+          className="mb-16 sm:mb-20 scroll-mt-20"
+          variants={sectionVariants}
+          initial="hidden"
+          whileInView="visible"
+          viewport={{ amount: 0.2 }}
+        >
+          <h2 className="text-3xl font-bold text-center mb-2">Fun Experiments</h2>
+          <p className="text-center text-muted-foreground mb-8 max-w-2xl mx-auto">
+            Bite-sized interactive experiments exploring various concepts and MVP ideas.
+          </p>
+          <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6 sm:gap-8">
+            {experiments.map((experiment) => {
+               const relatedSkills = getSkillsForProject(experiment.tags);
+               const isDimmed = hoveredSkill !== null && !relatedSkills.includes(hoveredSkill);
+               const isHighlighted = hoveredSkill !== null && relatedSkills.includes(hoveredSkill);
+
+              return (
+                 <div
+                   key={experiment.title + '-experiment'}
+                   className={clsx(
+                       "relative list-none transition-all duration-200 ease-in-out rounded-lg",
+                       isDimmed ? 'opacity-30 scale-95' : 'opacity-100 scale-100',
+                        isHighlighted ? 'ring-2 ring-accent ring-offset-2 ring-offset-background rounded-lg' : ''
+                   )}
+                  >
+                     <GlowingEffect
+                       spread={40}
+                       glow={true}
+                       disabled={false}
+                       proximity={64}
+                       inactiveZone={0.01}
+                       borderWidth={3}
+                       className="rounded-lg"
+                     />
+                   <ProjectCard {...experiment} />
                   </div>
               );
             })}
