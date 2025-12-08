@@ -120,3 +120,121 @@
     @apply bg-background text-foreground;
   }
 }
+
+@layer utilities {
+  /* Template background + overlays */
+  .bg-void {
+    background-image:
+      radial-gradient(circle at 50% 50%, rgba(7, 178, 196, 0.05) 0%, transparent 50%),
+      linear-gradient(rgba(255, 255, 255, 0.02) 1px, transparent 1px),
+      linear-gradient(90deg, rgba(255, 255, 255, 0.02) 1px, transparent 1px);
+    background-size: 100% 100%, 4rem 4rem, 4rem 4rem;
+    background-position: center, 0 0, 0 0;
+  }
+
+  .scanlines {
+    background: linear-gradient(
+      to bottom,
+      rgba(255, 255, 255, 0),
+      rgba(255, 255, 255, 0) 50%,
+      rgba(0, 0, 0, 0.1) 50%,
+      rgba(0, 0, 0, 0.1)
+    );
+    background-size: 100% 4px;
+    pointer-events: none;
+  }
+
+  /* Opaque, tight dotted grid */
+  .dot-grid-tight {
+    background-image:
+      radial-gradient(circle at center, rgba(255, 255, 255, 0.15) 2px, transparent 2px);
+    background-size: 12px 12px;
+    background-attachment: fixed;
+    background-repeat: repeat;
+  }
+
+  /* Selection */
+  ::selection {
+    background: rgba(7, 178, 196, 0.7);
+    color: #041014;
+  }
+
+  /* Scrollbar */
+  ::-webkit-scrollbar {
+    width: 6px;
+  }
+  ::-webkit-scrollbar-track {
+    background: #000;
+  }
+  ::-webkit-scrollbar-thumb {
+    background: #1e293b;
+    border-radius: 3px;
+  }
+  ::-webkit-scrollbar-thumb:hover {
+    background: #06b6d4;
+  }
+
+  /* Animations */
+  @keyframes char-reveal {
+    0% {
+      opacity: 0;
+      transform: translateY(1.5rem);
+      filter: blur(12px);
+    }
+    100% {
+      opacity: 1;
+      transform: translateY(0);
+      filter: blur(0);
+    }
+  }
+  .animate-char {
+    display: inline-block;
+    animation: char-reveal 0.8s cubic-bezier(0.2, 0.8, 0.2, 1) forwards;
+  }
+
+  @keyframes float-soft {
+    0%, 100% { transform: translateY(0px) rotate(0deg); }
+    50% { transform: translateY(-10px) rotate(2deg); }
+  }
+  .animate-float {
+    animation: float-soft 6s ease-in-out infinite;
+  }
+
+  @keyframes marquee {
+    0% { transform: translateX(0); }
+    100% { transform: translateX(-50%); }
+  }
+  .animate-marquee {
+    animation: marquee 28s linear infinite;
+  }
+
+  @keyframes drawRadar {
+    to { stroke-dashoffset: 0; }
+  }
+  .radar-path {
+    stroke-dasharray: 1000;
+    stroke-dashoffset: 1000;
+    animation: drawRadar 2s ease-out forwards 0.5s;
+  }
+
+  /* 3D tilt helpers */
+  .tilt-card {
+    transition: transform 0.2s ease, box-shadow 0.3s ease;
+    transform-style: preserve-3d;
+  }
+  .tilt-content {
+    transform: translateZ(20px);
+  }
+
+  /* Perspective utilities */
+  .perspective-none { perspective: none; }
+  .perspective-near { perspective: 300px; }
+  .perspective-normal { perspective: 500px; }
+  .perspective-distant { perspective: 1200px; }
+
+  /* Rotate utilities */
+  .rotate-x-5 { transform: rotateX(5deg); }
+  .rotate-x--5 { transform: rotateX(-5deg); }
+  .rotate-y-5 { transform: rotateY(5deg); }
+  .rotate-y--5 { transform: rotateY(-5deg); }
+}

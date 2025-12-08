@@ -4,6 +4,7 @@ import "./globals.css";
 import { ThemeProvider } from "@/app/components/ThemeProvider";
 import { cn } from '@/lib/utils';
 import { ThemeAwareCircuitBackground } from '@/app/components/ThemeAwareCircuitBackground';
+import { DottedGridBackground } from '@/app/components/DottedGridBackground';
 import { Header } from '@/app/components/Header';
 import { Footer } from '@/app/components/Footer';
 
@@ -74,12 +75,16 @@ export default function RootLayout({
           geistMono.variable
         )}
       >
+        {/* Dotted grid below everything */}
+        <DottedGridBackground className="-z-20" opacity={0.25} />
         <ThemeAwareCircuitBackground />
+        {/* Dotted grid above the main circuit layer but below content */}
+        <DottedGridBackground className="-z-5" opacity={0.15} />
 
         <ThemeProvider attribute="class" defaultTheme="dark" enableSystem={false} disableTransitionOnChange>
-          <Header />
+          {/* <Header /> */}
           <main className="relative z-10 flex-1">{children}</main>
-          <Footer />
+          {/* <Footer /> */}
         </ThemeProvider>
       </body>
     </html>

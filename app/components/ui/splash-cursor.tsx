@@ -1,6 +1,8 @@
 "use client";
 import { useEffect, useRef } from "react";
 
+const ACCENT_TEAL = { r: 7 / 255, g: 178 / 255, b: 196 / 255 };
+
 interface Pointer {
   id: number;
   texcoordX: number;
@@ -49,7 +51,7 @@ function SplashCursor({
   SPLAT_FORCE = 6000,
   SHADING = true,
   COLOR_UPDATE_SPEED = 10,
-  BACK_COLOR = { r: 0.5, g: 0, b: 0 },
+  BACK_COLOR = { r: 0, g: 0, b: 0 },
   TRANSPARENT = true,
 }) {
   const canvasRef = useRef<HTMLCanvasElement>(null);
@@ -1164,11 +1166,8 @@ function SplashCursor({
     }
 
     function generateColor(): { r: number, g: number, b: number } {
-      const c = HSVtoRGB(Math.random(), 1.0, 1.0);
-      c.r = (c.r ?? 0) * 0.15;
-      c.g = (c.g ?? 0) * 0.15;
-      c.b = (c.b ?? 0) * 0.15;
-      return c as { r: number, g: number, b: number };
+      // Keep splashes in the accent teal family for consistent theming
+      return { ...ACCENT_TEAL };
     }
 
     function HSVtoRGB(h: number, s: number, v: number): { r: number, g: number, b: number } {

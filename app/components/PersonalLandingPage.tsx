@@ -1,658 +1,144 @@
+// New landing page component matching the provided monochrome + teal reference.
 'use client'
 
-import React, { useState } from 'react';
-import {
-  Github,
-  Linkedin,
-  Twitter, // Represents X
-  Youtube,
-  ExternalLink,
-  Code, // Represents Web/Software Engineering & Tools
-  Cpu, // Using Cpu for AI Integration, replacing Brain
-  Package, // Using Package for Game/Tool Development, replacing Wrench
-  Gamepad2, // Using Gamepad2 for Itch.io
-  Box, // Using Box for XR/Unity, replacing Cuboid
-  Cog, // Using Cog for Automation, representing efficiency and control
-} from 'lucide-react'; // Assuming lucide-react is installed
-import clsx from 'clsx'; // Import clsx for conditional classes
-import { GlowingEffect } from '@/app/components/ui/glowing-effect';
-import { SplashCursor } from '@/app/components/ui/splash-cursor';
-import { motion } from 'framer-motion'; // Import motion
+import Image from 'next/image';
+import React from 'react';
 
+const techBadges = [
+  'Python',
+  'C#',
+  'TypeScript',
+  'Next.js',
+  'Vite',
+  'FastAPI',
+  'Supabase',
+  'ChatGPT',
+  'Anthropic',
+  'Gemini',
+  'Cursor',
+  'Unity',
+  'Vercel',
+  'Render',
+];
 
-// Helper component for icon links
-const IconLink = ({ href, Icon, label }: { href: string; Icon: React.ElementType; label: string }) => (
-  <a
-    href={href}
-    target="_blank"
-    rel="noopener noreferrer"
-    className="inline-flex items-center gap-2 text-accent/50 hover:text-accent transition-colors duration-150 group"
-    aria-label={label}
-    title={label}
-  >
-    <Icon className="w-5 h-5 group-hover:scale-110 transition-transform" />
-    <span className="hidden sm:inline">{label}</span>
-  </a>
-);
+const techLogos = [
+  { label: 'Python', glyph: '🐍' },
+  { label: 'C#', glyph: '♯' },
+  { label: 'TypeScript', glyph: 'TS' },
+  { label: 'Next.js', glyph: 'N' },
+  { label: 'Vite', glyph: '⚡' },
+  { label: 'FastAPI', glyph: 'A' },
+  { label: 'Supabase', glyph: 'S' },
+  { label: 'ChatGPT', glyph: 'G' },
+  { label: 'Anthropic', glyph: 'A⋂' },
+  { label: 'Gemini', glyph: '双' },
+  { label: 'Cursor', glyph: '▸' },
+  { label: 'Unity', glyph: '⬡' },
+  { label: 'Vercel', glyph: '▲' },
+  { label: 'Render', glyph: 'R' },
+];
 
-// Helper component for project cards - Updated with hover scale and optional thumbnail
-const ProjectCard = ({ title, description, link, tags, thumbnail }: { title: string; description: string; link?: string; tags?: string[]; thumbnail?: string }) => (
-  <div className="bg-card border border-border rounded-lg shadow-sm p-6 flex flex-col justify-between hover:shadow-md hover:border-accent/20 hover:scale-[1.02] transition-all duration-150 h-full">
-    <div>
-      {thumbnail && (
-        <div className="mb-4 rounded-lg overflow-hidden">
-          <img src={thumbnail} alt={`${title} preview`} className="w-full h-48 object-cover" />
-        </div>
-      )}
-      <h3 className="text-xl font-semibold mb-2 text-card-foreground flex items-center gap-2">
-          {title}
-          {link && (
-             <a href={link} target="_blank" rel="noopener noreferrer" title={`Visit ${title}`} className="text-primary hover:text-primary/80 transition-colors">
-                 <ExternalLink className="w-4 h-4 text-accent/50 hover:text-accent transition-colors" />
-             </a>
-          )}
-      </h3>
-      <p className="text-muted-foreground mb-4 text-sm leading-relaxed whitespace-pre-line">{description}</p>
-    </div>
-    {tags && tags.length > 0 && (
-      <div className="flex flex-wrap gap-2 mt-auto pt-4 border-t border-border/50">
-        {tags.map((tag) => (
-          <span
-            key={tag}
-            className="text-xs bg-secondary text-secondary-foreground px-2 py-0.5 rounded hover:bg-accent hover:text-accent-foreground transition-colors duration-150 cursor-default"
-          >
-            {tag}
-          </span>
-        ))}
-      </div>
-    )}
-  </div>
-);
-
-// Define skill identifiers (used for linking)
-const SKILL_IDS = {
-  XR: 'xr',
-  AI: 'ai',
-  GAME_TOOL: 'game_tool',
-  WEB: 'web',
-  AUTOMATION: 'automation',
-} as const;
-
-// --- Mappings to link skills, technologies, and projects ---
-// (These determine what gets highlighted/dimmed on hover)
-
-const skillTechnologyMapping: Record<typeof SKILL_IDS[keyof typeof SKILL_IDS], string[]> = {
-  [SKILL_IDS.XR]: ['C#', 'Unity', 'Oculus SDK', 'OpenXR', 'VR', 'XR', 'Git', 'GitHub', 'Visual Studio', 'Game Jam'],
-  [SKILL_IDS.AI]: ['Python', 'OpenAI API', 'Unity ML-Agents', 'AI', 'GPT', 'Voice AI', 'FastAPI', 'Conversational AI', 'Voice Agent'],
-  [SKILL_IDS.GAME_TOOL]: ['C#', 'Unity', 'Git', 'GitHub', 'Game Jam', 'Tool', 'SDK', 'Open Source', 'Open AI', 'OpenXR', 'Visual Studio', 'Android', 'Game Development', 'VFX', 'Developer Productivity'],
-  [SKILL_IDS.WEB]: ['JavaScript', 'TypeScript', 'Python', 'React', 'Next.js', 'Node.js', '.Net', 'FastAPI', 'Vite.js', 'HTML', 'CSS', 'Git', 'GitHub', 'Web App', 'Platform', 'Cursor'],
-  [SKILL_IDS.AUTOMATION]: ['Python', 'Node.js', 'FastAPI', 'Automation', 'Systems', 'Robotics', 'Process Control', 'Monitoring'],
-};
-
-// Function to get skills related to a technology item
-const getSkillsForTechnology = (item: string): string[] => {
-  return Object.entries(skillTechnologyMapping)
-    .filter(([, techItems]) => techItems.some(tech => item.toLowerCase().includes(tech.toLowerCase()) || tech.toLowerCase().includes(item.toLowerCase())))
-    .map(([skillId]) => skillId);
-};
-
-// CORRECTED Function to get skills related to a project
-const getSkillsForProject = (projectTags: string[] = []): string[] => {
-  const relatedSkills = new Set<string>();
-  const lowerCaseTags = projectTags.map(tag => tag.toLowerCase());
-
-  // Identify if the project has explicit game development context
-  const hasGameContext = lowerCaseTags.some(tag => ['unity', 'game jam', 'game development', 'vr', 'xr', 'vfx', 'multiplayer'].includes(tag));
-
-  // Iterate through tags and map to skills
-  lowerCaseTags.forEach(tag => {
-    Object.entries(skillTechnologyMapping).forEach(([skillId, techItems]) => {
-      // Check if the current tag matches any keyword for the current skill
-      if (techItems.some(tech => tag.includes(tech.toLowerCase()) || tech.toLowerCase().includes(tag))) {
-
-        // *** Special handling for GAME_TOOL ***
-        if (skillId === SKILL_IDS.GAME_TOOL) {
-          // Only add GAME_TOOL if:
-          // 1. The project has explicit game context OR
-          // 2. The specific tag itself implies game context (e.g., 'unity', 'game jam')
-          const isGameSpecificTag = ['unity', 'game jam', 'game development', 'vfx', 'multiplayer', 'open source'].includes(tag); // Define game-specific tags from the mapping
-
-          if (hasGameContext || isGameSpecificTag) {
-             // Check if the tag is 'tool' or 'sdk' and requires game context which might be missing
-             if ((tag === 'tool' || tag === 'sdk') && !hasGameContext && !isGameSpecificTag) {
-                 // Don't add GAME_TOOL if it's just 'tool'/'sdk' without other game context
-             } else {
-                 relatedSkills.add(SKILL_IDS.GAME_TOOL);
-             }
-          }
-        } else {
-          // For other skills (AI, XR, WEB), add directly if a match is found
-          relatedSkills.add(skillId);
-        }
-      }
-    });
-  });
-
-  // Direct skill checks based on specific tags (can sometimes override or add)
-  if (lowerCaseTags.includes('vr') || lowerCaseTags.includes('xr') || lowerCaseTags.includes('multiplayer')) relatedSkills.add(SKILL_IDS.XR);
-  if (lowerCaseTags.includes('ai') || lowerCaseTags.includes('conversational ai') || lowerCaseTags.includes('voice agent')) relatedSkills.add(SKILL_IDS.AI);
-  // NO direct add for GAME_TOOL based on 'tool'/'sdk' here
-  if (lowerCaseTags.includes('web app') || lowerCaseTags.includes('platform')) relatedSkills.add(SKILL_IDS.WEB);
-
-  // Ensure 'Assistance For Unity' always gets GAME_TOOL because it uses 'Unity' tag
-  if (lowerCaseTags.includes('unity')) {
-    relatedSkills.add(SKILL_IDS.GAME_TOOL);
-  }
-
-
-  return Array.from(relatedSkills);
-};
-
-
-// Main Component
 const PersonalLandingPage: React.FC = () => {
-  // State to track hovered skill ID
-  const [hoveredSkill, setHoveredSkill] = useState<string | null>(null);
-
-  // Skills Data - Add skillId to each skill
-  const skills = [
-    { skillId: SKILL_IDS.XR, icon: Box, name: 'Extended Reality (XR) Development', desc: 'Expert in Unity 3D real-time engine and C# programming for VR applications. Experienced with platforms (Oculus Quest, Rift), 3D environment design, interaction mechanics, multiplayer/social VR, emphasizing user immersion and comfort.' },
-    { skillId: SKILL_IDS.AI, icon: Cpu, name: 'Artificial Intelligence Integration', desc: 'Proven ability to ship real-time AI systems in XR, voice, and companion apps. Integrates ML agents (Unity ML-Agents), conversational AI (OpenAI GPT), voice recognition (Whisper), and develops AI companions & generative content tools.' },
-    { skillId: SKILL_IDS.GAME_TOOL, icon: Package, name: 'Game & Tool Development', desc: 'Skilled in rapid prototyping & game jams (entertainment & serious apps). Develops custom Unity tools/plugins/editor extensions. Contributor to open-source projects like Open Brush (Google Tilt Brush fork).' },
-    { skillId: SKILL_IDS.WEB, icon: Code, name: 'Web & Software Engineering', desc: 'Full-stack deployment of web applications and services (e.g., SongTailor web app, community sites). Proficient in Git/GitHub (44+ repositories) and collaborative development.' },
-    { skillId: SKILL_IDS.AUTOMATION, icon: Cog, name: 'Automation Expert', desc: 'Designs, develops, and implements technology to monitor and control processes, products, and services, improving efficiency and operations. They possess strong technical skills in areas like programming, systems analysis, and robotics, alongside soft skills such as problem-solving and collaboration. These experts work in various fields, including IT, manufacturing, and other sectors, and are essential for integrating new technologies and optimizing automated systems.' },
-  ];
-
-  // Technologies Data (keep structure, add items from previous step)
-  const technologies = [
-    { category: 'Languages', items: ['C#', 'JavaScript', 'TypeScript', 'Python'] },
-    { category: 'Frameworks', items: ['React', 'Next.js', 'Node.js', '.Net', 'FastAPI', 'Vite.js', 'HTML', 'CSS'] },
-    { category: 'SDKs & APIs', items: ['Oculus SDK', 'OpenXR', 'OpenAI API', 'Android', 'Web'] },
-    { category: 'Tools', items: ['Git', 'GitHub', 'Unity', 'Visual Studio', 'Cursor', 'Adobe Creative Suite', 'Ableton Live'] },
-  ];
-
-  // Projects Data (keep structure, add items from previous step)
-  const projects = [
-      {
-          title: "Your Indie Dev",
-          description: "Founder of a platform empowering indie game developers with tools & insights to make game development easier and more enjoyable. Offers productivity tools developed in-house.",
-          link: "https://yourindie.dev",
-          tags: ["Founder", "Game Development", "Tools"]
-      },
-      {
-          title: "Knolia",
-          description: "Creator of an AI-driven companion application (Knolia.org) designed to combat loneliness. A personal AI that learns over time, available 24/7 to listen without judgment. Focuses on social good through empathetic conversational AI.",
-          link: "https://knolia.org/welcome",
-          tags: ["Founder", "AI", "Social Good", "Web App", "Conversational AI", "Voice Agent"]
-      },
-      {
-        title: "AI Companion Toolkit",
-        description: "A ready-made toolkit for indie creators to build AI companions with integrated speech (voice) and GPT-based dialogue. Engineered for easy deployment, democratizing AI development.",
-        link: "https://aicompaniontoolkit.com",
-        tags: ["Creator", "AI", "Tool", "Web App", "Voice Agent"]
-      },
-      {
-        title: "Improv Forms",
-        description: "Create dynamic, AI-powered conversational forms just by describing what you need, and the form builds itself. Share your link or QR code to collect responses in a natural, chat-like flow.",
-        link: "https://ImprovForms.com",
-        tags: ["Creator", "AI", "Tool", "Web App", "Data Entry", "Data Analysis"]
-      },
-      {
-        title: "Assistance For Unity",
-        description: "AI chat assistant for the Unity Editor. Provides in-editor help via natural language queries to streamline coding and design tasks, merging AI with developer workflows.",
-        link: "https://assetstore.unity.com/packages/tools/ai-ml-integration/assistance-293407",
-        tags: ["Creator", "AI", "Tool", "Unity", "Game Development", "Developer Productivity"]
-      },
-      {
-          title: "SongTailor",
-          description: "Co-developer of an AI-powered music application that creates personalized songs from user stories and input. Launched on Product Hunt (Jan 2025). Integrates generative AI into creative media.",
-          link: "https://songtailor.app",
-          tags: ["Creator", "AI", "Music", "Generative Media", "Web App", "Product Hunt"]
-      },
-      {
-          title: "Custom Golf Club Builder",
-          description: "Built for client Oriekhalkos, this app lets golfers design custom iron sets and purchase them. It retrieves all product data and images through Shopify's Storefront API, with checkout handled directly by Shopify.",
-          link: "https://iron-golfclub-builder.vercel.app/",
-          tags: ["Client Work", "Web App", "Shopify", "Custom Product", "E-commerce"]
-      },
-      {
-          title: "Its Memory",
-          description: "Its Memory is an AI-powered knowledge management platform with Profiles, Dashboards, and collaborative Brains that keep personal knowledge organized. Users can sign in, explore pricing plans, and manage productivity, memories, and accounts in one place.",
-          link: "https://itsmemory.com",
-          tags: ["Creator", "AI", "Knowledge Management", "Productivity", "Platform"]
-      },
-      {
-          title: "Just Build Now",
-          description: "JustBuildNow makes building in public effortless for creators. Sign up with GitHub to launch a public profile automatically, share project updates, and collaborate transparently with a progress-focused dashboard.",
-          link: "https://JustBuildNow.com",
-          tags: ["Creator", "Web App", "Community", "Open Building", "GitHub"]
-      },
-      {
-          title: "GoodLooks",
-          description: "GoodLooks is an AI-powered beauty consultation platform for clients and stylists. Upload a selfie to preview photorealistic hairstyles, experiment with infinite cuts and colors, and share detailed notes to compare before-and-after transformations.",
-          link: "https://goodlooks.me",
-          tags: ["Creator", "AI", "Beauty", "Computer Vision", "Consultation"]
-      },
-      {
-          title: "Your Prompt Refiner",
-          description: "Iteratively refine AI prompts with automated critique and suggestions. Start with a simple prompt and improve it step by step to better achieve your goal.",
-          link: "https://refine-your-prompt.vercel.app/",
-          tags: ["Creator", "AI", "Tool", "Web App", "Prompt Engineering"]
-      },
-  ];
-
-  // Fun VR Projects Data (keep structure, add items from previous step)
-    const funVrProjects = [
-      {
-          title: "The Phantom Delivery (VR)",
-          description: "Folklore-inspired VR adventure game (VR Jam 2023). Players navigate a boat in the Sundarban Mangrove Forest, guided by phantom lights. Handled visual effects (mythical Aleya ghost light) and core gameplay mechanics.",
-          link: "https://dangerdano.itch.io/the-phantom-delivery",
-          tags: ["VR", "Game Jam", "Storytelling", "Unity", "VFX"]
-      },
-      {
-          title: "Fireside (VR)",
-          description: "Social VR experience for mental health discussions around a virtual campfire (DeepWell DTx Global Game Jam 2022). Enables anonymous sharing in a safe metaverse space. Co-developed with Eunoia Collab, implementing multi-user features and guided meditation.",
-          link: "https://dangerdano.itch.io/fireside",
-          tags: ["VR", "Social VR", "Mental Health", "Game Jam", "Multiplayer", "Collaboration"]
-      },
-      {
-          title: "Swapno (VR)",
-          description: "Experimental VR adventure playing as an imaginary friend inside a child\'s dream (Swapno means \'dream\'). Explores imaginative storytelling and world-building in VR.",
-          link: "https://dangerdano.itch.io/swapno",
-          tags: ["VR", "Experimental", "Storytelling", "World-Building", "Unity"]
-      },
-      {
-          title: "Open Brush Contributions",
-          description: "Contributed to the open-source VR art tool Open Brush (community-driven fork of Google Tilt Brush). Shares code/examples on GitHub for VR learning (Quest templates, ML pet simulations).",
-        link: "https://github.com/icosa-foundation/open-brush",
-          tags: ["VR", "Open Source", "Art Tool", "Community", "Contribution", "Unity"]
-      },
-      {
-        title: "Sunlink (Spatial.io)",
-        description: "VR environment on Spatial.io focused on climate change awareness. Showcases microorganisms converting organic waste into electricity within integrated greenhouses.",
-        link: "https://www.spatial.io/s/SUNLINK-644190f97394541eca36d3a7",
-        tags: ["VR", "Spatial.io", "Environment", "Climate Change", "Sustainability", "Educational", "XR"]
-      },
-  ];
-
-  // Experiments Data - Fun bite-sized interactive experiments
-  const experiments = [
-      {
-          title: "Neural Architect",
-          description: "An interactive neural network visualization tool that helps you learn about neural networks and how they work. Build, train, and visualize neural networks in real-time to understand the fundamentals of deep learning through hands-on experimentation.",
-          link: "https://ai.studio/apps/drive/119r3q-g-oZ7h0TCG809qm-Y4L_006EVG?fullscreenApplet=true",
-          thumbnail: "/videos/NeuralNexus/neural-architect-thumbnail.jpg",
-          tags: ["AI", "Education", "Visualization", "Machine Learning", "Interactive", "Web App"]
-      },
-  ];
-
-  // Animation variants for sections
-  const sectionVariants = {
-    hidden: { opacity: 0, y: 50 },
-    visible: { opacity: 1, y: 0, transition: { duration: 0.6, ease: "easeOut" } },
-  };
-
   return (
-    <div className="min-h-screen text-foreground font-sans">
-
-      <SplashCursor />
-      <div className="container mx-auto px-4 sm:px-6 lg:px-8 py-16 sm:py-24">
-
-        {/* Header / Hero - Keep as is */}
-        <header className="text-center mb-16 sm:mb-20">
-          <h1 className="text-4xl sm:text-5xl lg:text-6xl font-bold tracking-tight mb-3">
-            Dane Willacker
-          </h1>
-           <p className="text-lg text-muted-foreground mb-3">aka Danejw</p>
-          <p className="text-xl sm:text-2xl text-primary mb-6 font-medium">
-            AI + XR Developer
-          </p>
-          <p className="max-w-3xl mx-auto text-lg text-muted-foreground leading-relaxed">
-            Based in Hawaii, Dane Willacker is an independent{' '}
-            <span className="text-foreground font-medium">AI + XR Developer</span> harnessing artificial
-            intelligence and virtual/augmented reality to create{' '}
-            <span className="text-foreground font-medium">innovative immersive experiences and development tools</span>.
-            With a background in XR development, a passion for human-computer interaction, and over a decade of software
-            development experience, his work spans{' '}
-            <span className="text-foreground font-medium">XR games, AI-driven applications, and open-source tools</span> aimed at{' '}
-            <span className="text-foreground font-medium">empowering the indie developer community</span> and{' '}
-            <span className="text-foreground font-medium">pushing creative boundaries</span>.
-          </p>
-           {/* Updated Social Links */}
-           <div className="mt-8 flex justify-center flex-wrap gap-x-6 gap-y-4">
-              <IconLink href="https://www.linkedin.com/in/danejw" Icon={Linkedin} label="LinkedIn" />
-              <IconLink href="https://github.com/Danejw" Icon={Github} label="GitHub" />
-              <IconLink href="https://twitter.com/Djw_learn" Icon={Twitter} label="X" />
-              <IconLink href="https://www.youtube.com/channel/UCYnBPlKf3iqmaLcBC8maYYw" Icon={Youtube} label="YouTube" />
-              <IconLink href="https://dangerdano.itch.io/" Icon={Gamepad2} label="itch.io" />
-          </div>
-        </header>
-
-        {/* Skills Section - Animate in/out based on visibility */}
-        <motion.section
-          id="skills"
-          className="mb-16 sm:mb-20 scroll-mt-20"
-          variants={sectionVariants}
-          initial="hidden"
-          whileInView="visible"
-          viewport={{ amount: 0.4 }} // Animate when 40% is visible, allow reverse animation
-        >
-          <h2 className="text-3xl font-bold text-center mb-10 sm:mb-12">Skills & Technical Proficiencies</h2>
-          <div className="grid grid-cols-1 md:grid-cols-2 gap-8">
-            {skills.map((skill) => (
-              <div
-                key={skill.name}
-                className="relative list-none rounded-lg"
-                onMouseEnter={() => setHoveredSkill(skill.skillId)}
-                onMouseLeave={() => setHoveredSkill(null)}
-              >
-                <GlowingEffect
-                  spread={40}
-                  glow={true}
-                  disabled={false}
-                  proximity={64}
-                  inactiveZone={0.01}
-                  borderWidth={3}
-                  className="rounded-lg"
-                />
-                <div
-                  className="flex items-start gap-4 p-6 bg-card border border-border rounded-lg shadow-sm transition-all duration-200 ease-in-out hover:shadow-xl hover:scale-[1.02] h-full"
-                >
-                  <skill.icon className="w-8 h-8 text-accent mt-1 flex-shrink-0 transition-transform duration-200 ease-in-out group-hover:scale-110" />
-                  <div>
-                    <h3 className="text-lg font-semibold mb-1 text-card-foreground">{skill.name}</h3>
-                    <p className="text-sm text-muted-foreground leading-relaxed">{skill.desc}</p>
+    <div className="min-h-screen bg-[#06080b] text-gray-100 overflow-hidden">
+      <div className="relative isolate overflow-hidden">
+        {/* HERO */}
+        <div className="relative -rotate-3 origin-top overflow-hidden]">
+          <div className="rotate-3">
+            <div className="relative h-[70vh] min-h-[520px]">
+              <Image
+                src="/photos/hero_background.jpg"
+                alt="Circuit mountain landscape"
+                fill
+                priority
+                className="absolute inset-0 h-full w-full object-cover object-center opacity-95 pointer-events-none select-none"
+                sizes="100vw"
+              />
+              <div className="relative z-10 h-full w-full px-6 sm:px-10 lg:px-16 flex items-center">
+                <div className="relative w-full max-w-5xl mx-auto">
+                  <div className="absolute -top-20 left-2 sm:left-6 w-32 h-32 sm:w-40 sm:h-40 lg:w-44 lg:h-44 rounded-full overflow-hidden border-4 border-[#06080b] shadow-[0_25px_60px_rgba(0,0,0,0.55)]">
+                    <Image
+                      src="/photos/headshot.jpg"
+                      alt="Portrait of Julius Willacker"
+                      fill
+                      className="object-cover grayscale"
+                      sizes="200px"
+                      priority
+                    />
                   </div>
-                </div>
-              </div>
-            ))}
-          </div>
-        </motion.section>
 
-        {/* Technologies & Tools Section - Animate in/out based on visibility */}
-        <motion.section
-          id="technologies"
-          className="mb-16 sm:mb-20 scroll-mt-20"
-          variants={sectionVariants}
-          initial="hidden"
-          whileInView="visible"
-          viewport={{ amount: 0.4 }}
-        >
-          <h2 className="text-3xl font-bold text-center mb-10 sm:mb-12">Technologies & Tools</h2>
-          <div className="max-w-4xl mx-auto text-center">
-            {technologies.map((techCategory) => (
-              <div key={techCategory.category} className="mb-4 sm:mb-2">
-                <span className="font-semibold text-primary mr-2">{techCategory.category}:</span>
-                <div className="inline-flex flex-wrap gap-1.5 justify-center">
-                  {techCategory.items.map((item) => {
-                    const relatedSkills = getSkillsForTechnology(item);
-                    const isDimmed = hoveredSkill !== null && !relatedSkills.includes(hoveredSkill);
-                    const isHighlighted = hoveredSkill !== null && relatedSkills.includes(hoveredSkill); // Optional: Add highlight style
-
-                    return (
-                      <span
-                        key={item}
-                        className={clsx(
-                          "text-xs bg-secondary text-secondary-foreground px-2.5 py-0.5 rounded-full whitespace-nowrap transition-all duration-200 ease-in-out", // Base classes + transition
-                          isDimmed ? 'opacity-30 scale-95' : 'opacity-100 scale-100', // Dimming effect
-                          isHighlighted ? 'ring-2 ring-accent ring-offset-1 ring-offset-background' : '', // Highlight effect (optional)
-                          "hover:bg-accent hover:text-accent-foreground cursor-default" // Keep existing hover on tag itself
-                        )}
-                      >
-                        {item}
-                      </span>
-                    );
-                  })}
-                </div>
-              </div>
-            ))}
-          </div>
-        </motion.section>
-
-        {/* Project Sections - Animate in/out based on visibility */}
-        <motion.section
-          id="projects"
-          className="mb-16 sm:mb-20 scroll-mt-20"
-          variants={sectionVariants}
-          initial="hidden"
-          whileInView="visible"
-          viewport={{ amount: 0.2 }} // Use smaller amount for grids to trigger sooner
-        >
-          <h2 className="text-3xl font-bold text-center mb-10 sm:mb-12">Projects</h2>
-          <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6 sm:gap-8">
-            {projects.map((project) => {
-              const relatedSkills = getSkillsForProject(project.tags);
-              const isDimmed = hoveredSkill !== null && !relatedSkills.includes(hoveredSkill);
-              const isHighlighted = hoveredSkill !== null && relatedSkills.includes(hoveredSkill); // Optional: Add highlight style
-
-              return (
-                <div
-                  key={project.title + '-major'}
-                  className={clsx(
-                      "relative list-none transition-all duration-200 ease-in-out rounded-lg",
-                      isDimmed ? 'opacity-30 scale-95' : 'opacity-100 scale-100',
-                      isHighlighted ? 'ring-2 ring-accent ring-offset-2 ring-offset-background rounded-lg' : ''
-                  )}
-                 >
-                   <GlowingEffect
-                     spread={40}
-                     glow={true}
-                     disabled={false}
-                     proximity={64}
-                     inactiveZone={0.01}
-                     borderWidth={3}
-                     className="rounded-lg"
-                   />
-                   <ProjectCard {...project} />
-                 </div>
-              );
-            })}
-          </div>
-        </motion.section>
-
-        <motion.section
-          id="vr-projects"
-          className="mb-16 sm:mb-20 scroll-mt-20"
-          variants={sectionVariants}
-          initial="hidden"
-          whileInView="visible"
-          viewport={{ amount: 0.2 }} // Use smaller amount for grids
-        >
-          <h2 className="text-3xl font-bold text-center mb-10 sm:mb-12">Fun VR Projects</h2>
-          <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6 sm:gap-8">
-            {funVrProjects.map((project) => {
-               const relatedSkills = getSkillsForProject(project.tags);
-               const isDimmed = hoveredSkill !== null && !relatedSkills.includes(hoveredSkill);
-               const isHighlighted = hoveredSkill !== null && relatedSkills.includes(hoveredSkill); // Optional: Add highlight style
-
-              return (
-                 <div
-                   key={project.title + '-vr'}
-                   className={clsx(
-                       "relative list-none transition-all duration-200 ease-in-out rounded-lg",
-                       isDimmed ? 'opacity-30 scale-95' : 'opacity-100 scale-100',
-                        isHighlighted ? 'ring-2 ring-accent ring-offset-2 ring-offset-background rounded-lg' : ''
-                   )}
-                  >
-                     <GlowingEffect
-                       spread={40}
-                       glow={true}
-                       disabled={false}
-                       proximity={64}
-                       inactiveZone={0.01}
-                       borderWidth={3}
-                       className="rounded-lg"
-                     />
-                   <ProjectCard {...project} />
-                  </div>
-              );
-            })}
-          </div>
-        </motion.section>
-
-        {/* Experiments Section - Animate in/out based on visibility */}
-        <motion.section
-          id="experiments"
-          className="mb-16 sm:mb-20 scroll-mt-20"
-          variants={sectionVariants}
-          initial="hidden"
-          whileInView="visible"
-          viewport={{ amount: 0.2 }}
-        >
-          <h2 className="text-3xl font-bold text-center mb-2">Fun Experiments</h2>
-          <p className="text-center text-muted-foreground mb-8 max-w-2xl mx-auto">
-            Bite-sized interactive experiments exploring various concepts and MVP ideas.
-          </p>
-          <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6 sm:gap-8">
-            {experiments.map((experiment) => {
-               const relatedSkills = getSkillsForProject(experiment.tags);
-               const isDimmed = hoveredSkill !== null && !relatedSkills.includes(hoveredSkill);
-               const isHighlighted = hoveredSkill !== null && relatedSkills.includes(hoveredSkill);
-
-              return (
-                 <div
-                   key={experiment.title + '-experiment'}
-                   className={clsx(
-                       "relative list-none transition-all duration-200 ease-in-out rounded-lg",
-                       isDimmed ? 'opacity-30 scale-95' : 'opacity-100 scale-100',
-                        isHighlighted ? 'ring-2 ring-accent ring-offset-2 ring-offset-background rounded-lg' : ''
-                   )}
-                  >
-                     <GlowingEffect
-                       spread={40}
-                       glow={true}
-                       disabled={false}
-                       proximity={64}
-                       inactiveZone={0.01}
-                       borderWidth={3}
-                       className="rounded-lg"
-                     />
-                   <ProjectCard {...experiment} />
-                  </div>
-              );
-            })}
-          </div>
-        </motion.section>
-
-        {/* Experience Section - Animate in/out based on visibility */}
-        <motion.section
-          id="experience"
-          className="mb-16 sm:mb-20 scroll-mt-20"
-          variants={sectionVariants}
-          initial="hidden"
-          whileInView="visible"
-          viewport={{ amount: 0.4 }}
-        >
-           <h2 className="text-3xl font-bold text-center mb-10 sm:mb-12">Experience</h2>
-           <div className="max-w-4xl mx-auto space-y-8">
-
-              {/* Your Indie LLC - Founder */}
-             <div className="relative list-none rounded-lg">
-                <GlowingEffect
-                  spread={40}
-                  glow={true}
-                  disabled={false}
-                  proximity={64}
-                  inactiveZone={0.01}
-                  borderWidth={3}
-                  className="rounded-lg"
-                />
-                <div className="bg-card border border-border rounded-lg shadow-sm p-6 sm:p-8 transition-all duration-150 hover:shadow-md hover:border-accent/20 hover:scale-[1.02] cursor-pointer">
-                   <div className="flex items-start gap-4">
-                     <div>
-                        <h3 className="text-xl font-semibold text-card-foreground mb-1">
-                          <a href="https://yourindie.llc" target="_blank" rel="noopener noreferrer" className="hover:text-primary/80 transition-colors inline-flex items-center gap-1.5">
-                            Founder – Your Indie LLC
-                         <ExternalLink className="w-4 h-4 text-accent/50 hover:text-accent transition-colors" />      
-                          </a>
-                         <p className="text-sm text-muted-foreground mb-2">Remote</p>
-                        </h3>
-                     <p className="text-sm text-muted-foreground leading-relaxed">Leads Your Indie LLC, an independent studio building personal software for creators. Focuses on product vision and delivery of automation and developer tooling that help indie teams ship faster and turn rough ideas into polished experiences.</p>
-                     </div>
-                   </div>
-                </div>
-             </div>
-
-              {/* XR Developer */}
-             <div className="relative list-none rounded-lg">
-                <GlowingEffect
-                  spread={40}
-                  glow={true}
-                  disabled={false}
-                  proximity={64}
-                  inactiveZone={0.01}
-                  borderWidth={3}
-                  className="rounded-lg"
-                />
-                <div className="bg-card border border-border rounded-lg shadow-sm p-6 sm:p-8 transition-all duration-150 hover:shadow-md hover:border-accent/20 hover:scale-[1.02] cursor-pointer">
-                   <div className="flex items-start gap-4">
-                     {/* <Briefcase className="w-8 h-8 text-primary mt-1 flex-shrink-0"/> */}
-                     <div>
-                        <h3 className="text-xl font-semibold text-card-foreground">XR Developer</h3>
-                        <p className="text-sm text-muted-foreground mb-2">Remote</p>
-                        <p className="text-sm text-muted-foreground leading-relaxed">Leads the design and development of VR applications and games. Delivers multiple prototypes and immersive experiences, integrating advanced AI where applicable. Involves full-stack game development (Unity/C#), VR hardware optimization, and project oversight from concept to release.</p>
-                     </div>
-                   </div>
-                </div>
-             </div>
-
-              {/* Universe VR */}
-              <div className="relative list-none rounded-lg">
-                 <GlowingEffect
-                   spread={40}
-                   glow={true}
-                   disabled={false}
-                   proximity={64}
-                   inactiveZone={0.01}
-                   borderWidth={3}
-                   className="rounded-lg"
-                 />
-                 <div className="bg-card border border-border rounded-lg shadow-sm p-6 sm:p-8 transition-all duration-150 hover:shadow-md hover:border-accent/20 hover:scale-[1.02] cursor-pointer">
-                    <div className="flex items-start gap-4">
-                      {/* <Briefcase className="w-8 h-8 text-primary mt-1 flex-shrink-0 text-accent"/> */}
-                      <div>
-                         <h3 className="text-xl font-semibold text-card-foreground mb-1">
-                           <a href="https://www.linkedin.com/company/joinuniversevr/" target="_blank" rel="noopener noreferrer" className="hover:text-primary/80 transition-colors inline-flex items-center gap-1.5">
-                             Lead Developer – Universe VR
-                          <ExternalLink className="w-4 h-4 text-accent/50 hover:text-accent transition-colors" />      
-                           </a>
-                          <p className="text-sm text-muted-foreground mb-2">Remote</p>
-                         </h3>
-                      <p className="text-sm text-muted-foreground leading-relaxed">Headed the development of internal tools and simulation systems for Universe VR, an organization dedicated to advancing VR game development education. Focused on building scalable solutions to support K–12 learning initiatives across Newark, NJ and Mexico, enabling accessible, high-quality VR experiences in educational environments.</p>
+                  <div className="pt-24 sm:pt-28 lg:pt-16 space-y-4">
+                    <div className="flex flex-col gap-2 max-w-3xl">
+                      <p className="text-4xl sm:text-5xl lg:text-6xl font-extrabold tracking-tight text-gray-200">
+                        JULIUS
+                      </p>
+                      <div className="inline-block bg-[#07b2c4] text-[#041014] px-3 sm:px-4 py-2 text-5xl sm:text-6xl lg:text-7xl font-black tracking-[0.06em] uppercase shadow-[0_18px_40px_rgba(0,0,0,0.4)]">
+                        WILLACKER
                       </div>
                     </div>
-                 </div>
+                    <div className="max-w-3xl bg-black/60 border border-teal-800/80 backdrop-blur-sm px-4 sm:px-5 py-3 text-sm sm:text-base leading-relaxed text-gray-200 shadow-[0_10px_40px_rgba(0,0,0,0.35)] border-l-12 border-[#07b2c4] pl-5">
+                      Full-stack partner for founders, small business owners, and teams who need modern, fast automated
+                      solutions that save valuable time, easy to manage, and actually provide value to your customers.
+                    </div>
+                  </div>
+                </div>
               </div>
+            </div>
+          </div>
+        </div>
 
-             {/* Independent Developer */}
-             <div className="relative list-none rounded-lg">
-                <GlowingEffect
-                  spread={40}
-                  glow={true}
-                  disabled={false}
-                  proximity={64}
-                  inactiveZone={0.01}
-                  borderWidth={3}
-                  className="rounded-lg"
+        {/* SUB HERO / CTA */}
+        <div className="relative bg-[#050708] border-t border-gray-900/70 pb-12">
+          <div className="absolute inset-0 bg-[radial-gradient(circle,rgba(255,255,255,0.08)_1px,transparent_0)] bg-[length:18px_18px] opacity-35" />
+          <div className="relative max-w-6xl mx-auto px-6 lg:px-10 pt-10 lg:pt-12 grid lg:grid-cols-12 gap-10 lg:gap-12 items-center">
+            <div className="lg:col-span-6">
+              <div className="relative aspect-[16/10] rounded-sm overflow-hidden border border-gray-800/70 shadow-[0_20px_70px_rgba(0,0,0,0.55)]">
+                <Image
+                  src="/photos/blurred_look.jpeg"
+                  alt="Subway portrait"
+                  fill
+                  className="object-cover"
+                  sizes="700px"
                 />
-                <div className="bg-card border border-border rounded-lg shadow-sm p-6 sm:p-8 transition-all duration-150 hover:shadow-md hover:border-accent/20 hover:scale-[1.02] cursor-pointer">
-                   <div className="flex items-start gap-4">
-                      {/* <Users className="w-8 h-8 text-primary mt-1 flex-shrink-0 text-accent"/> */}
-                       <div>
-                          <h3 className="text-xl font-semibold text-card-foreground">Independent Developer & Collaborator</h3>
-                          <p className="text-sm text-muted-foreground mb-2">Remote / Various Teams</p>
-                          <p className="text-sm text-muted-foreground leading-relaxed">Frequently collaborates on external projects and game jam teams (e.g., Eunoia Collab, EmpressVR, Bad Golf Hawaii, Sockoe, VR jam entries). Self-driven learning background and contributor to open communities. Adept at teamwork in remote, cross-functional groups and mentoring others in XR development.</p>
-                       </div>
-                   </div>
-                 </div>
-             </div>
-           </div>
-        </motion.section>
+              </div>
+            </div>
 
+            <div className="lg:col-span-6 space-y-4">
+              <div className="flex items-center gap-3">
+                <div className="h-12 w-1 bg-[#07b2c4]" />
+                <div>
+                  <div className="text-3xl sm:text-4xl font-light leading-tight text-gray-100">Build Custom</div>
+                  <div className="text-3xl sm:text-4xl font-black uppercase tracking-wide text-gray-100">
+                    <span className="bg-[#07b2c4] text-[#041014] px-1.5">Software.</span>
+                  </div>
+                </div>
+              </div>
+              <p className="text-gray-300 leading-relaxed text-base">
+                Full-stack partner for founders, small business owners, and teams who need modern, fast automated
+                solutions that save valuable time, easy to manage, and actually provide value to your customers.
+              </p>
+              <div className="h-px w-14 bg-[#07b2c4]" />
+            </div>
+          </div>
+        </div>
+
+        {/* TECH STRIP */}
+        <div className="relative border-t border-b border-gray-900/80 bg-white text-black">
+          <div className="max-w-6xl mx-auto px-3 sm:px-6 lg:px-10 py-4 sm:py-5 flex flex-wrap items-center justify-center gap-3 sm:gap-4">
+            {techLogos.map((tech) => (
+              <div key={tech.label} className="flex flex-col items-center gap-1">
+                <div className="w-10 h-10 sm:w-11 sm:h-11 rounded-full bg-black text-white flex items-center justify-center text-xs font-bold shadow-[0_6px_18px_rgba(0,0,0,0.35)]">
+                  {tech.glyph}
+                </div>
+                <span className="text-[10px] uppercase tracking-[0.12em] text-black/80">{tech.label}</span>
+              </div>
+            ))}
+          </div>
+        </div>
       </div>
     </div>
   );
 };
 
+export default PersonalLandingPage;
 
-export default PersonalLandingPage; 
