@@ -97,6 +97,15 @@ const buildSlides: BuildSlide[] = [
   },
 ];
 
+type PortfolioItem = {
+  title: string;
+  description: string;
+  tech: string;
+  img: string;
+  video?: string;
+  tall?: boolean;
+};
+
 const processSteps = [
   {
     icon: <BrainCircuit className="w-6 h-6" />,
@@ -118,37 +127,45 @@ const processSteps = [
   },
 ];
 
-const portfolio = [
+const portfolio: PortfolioItem[] = [
   {
-    title: 'AI Agent Dashboard',
+    title: 'JustBuildNow.com',
+    description: 'Build in public AI agent automaton',
     tech: 'NEXT.JS / TYPESCRIPT / PYTHON / FASTAPI / OPENAI / SUPABASE',
     img: '/photos/JBN_Placeholder.png',
   },
   {
-    title: 'Knowledge Graph Memory For AI',
+    title: 'ItsMemory.com',
+    description: 'Persistent graph-backed memory layer for AI Agents',
     tech: 'NEXT.JS / TYPESCRIPT / PYTHON / FASTAPI / OPENAI / SUPABASE',
     img: '/photos/ItsMemory.svg',
+    video: '/photos/ItsMemory.mp4',
     tall: true,
   },
   {
-    title: 'AI Inforgraphic SaaS',
+    title: 'ViziVibes.com',
+    description: 'Generates data-driven infographics',
     tech: 'REACT / NEXT.JS / TYPESCRIPT / PYTHON / FASTAPI / GEMINI / SUPABASE',
     img: '/photos/ViziVibes.jpg',
   },
   {
-    title: 'Salon Hairstyles SaaS',
+    title: 'GoodLooks.me',
+    description: 'Try on hair styles and colors',
     tech: 'REACT / NEXT.JS / TYPESCRIPT / PYTHON / FASTAPI / GEMINI / SUPABASE',
     img: '/photos/GoodLooks.gif',
   },
   {
     title: 'XR Medical Visualization',
+    description: 'Immersive multiplayer anatomy visualizations',
     tech: 'UNITY / C# / OCULUS',
     img: 'https://images.unsplash.com/photo-1535223289827-42f1e9919769?q=80&w=1000&auto=format&fit=crop',
   },
   {
     title: 'Neural Net Viz',
+    description: 'Interactive neural network visualizer',
     tech: 'Three.JS / REACT / GEMINI',
     img: '/photos/NNViz.jpg',
+    video: '/photos/NN3D.mp4'
   },
 ];
 
@@ -161,6 +178,11 @@ export const TemplateLandingPage: React.FC = () => {
   const workRef = useRef<HTMLElement | null>(null);
   const contactRef = useRef<HTMLElement | null>(null);
   const [activeSection, setActiveSection] = useState<SectionKey>('hero');
+  const [videoReady, setVideoReady] = useState<Record<string, boolean>>({});
+
+  const handleVideoLoaded = useCallback((key: string) => {
+    setVideoReady((prev) => ({ ...prev, [key]: true }));
+  }, []);
 
   const updateActiveByScroll = useCallback(() => {
     const centerY = window.innerHeight / 2;
@@ -652,21 +674,40 @@ export const TemplateLandingPage: React.FC = () => {
         <div className="max-w-7xl mx-auto px-6">
           <div className="flex items-end justify-between mb-16 border-b border-white/10 pb-4">
             <h3 className="text-4xl font-light text-white tracking-tight">Selected Works</h3>
-            <span className="text-cyan-500 font-mono text-xs">02 // PORTFOLIO</span>
+            <span className="text-cyan-500 font-mono text-xs">PORTFOLIO</span>
           </div>
           <div className="columns-1 md:columns-2 lg:columns-3 gap-8 space-y-8">
             {portfolio.map((item) => (
               <div key={item.title} className="group break-inside-avoid relative rounded-xl overflow-hidden cursor-pointer">
                 <div className="absolute inset-0 bg-cyan-500/0 group-hover:bg-cyan-500/10 transition-colors z-20 border-2 border-transparent group-hover:border-cyan-400/50 rounded-xl" />
-                <img
-                  src={item.img}
-                  alt={item.title}
-                  className={`w-full ${item.tall ? 'h-[500px]' : 'h-auto'} object-cover transform group-hover:scale-105 transition-transform duration-700 grayscale group-hover:grayscale-0`}
-                />
+                  <div className="relative w-full">
+                    <img
+                      src={item.img}
+                      alt={item.title}
+                      className={`w-full ${item.tall ? 'h-[500px]' : 'h-auto'} object-cover transform transition-transform duration-700 grayscale ${
+                        videoReady[item.title] ? 'opacity-0 scale-100' : 'opacity-100 group-hover:scale-105 group-hover:grayscale-0'
+                      }`}
+                    />
+                    {item.video && (
+                      <video
+                        className={`absolute inset-0 w-full ${item.tall ? 'h-[500px]' : 'h-auto'} object-cover transition-opacity duration-500 ${
+                          videoReady[item.title] ? 'opacity-100' : 'opacity-0 pointer-events-none'
+                        }`}
+                        src={item.video}
+                        poster={item.img}
+                        playsInline
+                        muted
+                        loop
+                        autoPlay
+                        onLoadedData={() => handleVideoLoaded(item.title)}
+                      />
+                    )}
+                  </div>
                 <div className="absolute bottom-0 left-0 right-0 p-6 bg-gradient-to-t from-black via-black/80 to-transparent translate-y-4 group-hover:translate-y-0 transition-transform duration-300 z-30">
                   <div className="flex justify-between items-end">
                     <div>
                       <h4 className="text-white font-medium text-lg">{item.title}</h4>
+                      <p className="text-md text-slate-400">{item.description}</p>
                       <p className="text-xs text-cyan-400 font-mono mt-1">{item.tech}</p>
                     </div>
                     <ArrowUpRight className="w-5 h-5 text-white opacity-0 group-hover:opacity-100 transition-opacity" />
