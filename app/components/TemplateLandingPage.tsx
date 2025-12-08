@@ -24,6 +24,8 @@ import {
   Star,
   Mail,
   MapPin,
+  Zap,
+  Triangle,
 } from 'lucide-react';
 
 type SectionKey = 'hero' | 'process' | 'work' | 'contact';
@@ -55,15 +57,20 @@ const sectionInfo: Record<SectionKey, { label: string; detail: string }> = {
 };
 
 const marqueeItems = [
-  { icon: <LayoutTemplate className="w-5 h-5 text-cyan-400" />, label: 'React' },
+  { icon: <Code2 className="w-5 h-5 text-cyan-400" />, label: 'Python' },
+  { icon: <Hammer className="w-5 h-5 text-cyan-400" />, label: 'C#' },
+  { icon: <LayoutTemplate className="w-5 h-5 text-cyan-400" />, label: 'TypeScript' },
   { icon: <Box className="w-5 h-5 text-cyan-400" />, label: 'Next.js' },
-  { icon: <Code2 className="w-5 h-5 text-cyan-400" />, label: 'TypeScript' },
-  { icon: <Layers className="w-5 h-5 text-cyan-400" />, label: 'Tailwind' },
-  { icon: <Server className="w-5 h-5 text-cyan-400" />, label: 'Node.js' },
-  { icon: <Database className="w-5 h-5 text-cyan-400" />, label: 'Postgres' },
-  { icon: <Cloud className="w-5 h-5 text-cyan-400" />, label: 'AWS' },
-  { icon: <Sparkles className="w-5 h-5 text-cyan-400" />, label: 'Framer Motion' },
-  { icon: <ShieldCheck className="w-5 h-5 text-cyan-400" />, label: 'Auth' },
+  { icon: <Sparkles className="w-5 h-5 text-cyan-400" />, label: 'Vite' },
+  { icon: <Zap className="w-5 h-5 text-cyan-400" />, label: 'FastAPI' },
+  { icon: <Database className="w-5 h-5 text-cyan-400" />, label: 'Supabase' },
+  { icon: <BrainCircuit className="w-5 h-5 text-cyan-400" />, label: 'ChatGPT' },
+  { icon: <Server className="w-5 h-5 text-cyan-400" />, label: 'Anthropic' },
+  { icon: <Cloud className="w-5 h-5 text-cyan-400" />, label: 'Gemini' },
+  { icon: <Layers className="w-5 h-5 text-cyan-400" />, label: 'Cursor' },
+  { icon: <Cpu className="w-5 h-5 text-cyan-400" />, label: 'Unity' },
+  { icon: <Triangle className="w-5 h-5 text-cyan-400" />, label: 'Vercel' },
+  { icon: <ShieldCheck className="w-5 h-5 text-cyan-400" />, label: 'Render' },
 ];
 
 type BuildSlide = {
@@ -115,23 +122,23 @@ const portfolio = [
   {
     title: 'AI Agent Dashboard',
     tech: 'NEXT.JS / TYPESCRIPT / PYTHON / FASTAPI / OPENAI / SUPABASE',
-    img: 'https://hoirqrkdgbmvpwutwuwj.supabase.co/storage/v1/object/public/assets/assets/917d6f93-fb36-439a-8c48-884b67b35381_1600w.jpg',
+    img: '/photos/JBN_Placeholder.png',
   },
   {
-    title: 'AI Knowledge Graph Memory',
+    title: 'Knowledge Graph Memory For AI',
     tech: 'NEXT.JS / TYPESCRIPT / PYTHON / FASTAPI / OPENAI / SUPABASE',
-    img: 'https://images.unsplash.com/photo-1611162617474-5b21e879e113?q=80&w=1000&auto=format&fit=crop',
+    img: '/photos/ItsMemory.svg',
     tall: true,
   },
   {
     title: 'AI Inforgraphic SaaS',
     tech: 'REACT / NEXT.JS / TYPESCRIPT / PYTHON / FASTAPI / GEMINI / SUPABASE',
-    img: 'https://images.unsplash.com/photo-1555066931-4365d14bab8c?q=80&w=1000&auto=format&fit=crop',
+    img: '/photos/ViziVibes.jpg',
   },
   {
     title: 'Salon Hairstyles SaaS',
     tech: 'REACT / NEXT.JS / TYPESCRIPT / PYTHON / FASTAPI / GEMINI / SUPABASE',
-    img: 'https://images.unsplash.com/photo-1551288049-bebda4e38f71?q=80&w=1000&auto=format&fit=crop',
+    img: '/photos/GoodLooks.gif',
   },
   {
     title: 'XR Medical Visualization',
@@ -141,7 +148,7 @@ const portfolio = [
   {
     title: 'Neural Net Viz',
     tech: 'Three.JS / REACT / GEMINI',
-    img: 'https://images.unsplash.com/photo-1504639725590-34d0984388bd?q=80&w=1000&auto=format&fit=crop',
+    img: '/photos/NNViz.jpg',
   },
 ];
 
@@ -522,7 +529,7 @@ export const TemplateLandingPage: React.FC = () => {
             <div className="flex items-center gap-4">
               <div className="relative w-48 h-48 sm:w-48 sm:h-48 rounded-full overflow-hidden shadow-[0_10px_30px_rgba(6,182,212,0.35)]">
                 <Image
-                  src="/photos/headshot_cut .png"
+                  src="/photos/headshot_cut.png"
                   alt="Julius Willacker headshot"
                   fill
                   className="object-cover"
@@ -537,7 +544,7 @@ export const TemplateLandingPage: React.FC = () => {
               <span className="hero-line block bg-cyan-500 text-black px-2 inline-block">WILLACKER</span>
             </h1>
             <p className="hero-subcopy text-lg md:text-xl text-slate-400 max-w-2xl font-light tracking-wide border-l-2 border-cyan-500 pl-6 bg-black/50 backdrop-blur-md p-2">
-              Full-stack partner for founders, small business owners, and teams who need modern, fast solutions that are easy to manage and actually help close more customers.
+              Full-stack partner for founders, small business owners, and teams who need modern, fast solutions that are easy to manage, automate tasks, and save time.
             </p>
             <div className="mt-8 flex items-center gap-4 text-slate-300">
               <div className="hero-icon-chip p-2 border border-white/10 rounded bg-black/50 backdrop-blur hover:border-cyan-500/50 transition-colors">
