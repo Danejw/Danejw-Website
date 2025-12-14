@@ -21,7 +21,6 @@ import {
   Hammer,
   Rocket,
   ArrowUpRight,
-  Star,
   Mail,
   MapPin,
   Zap,
@@ -29,9 +28,9 @@ import {
   X,
   ExternalLink,
   Github,
-  Linkedin,
-  Twitter,
 } from 'lucide-react';
+import { SocialIcons } from './SocialIcons';
+import { InputArea } from './InputArea';
 
 type SectionKey = 'hero' | 'process' | 'work' | 'contact';
 
@@ -45,7 +44,7 @@ const sectionIds: Record<SectionKey, string> = {
 const sectionInfo: Record<SectionKey, { label: string; detail: string }> = {
   hero: {
     label: 'Introduction',
-    detail: 'High-level positioning and credibility for Julius Willacker.',
+    detail: 'High-level positioning and credibility for Dane Willacker.',
   },
   process: {
     label: 'Process',
@@ -356,38 +355,6 @@ const CursorRadialTint: React.FC = () => {
 };
 
 /**
- * Social media icons component - displays social media links
- */
-const SocialIcons: React.FC<{ className?: string; iconSize?: string }> = ({ className = '', iconSize = 'w-5 h-5' }) => {
-  const socialLinks = [
-    { icon: Twitter, url: 'https://x.com/Djw_learn', label: 'X.com (Twitter)' },
-    { icon: Linkedin, url: 'https://www.linkedin.com/in/dane-willacker/', label: 'LinkedIn' },
-    { icon: Github, url: 'https://github.com/Danejw', label: 'GitHub' },
-  ];
-
-  return (
-    <div className={`flex gap-6 ${className}`}>
-      {socialLinks.map((social, idx) => {
-        const Icon = social.icon;
-        return (
-          <a
-            key={idx}
-            href={social.url}
-            target="_blank"
-            rel="noopener noreferrer"
-            aria-label={social.label}
-            className="group relative p-2 text-slate-400 hover:text-cyan-400 hover:scale-150 transition-colors"
-          >
-            <div className="absolute inset-0 bg-cyan-500/20 blur-xl opacity-0 group-hover:opacity-100 transition-opacity" />
-            <Icon className={iconSize} />
-          </a>
-        );
-      })}
-    </div>
-  );
-};
-
-/**
  * Product Hunt badge component - displays the iconic Product Hunt badge
  */
 const ProductHuntBadge: React.FC<{ className?: string; url?: string }> = ({ className = '', url }) => {
@@ -426,14 +393,61 @@ export const TemplateLandingPage: React.FC = () => {
   const heroRef = useRef<HTMLElement | null>(null);
   const processRef = useRef<HTMLElement | null>(null);
   const workRef = useRef<HTMLElement | null>(null);
+  const questionsRef = useRef<HTMLElement | null>(null);
+  const techMarqueeRef = useRef<HTMLElement | null>(null);
   const contactRef = useRef<HTMLElement | null>(null);
   const [activeSection, setActiveSection] = useState<SectionKey>('hero');
   const [videoReady, setVideoReady] = useState<Record<string, boolean>>({});
   const [selectedProject, setSelectedProject] = useState<PortfolioItem | null>(null);
+  const [questionAnswers, setQuestionAnswers] = useState({
+    question1: '',
+    question2: '',
+    question3: '',
+  });
+  const [formData, setFormData] = useState({
+    name: '',
+    email: '',
+    projectDetails: '',
+  });
 
   const handleVideoLoaded = useCallback((key: string) => {
     setVideoReady((prev) => ({ ...prev, [key]: true }));
   }, []);
+
+  const formatQuestionAnswers = useCallback(() => {
+    const answers = [];
+    if (questionAnswers.question1) {
+      answers.push('Q1: What is the one annoying thing you do over and over every week that you secretly know a computer should be doing for you by now?');
+      answers.push(`A: ${questionAnswers.question1}`);
+    }
+    if (questionAnswers.question2) {
+      answers.push('\nQ2: If you had a piece of software built just for you that understood your exact workflow, what is the first thing you would stop doing manually tomorrow?');
+      answers.push(`A: ${questionAnswers.question2}`);
+    }
+    if (questionAnswers.question3) {
+      answers.push('\nQ3: Where in your day are you copy-pasting, double entering data, or babysitting a process that could quietly run itself while you do something that actually matters?');
+      answers.push(`A: ${questionAnswers.question3}`);
+    }
+    return answers.join('\n');
+  }, [questionAnswers]);
+
+  const handleFormSubmit = useCallback((e: React.FormEvent) => {
+    e.preventDefault();
+    const questionAnswersText = formatQuestionAnswers();
+    const fullProjectDetails = questionAnswersText 
+      ? `${formData.projectDetails}${questionAnswersText ? '\n\n--- Question Answers ---\n' + questionAnswersText : ''}`
+      : formData.projectDetails;
+    
+    // Here you would typically send the form data to your backend
+    // For now, we'll just log it
+    console.log('Form Data:', {
+      name: formData.name,
+      email: formData.email,
+      projectDetails: fullProjectDetails,
+    });
+    
+    // You can add your form submission logic here
+  }, [formData, formatQuestionAnswers]);
 
   // Prevent body scroll when modal is open
   useEffect(() => {
@@ -515,6 +529,7 @@ export const TemplateLandingPage: React.FC = () => {
     // Set initial state to prevent flash
     gsap.set('.hero-name', { x: -200, opacity: 0, filter: 'blur(10px)' });
     gsap.set('.hero-word', { x: 200, opacity: 0, filter: 'blur(8px)' });
+    gsap.set('.hero-social-icons', { x: -200, opacity: 0, filter: 'blur(10px)' });
 
     // Create timeline for coordinated animations
     const tl = gsap.timeline({ defaults: { ease: 'power3.out' } });
@@ -552,6 +567,18 @@ export const TemplateLandingPage: React.FC = () => {
           },
         },
         '-=0.3', // Start slightly before name animation completes
+      )
+      // Animate social icons from left after subtext completes
+      .to(
+        '.hero-social-icons',
+        {
+          x: 0,
+          opacity: 1,
+          filter: 'blur(0px)',
+          duration: 1,
+          ease: 'power4.out',
+        },
+        '+=0.2', // Start 0.2s after subtext animation completes
       );
   }, []);
 
@@ -729,6 +756,29 @@ export const TemplateLandingPage: React.FC = () => {
 
       // Animate portfolio items based on scroll position
       if (workRef.current) {
+        // Animate "The Work" title from left
+        gsap.fromTo(
+          '.work-title',
+          {
+            x: -300,
+            opacity: 0,
+            filter: 'blur(10px)',
+          },
+          {
+            x: 0,
+            opacity: 1,
+            filter: 'blur(0px)',
+            ease: 'power4.out',
+            scrollTrigger: {
+              trigger: workRef.current,
+              start: 'top 85%',
+              end: 'top 50%',
+              scrub: 1.2,
+              toggleActions: 'play none none reverse',
+            },
+          },
+        );
+
         gsap.utils.toArray<HTMLElement>('.portfolio-item').forEach((item, idx) => {
           // Calculate stagger delay based on position in masonry layout
           const columnIndex = idx % 3;
@@ -806,6 +856,226 @@ export const TemplateLandingPage: React.FC = () => {
             );
           }
         });
+      }
+
+      // Animate tech marquee section with Y-axis scale
+      if (techMarqueeRef.current) {
+        gsap.fromTo(
+          techMarqueeRef.current,
+          {
+            scaleY: 0,
+            transformOrigin: 'center center',
+          },
+          {
+            scaleY: 1,
+            ease: 'power3.out',
+            scrollTrigger: {
+              trigger: techMarqueeRef.current,
+              start: 'top 90%',
+              end: 'top 50%',
+              scrub: 1.2,
+              toggleActions: 'play none none reverse',
+            },
+          },
+        );
+      }
+
+      // Animate questions section
+      if (questionsRef.current) {
+        // Animate header and subtitle
+        gsap.fromTo(
+          '.questions-header',
+          {
+            y: 60,
+            opacity: 0,
+          },
+          {
+            y: 0,
+            opacity: 1,
+            ease: 'power3.out',
+            scrollTrigger: {
+              trigger: questionsRef.current,
+              start: 'top 80%',
+              end: 'top 50%',
+              scrub: 1.5,
+            },
+          },
+        );
+
+        // Animate subtitle words word by word from left to right
+        const subtitleWords = questionsRef.current?.querySelectorAll('.questions-subtitle-word');
+        if (subtitleWords && subtitleWords.length > 0) {
+          gsap.set(subtitleWords, {
+            x: 200,
+            opacity: 0,
+            filter: 'blur(8px)',
+          });
+
+          gsap.to(
+            subtitleWords,
+            {
+              x: 0,
+              opacity: 1,
+              filter: 'blur(0px)',
+              ease: 'power3.out',
+              duration: 0.6,
+              stagger: {
+                amount: 1.5,
+                from: 'start', // Start from the left (first word)
+              },
+              scrollTrigger: {
+                trigger: questionsRef.current,
+                start: 'top 75%',
+                end: 'top 40%',
+                scrub: 1.5,
+                toggleActions: 'play none none reverse',
+              },
+            },
+          );
+        }
+
+        // Animate each question group (question + input)
+        gsap.utils.toArray<HTMLElement>('.question-group').forEach((group, idx) => {
+          const question = group.querySelector('.question-item') as HTMLElement;
+          const input = group.querySelector('.question-input') as HTMLElement;
+          const isRight = group.classList.contains('question-group-right');
+          
+          if (!question) return;
+
+          // Set initial state for words
+          const words = question.querySelectorAll('.question-word');
+          gsap.set(words, { 
+            x: isRight ? 200 : -200, 
+            opacity: 0, 
+            filter: 'blur(8px)' 
+          });
+
+          // Set initial state for input area
+          if (input) {
+            gsap.set(input, {
+              x: isRight ? 200 : -200,
+              opacity: 0,
+              y: 30,
+              filter: 'blur(8px)',
+            });
+          }
+
+          // Animate question container
+          gsap.fromTo(
+            question,
+            {
+              y: 60,
+              opacity: 0,
+              x: isRight ? 100 : -100,
+            },
+            {
+              y: 0,
+              opacity: 1,
+              x: 0,
+              ease: 'power3.out',
+              scrollTrigger: {
+                trigger: group,
+                start: 'top 85%',
+                end: 'top 40%',
+                scrub: 1.2,
+                toggleActions: 'play none none reverse',
+              },
+            },
+          );
+
+          // Animate words word by word
+          gsap.to(
+            words,
+            {
+              x: 0,
+              opacity: 1,
+              filter: 'blur(0px)',
+              ease: 'power3.out',
+              duration: 0.6,
+              stagger: {
+                amount: 1.5,
+                from: isRight ? 'end' : 'start', // Right-aligned questions animate from end
+              },
+              scrollTrigger: {
+                trigger: group,
+                start: 'top 80%',
+                end: 'top 35%',
+                scrub: 1.5,
+                toggleActions: 'play none none reverse',
+              },
+            },
+          );
+
+          // Animate input area after question words
+          if (input) {
+            gsap.to(
+              input,
+              {
+                x: 0,
+                y: 0,
+                opacity: 1,
+                filter: 'blur(0px)',
+                ease: 'power3.out',
+                scrollTrigger: {
+                  trigger: group,
+                  start: 'top 75%',
+                  end: 'top 30%',
+                  scrub: 1.5,
+                  toggleActions: 'play none none reverse',
+                },
+              },
+            );
+          }
+        });
+      }
+
+      // Animate contact section - copy and form upward
+      if (contactRef.current) {
+        // Animate contact copy (left side) upward
+        gsap.fromTo(
+          '.contact-copy',
+          {
+            y: 100,
+            opacity: 0,
+            filter: 'blur(10px)',
+          },
+          {
+            y: 0,
+            opacity: 1,
+            filter: 'blur(0px)',
+            ease: 'power3.out',
+            scrollTrigger: {
+              trigger: contactRef.current,
+              start: 'top 85%',
+              end: 'top 50%',
+              scrub: 1.2,
+              toggleActions: 'play none none reverse',
+            },
+          },
+        );
+
+        // Animate contact form (right side) upward
+        gsap.fromTo(
+          '.contact-form',
+          {
+            y: 100,
+            opacity: 0,
+            filter: 'blur(10px)',
+          },
+          {
+            y: 0,
+            opacity: 1,
+            filter: 'blur(0px)',
+            ease: 'power3.out',
+            scrollTrigger: {
+              trigger: contactRef.current,
+              start: 'top 80%',
+              end: 'top 45%',
+              scrub: 1.2,
+              toggleActions: 'play none none reverse',
+            },
+          },
+        );
       }
     }, rootRef);
 
@@ -957,7 +1227,7 @@ export const TemplateLandingPage: React.FC = () => {
                 <span className="hero-word">save</span>{' '}
                 <span className="hero-word">time.</span>
               </p>
-              <div className="flex items-center justify-center lg:justify-start mt-6">
+              <div className="hero-social-icons flex items-center justify-center lg:justify-start mt-6">
                 <SocialIcons />
               </div>
             </div>
@@ -1017,7 +1287,7 @@ export const TemplateLandingPage: React.FC = () => {
       </section>
 
       {/* Tech marquee */}
-      <section className="relative z-10 border-y bg-white">
+      <section ref={techMarqueeRef} className="relative z-10 border-y bg-white">
         <div className="max-w-7xl mx-auto px-6 py-6 flex items-center gap-10 overflow-hidden">
           <div className="flex items-center gap-3 shrink-0">
             <span className="text-[0.9rem] uppercase tracking-[0.3em] text-black">Tech Stack</span>
@@ -1040,7 +1310,7 @@ export const TemplateLandingPage: React.FC = () => {
       <section id="work" ref={workRef} className="py-20 relative z-10">
         <div className="max-w-7xl mx-auto px-6">
           <div className="flex items-end justify-between mb-16 pb-4">
-            <h3 className="text-4xl md:text-5xl lg:text-6xl font-semibold text-white leading-tight">The <span className="bg-cyan-500 text-black px-1 inline-block">Work</span></h3>
+            <h3 className="work-title text-4xl md:text-5xl lg:text-6xl font-semibold text-white leading-tight">The <span className="bg-cyan-500 text-black px-1 inline-block">Work</span></h3>
             <span className="text-cyan-500 font-mono text-xs">PORTFOLIO</span>
           </div>
           <div className="columns-1 md:columns-2 lg:columns-3 gap-8 space-y-8">
@@ -1095,11 +1365,93 @@ export const TemplateLandingPage: React.FC = () => {
         </div>
       </section>
 
+      {/* Prompt Questions Section */}
+      <section ref={questionsRef} className="py-24 relative z-10">
+        <div className="max-w-4xl mx-auto px-6">
+          <div className="space-y-12">
+            <div className="text-center mb-12 questions-header">
+              <h3 className="text-4xl md:text-5xl lg:text-6xl font-semibold text-white leading-tight">
+                Questions to <br/><span className="mt-2 bg-cyan-500 text-black px-2 inline-block">Consider</span>
+              </h3>
+              <p className="mt-4 text-slate-400 text-lg max-w-2xl mx-auto questions-subtitle">
+                {'Before we build something together, take a moment to reflect on these questions'.split(' ').map((word, wordIdx) => (
+                  <span key={wordIdx} className="questions-subtitle-word">
+                    {word}{' '}
+                  </span>
+                ))}
+              </p>
+            </div>
+
+            <div className="space-y-8">
+              {/* First Question - Left Aligned */}
+              <div className="space-y-4 question-group question-group-left">
+                <div className="question-item question-left text-base sm:text-lg md:text-xl text-slate-400 max-w-2xl font-light tracking-wide border-l-2 border-cyan-500 pl-6 bg-black/50 backdrop-blur-lg p-4">
+                  <p>
+                    {'What is the one annoying thing you do over and over every week that you secretly know a computer should be doing for you by now?'.split(' ').map((word, wordIdx) => (
+                      <span key={wordIdx} className="question-word">
+                        {word}{' '}
+                      </span>
+                    ))}
+                  </p>
+                </div>
+                <div className="question-input question-input-left max-w-2xl">
+                  <InputArea
+                    value={questionAnswers.question1}
+                    onChange={(value) => setQuestionAnswers(prev => ({ ...prev, question1: value }))}
+                    placeholder="Share your thoughts..."
+                  />
+                </div>
+              </div>
+
+              {/* Second Question - Right Aligned */}
+              <div className="space-y-4 question-group question-group-right">
+                <div className="question-item question-right text-base sm:text-lg md:text-xl text-slate-400 max-w-2xl ml-auto font-light tracking-wide border-r-2 border-cyan-500 pr-6 bg-black/50 backdrop-blur-md p-4">
+                  <p className="text-right">
+                    {'If you had a piece of software built just for you that understood your exact workflow, what is the first thing you would stop doing manually tomorrow?'.split(' ').map((word, wordIdx) => (
+                      <span key={wordIdx} className="question-word">
+                        {word}{' '}
+                      </span>
+                    ))}
+                  </p>
+                </div>
+                <div className="question-input question-input-right max-w-2xl ml-auto">
+                  <InputArea
+                    value={questionAnswers.question2}
+                    onChange={(value) => setQuestionAnswers(prev => ({ ...prev, question2: value }))}
+                    placeholder="Share your thoughts..."
+                  />
+                </div>
+              </div>
+
+              {/* Third Question - Left Aligned */}
+              <div className="space-y-4 question-group question-group-left">
+                <div className="question-item question-left text-base sm:text-lg md:text-xl text-slate-400 max-w-2xl font-light tracking-wide border-l-2 border-cyan-500 pl-6 bg-black/50 backdrop-blur-md p-4">
+                  <p>
+                    {'Where in your day are you copy-pasting, double entering data, or babysitting a process that could quietly run itself while you do something that actually matters?'.split(' ').map((word, wordIdx) => (
+                      <span key={wordIdx} className="question-word">
+                        {word}{' '}
+                      </span>
+                    ))}
+                  </p>
+                </div>
+                <div className="question-input question-input-left max-w-2xl">
+                  <InputArea
+                    value={questionAnswers.question3}
+                    onChange={(value) => setQuestionAnswers(prev => ({ ...prev, question3: value }))}
+                    placeholder="Share your thoughts..."
+                  />
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+      </section>
+
       {/* Contact */}
       <section id="contact" ref={contactRef} className="py-24 relative z-10">
         <div className="absolute right-0 top-1/4 w-1/2 h-1/2 bg-cyan-500/5 blur-[120px] rounded-full pointer-events-none" />
         <div className="max-w-7xl mx-auto px-6 grid grid-cols-1 lg:grid-cols-2 gap-16 items-center">
-          <div>
+          <div className="contact-copy">
             <div className="mb-6 flex flex-wrap items-center gap-6">
               {/* <div className="flex items-center gap-2">
                 <div className="flex text-yellow-400">
@@ -1149,25 +1501,46 @@ export const TemplateLandingPage: React.FC = () => {
           <div className="relative perspective-normal">
             <div className="glass-panel p-8 md:p-10 rounded-2xl border border-cyan-500/20 shadow-[0_0_30px_rgba(6,182,212,0.1)]">
               {/* <h4 className="text-2xl font-light text-white mb-6 tracking-tight">Booking Inquiry</h4> */}
-              <form className="space-y-6">
+              <form onSubmit={handleFormSubmit} className="space-y-6">
                 <div className="flex items-center justify-between gap-4">
                   <div className="flex items-center gap-2 text-xs text-slate-400">
-                    <span className="uppercase tracking-[0.25em]">Let's Connect</span>
+                    <span className="uppercase text-xl tracking-[0.25em]">Let's Connect</span>
                   </div>
                 </div>
                 <div className="space-y-1">
                   <label className="text-xs uppercase tracking-widest text-slate-500">Name</label>
-                  <input type="text" className="w-full bg-black/50 border border-white/10 rounded p-3 text-white focus:outline-none focus:border-cyan-500 focus:ring-1 focus:ring-cyan-500/50 transition-all placeholder:text-slate-700" placeholder="John Doe" />
+                  <InputArea
+                    type="text"
+                    value={formData.name}
+                    onChange={(value) => setFormData(prev => ({ ...prev, name: value }))}
+                    placeholder="John Doe"
+                  />
                 </div>
                 <div className="space-y-1">
                   <label className="text-xs uppercase tracking-widest text-slate-500">Email</label>
-                  <input type="email" className="w-full bg-black/50 border border-white/10 rounded p-3 text-white focus:outline-none focus:border-cyan-500 focus:ring-1 focus:ring-cyan-500/50 transition-all placeholder:text-slate-700" placeholder="john@company.com" />
+                  <InputArea
+                    type="email"
+                    value={formData.email}
+                    onChange={(value) => setFormData(prev => ({ ...prev, email: value }))}
+                    placeholder="john@company.com"
+                  />
                 </div>
                 <div className="space-y-1">
                   <label className="text-xs uppercase tracking-widest text-slate-500">Project Details</label>
-                  <textarea rows={4} className="w-full bg-black/50 border border-white/10 rounded p-3 text-white focus:outline-none focus:border-cyan-500 focus:ring-1 focus:ring-cyan-500/50 transition-all placeholder:text-slate-700" placeholder="Tell me about your vision..." />
+                  <InputArea
+                    type="textarea"
+                    rows={6}
+                    value={formData.projectDetails}
+                    onChange={(value) => setFormData(prev => ({ ...prev, projectDetails: value }))}
+                    placeholder="Tell me about your vision..."
+                  />
+                  {Object.values(questionAnswers).some(answer => answer.trim() !== '') && (
+                    <div className="mt-2 p-3 bg-cyan-500/10 border border-cyan-500/30 rounded text-xs text-cyan-400">
+                      <p className="font-semibold mb-1">Note: Your question answers will be included when you submit.</p>
+                    </div>
+                  )}
                 </div>
-                <button type="button" className="w-full bg-cyan-600 hover:bg-cyan-500 text-white py-4 rounded font-medium tracking-widest uppercase transition-all shadow-[0_0_20px_rgba(6,182,212,0.3)] hover:shadow-[0_0_30px_rgba(6,182,212,0.5)]">
+                <button type="submit" className="w-full bg-cyan-600 hover:bg-cyan-500 text-white py-4 rounded font-medium tracking-widest uppercase transition-all shadow-[0_0_20px_rgba(6,182,212,0.3)] hover:shadow-[0_0_30px_rgba(6,182,212,0.5)]">
                   Initiate Sequence
                 </button>
               </form>
