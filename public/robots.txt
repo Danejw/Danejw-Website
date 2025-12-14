@@ -1,0 +1,25 @@
+# robots.txt for danejw.com
+# https://danejw.com/robots.txt
+
+User-agent: *
+Allow: /
+
+# Disallow utility/internal pages that don't need to be indexed
+Disallow: /template
+Disallow: /api/
+
+# Allow important pages
+Allow: /
+Allow: /about
+Allow: /contact
+Allow: /services
+Allow: /services/*
+Allow: /articles
+Allow: /articles/*
+Allow: /hire-me
+
+# Sitemap location
+Sitemap: https://danejw.com/sitemap.xml
+
+# Crawl-delay (optional - helps prevent server overload)
+# Crawl-delay: 1

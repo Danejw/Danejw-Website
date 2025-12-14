@@ -1,37 +1,97 @@
 # Dane Willacker - llms.txt
 
-> Dane Willacker (aka Danejw) is an independent AI + XR developer based in Hawai'i. He creates immersive applications and tools that blend artificial intelligence, extended reality, and human-centered design. His projects span VR games, AI companions, open-source tools, and creative software for indie developers.
+> Dane Willacker (aka Danejw) is a full-stack partner for founders, small business owners, and teams who need modern, fast solutions that are easy to manage, automate tasks, and save time. He architects, designs, and ships bespoke web applications, AI integrations, and custom software solutions. Based in Hawai'i and available remotely.
 
 ## Documentation Overview
 
-- Portfolio Site: https://yourindie.dev
-- Featured Projects:
-  - [AI Companion Toolkit](https://aicompaniontoolkit.com) – Toolkit for building voice-enabled AI companions
-  - [Knolia](https://knolia.org) – Production example of a voice companion app
-  - [SongTailor](https://songtailor.app) – AI music generator
-  - [Custom Golf Club Builder](https://iron-golfclub-builder.vercel.app/) – Shopify-based iron set configurator for client Oriekhalkos
-  - [Assistance for Unity](https://assetstore.unity.com/packages/tools/ai-ml-integration/assistance-293407) – AI assistant inside the Unity Editor
-  - [VR Game Jam Projects](https://dangerdano.itch.io) – Fireside, Swapno, The Phantom Delivery, and more
+- Portfolio Site: https://yourindie.dev (or current domain)
+- Contact: yourindie101@gmail.com
+- Location: Based in Hawai'i — available remotely
+
+## Services
+
+Available for:
+- Websites and web applications
+- AI Integrations
+- Automations
+- Product launches
+- Ongoing retainers
+
+## Featured Projects
+
+### Web Applications & SaaS
+
+- [ViziVibes.com](https://vizivibes.com) – Generates data-driven infographics. Transform your data into stunning, shareable infographics with AI-powered design. Perfect for presentations, social media, and visual storytelling. Featured on Product Hunt.
+- [GoodLooks.me](https://goodlooks.me) – AI-powered beauty consultation platform for clients and stylists. Upload a selfie to preview photorealistic hairstyles, experiment with infinite cuts and colors. Featured on Product Hunt.
+- [JustBuildNow.com](https://justbuildnow.com) – Build in public AI agent automaton. Makes building in public effortless for creators. Sign up with GitHub to launch a public profile automatically, share project updates, and collaborate transparently.
+- [ItsMemory.com](https://itsmemory.com) – Persistent graph-backed memory layer for AI Agents. AI-powered knowledge management platform with Profiles, Dashboards, and collaborative Brains that keep personal knowledge organized.
+- [ImprovForms.com](https://improvforms.com) – Platform for creating and sharing forms with AI. Create forms with AI-powered questions and answers, and share them with friends and family.
+
+### AI & Voice Applications
+
+- [Knolia](https://knolia.org) – Therapeutical AI Voice Companion for personal use. An AI-driven companion application designed to combat loneliness. A personal AI that learns over time, available 24/7 to listen without judgment. Focuses on social good through empathetic conversational AI.
+
+### XR & Visualization
+
+- XR Medical Visualization – Immersive multiplayer anatomy visualizations. Advanced VR/AR medical training platform for anatomy visualization in immersive environments. Built with Unity and Oculus for collaborative medical education.
+- Neural Net Viz – Interactive neural network visualizer. Visualize and interact with neural networks in 3D. Built with Three.js to help developers and researchers understand complex AI architectures through interactive visualization.
+
+### E-commerce & Client Work
+
+- Golf Club Builder – Shopify-integrated iron set configurator. Built for client Oriekhalkos, this app lets golfers design custom iron sets and purchase them. Retrieves all product data and images through Shopify's Storefront API, with checkout handled directly by Shopify.
+
+### Unity Editor Tools
+
+- [Assistance For Unity](https://assetstore.unity.com/packages/tools/ai-ml-integration/assistance-293407) – AI assistant integrated into the Unity Editor. Provides in-editor help via natural language queries to streamline coding and design tasks, merging AI with developer workflows.
+- [One-Click Docs](https://assetstore.unity.com/packages/tools/ai-ml-integration/one-click-documentation-291665) – Generate documentation for your codebase with a single click. Automatically generate comprehensive documentation for Unity projects, saving hours of manual work.
+- [One-Click Translations](https://assetstore.unity.com/packages/tools/localization/one-click-translations-291308) – Translate your game UI with a single click. Instantly translate Unity game UI into multiple languages, perfect for reaching global audiences.
 
 ## Technical Focus
 
-- XR Development: Unity, C#, Oculus SDK, OpenXR
-- AI Systems: GPT, Whisper, FastAPI, Unity ML-Agents
-- Web & Tooling: Next.js, React, FastAPI, Vite, Node.js, TypeScript
-- Creative Coding: Open Brush, VR art tools, immersive storytelling
+### Frontend & Web
+- Next.js, React, TypeScript, Vite
+- Three.js for 3D visualizations
 
-## Skills
+### Backend & APIs
+- Python, FastAPI
+- Node.js
 
-- XR (VR/AR) Interaction & Simulation
-- Conversational & Voice AI
-- Generative Media Tools
-- Game Jams & Rapid Prototyping
-- Developer Productivity Tools
-- Full-Stack Web Deployment
+### AI & ML
+- OpenAI (GPT, ChatGPT)
+- Anthropic (Claude)
+- Google Gemini
+- AI integrations and automations
+
+### Databases & Infrastructure
+- Supabase
+- Vercel (deployment)
+- Render (hosting)
+
+### Development Tools
+- Cursor (AI-powered IDE)
+- GitHub
+- Unity (for XR and game development)
+- C# (Unity development)
+
+### E-commerce
+- Shopify (Storefront API, integrations)
+
+## Skills & Expertise
+
+- Full-Stack Web Development
+- AI Integration & Automation
+- Custom Software Architecture
+- SaaS Product Development
+- E-commerce Solutions
+- XR (VR/AR) Development
+- Unity Editor Tools
+- Data Visualization
+- Voice AI Applications
+- Rapid Prototyping & Product Launches
 
 ## Online Presence
 
-- LinkedIn: https://www.linkedin.com/in/danejw
+- LinkedIn: https://www.linkedin.com/in/dane-willacker/
 - GitHub: https://github.com/Danejw
 - YouTube: https://www.youtube.com/channel/UCYnBPlKf3iqmaLcBC8maYYw
 - X (Twitter): https://twitter.com/Djw_learn
@@ -39,5 +99,6 @@
 
 ## Contact
 
-Reach out via [LinkedIn](https://www.linkedin.com/in/danejw) or through any project site above.
-
+- Email: yourindie101@gmail.com
+- Location: Based in Hawai'i — available remotely
+- Reach out via email or through any project site above.
