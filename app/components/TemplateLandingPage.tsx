@@ -29,6 +29,8 @@ import {
   X,
   ExternalLink,
   Github,
+  Linkedin,
+  Twitter,
 } from 'lucide-react';
 
 type SectionKey = 'hero' | 'process' | 'work' | 'contact';
@@ -878,7 +880,7 @@ export const TemplateLandingPage: React.FC = () => {
           <div className="flex flex-col items-center lg:items-start space-y-8">
             {/* Image - Always on top, centered on mobile, left-aligned on desktop */}
             <div className="flex justify-center lg:justify-start w-full">
-              <div className="relative w-32 h-32 sm:w-40 sm:h-40 md:w-48 md:h-48 lg:w-56 lg:h-56 xl:w-64 xl:h-64 rounded-full overflow-hidden shadow-[0_10px_30px_rgba(6,182,212,0.35)] flex-shrink-0 animate-headshot">
+              <div className="relative w-32 h-32 sm:w-40 sm:h-40 md:w-48 md:h-48 lg:w-56 lg:h-56 xl:w-64 xl:h-64 rounded-full overflow-hidden flex-shrink-0 animate-headshot">
                 <Image
                   src="/photos/headshot_cut.png"
                   alt="Julius Willacker headshot"
@@ -1143,16 +1145,30 @@ export const TemplateLandingPage: React.FC = () => {
       <footer className="border-t border-white/5 bg-black pt-4 pb-4 relative z-20">
         <div className="max-w-7xl mx-auto px-6 flex flex-col md:flex-row justify-between items-center gap-8">
           <div className="text-center md:text-left">
-            <h5 className="tracking-widest text-2xl text-white mb-2">DANE WILLACKER</h5>
+            <h5 className="tracking-widest text-2xl text-white mb-2">DANE <span className="bg-cyan-500 text-black px-1 inline-block">WILLACKER</span></h5>
             <p className="text-slate-600 text-xs tracking-widest uppercase">© 2025. All Rights Reserved.</p>
           </div>
           <div className="flex gap-6">
-            {[<LayoutTemplate key="gh" />, <Box key="li" />, <Cpu key="tw" />].map((Icon, idx) => (
-              <a key={idx} className="group relative p-2 text-slate-400 hover:text-white transition-colors">
-                <div className="absolute inset-0 bg-cyan-500/20 blur-xl opacity-0 group-hover:opacity-100 transition-opacity" />
-                {Icon}
-              </a>
-            ))}
+            {[
+              { icon: Twitter, url: 'https://x.com/Djw_learn', label: 'X.com (Twitter)' },
+              { icon: Linkedin, url: 'https://www.linkedin.com/in/dane-willacker/', label: 'LinkedIn' },
+              { icon: Github, url: 'https://github.com/Danejw', label: 'GitHub' },
+            ].map((social, idx) => {
+              const Icon = social.icon;
+              return (
+                <a
+                  key={idx}
+                  href={social.url}
+                  target="_blank"
+                  rel="noopener noreferrer"
+                  aria-label={social.label}
+                  className="group relative p-2 text-slate-400 hover:text-cyan-400 hover:scale-150 transition-colors"
+                >
+                  <div className="absolute inset-0 bg-cyan-500/20 blur-xl opacity-0 group-hover:opacity-100 transition-opacity" />
+                  <Icon className="w-5 h-5" />
+                </a>
+              );
+            })}
           </div>
         </div>
       </footer>
