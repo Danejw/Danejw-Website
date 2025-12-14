@@ -1,6 +1,6 @@
 import React from "react";
-import PersonalLandingPage from "@/app/components/PersonalLandingPage";
+import { TemplateLandingPage } from "@/app/components/TemplateLandingPage";
 
 export default function AboutPage() {
-  return <PersonalLandingPage />;
+  return <TemplateLandingPage />;
 } 
