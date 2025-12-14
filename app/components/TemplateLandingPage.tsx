@@ -89,12 +89,19 @@ const buildSlides: BuildSlide[] = [
     img: '/photos/blurred_look.jpeg',
   },
   {
+    title: 'Solve your',
+    highlight: 'Niche.',
+    copy:
+      'Every business has unique challenges. I focus on understanding your specific pain points and delivering targeted solutions that eliminate bottlenecks, streamline workflows, and drive measurable results.',
+    img: '/photos/blurred_look_3.jpeg',
+  },
+  {
     title: 'Make It',
     highlight: 'Personal.',
     copy:
       'Tailored experiences that feel crafted for you. Personalized to fit your needs and solve your problems to save you time and money.',
     img: '/photos/blurred_look_2.jpeg',
-  },
+  }
 ];
 
 type PortfolioItem = {
@@ -132,13 +139,13 @@ const portfolio: PortfolioItem[] = [
     title: 'JustBuildNow.com',
     description: 'Build in public AI agent automaton',
     tech: 'NEXT.JS / TYPESCRIPT / PYTHON / FASTAPI / OPENAI / SUPABASE',
-    img: '/photos/JBN_Placeholder.png',
+    img: '/photos/JustBuildNow.jpg',
   },
   {
     title: 'ItsMemory.com',
     description: 'Persistent graph-backed memory layer for AI Agents',
     tech: 'NEXT.JS / TYPESCRIPT / PYTHON / FASTAPI / OPENAI / SUPABASE',
-    img: '/photos/ItsMemory.svg',
+    img: '/photos/ItsMemory.jpg',
     video: '/photos/ItsMemory.mp4',
     tall: true,
   },
@@ -277,7 +284,6 @@ const CursorRadialTint: React.FC = () => {
 export const TemplateLandingPage: React.FC = () => {
   const lenisRef = useRef<Lenis | null>(null);
   const rootRef = useRef<HTMLDivElement | null>(null);
-  const buildScrollerRef = useRef<HTMLDivElement | null>(null);
   const heroRef = useRef<HTMLElement | null>(null);
   const processRef = useRef<HTMLElement | null>(null);
   const workRef = useRef<HTMLElement | null>(null);
@@ -442,54 +448,52 @@ export const TemplateLandingPage: React.FC = () => {
         });
       }
 
-      gsap.fromTo(
-        '.build-image',
-        { y: 40, opacity: 0, scale: 0.96 },
-        {
-          y: 0,
-          opacity: 1,
-          scale: 1,
-          ease: 'power2.out',
-          scrollTrigger: {
-            trigger: '.build-section',
-            start: 'top 65%',
-            end: 'top 40%',
-            scrub: true,
-          },
-        },
-      );
-
-      gsap.utils.toArray<HTMLElement>('.build-copy > *').forEach((el, idx) => {
+      // Animate each staggered card individually
+      gsap.utils.toArray<HTMLElement>('.build-slide').forEach((card, idx) => {
+        const isEven = idx % 2 === 0;
+        
+        // Animate card image
         gsap.fromTo(
-          el,
-          { y: 30, opacity: 0 },
+          card.querySelector('.build-image'),
+          { 
+            x: isEven ? -60 : 60,
+            y: 40, 
+            opacity: 0, 
+            scale: 0.9,
+            rotateY: isEven ? -15 : 15
+          },
           {
+            x: 0,
             y: 0,
             opacity: 1,
-            ease: 'power2.out',
+            scale: 1,
+            rotateY: 0,
+            ease: 'power3.out',
             scrollTrigger: {
-              trigger: '.build-section',
-              start: `top ${70 - idx * 5}%`,
-              end: `top ${45 - idx * 5}%`,
-              scrub: true,
+              trigger: card,
+              start: 'top 75%',
+              end: 'top 35%',
+              scrub: 1.5,
             },
           },
         );
-      });
 
-      gsap.utils.toArray<HTMLElement>('.build-chip').forEach((chip, idx) => {
+        // Animate card content
         gsap.fromTo(
-          chip,
-          { y: 16, opacity: 0 },
+          card.querySelector('.build-copy'),
+          { 
+            x: isEven ? 40 : -40,
+            opacity: 0 
+          },
           {
-            y: 0,
+            x: 0,
             opacity: 1,
             ease: 'power2.out',
             scrollTrigger: {
-              trigger: '.build-section',
-              start: `top ${90 - idx * 2}%`,
-              end: `top ${45 - idx * 2}%`,
-              scrub: true,
+              trigger: card,
+              start: 'top 70%',
+              end: 'top 40%',
+              scrub: 1.5,
             },
           },
         );
@@ -515,56 +519,6 @@ export const TemplateLandingPage: React.FC = () => {
   };
 
   const sectionOrder = useMemo(() => Object.keys(sectionInfo) as SectionKey[], []);
-
-  // Drag-to-scroll helper for horizontal carousel
-  const registerDragScroll = useCallback((el: HTMLElement | null) => {
-    if (!el) return () => {};
-
-    let isDown = false;
-    let startX = 0;
-    let scrollStart = 0;
-
-    const onPointerDown = (e: PointerEvent) => {
-      isDown = true;
-      startX = e.clientX;
-      scrollStart = el.scrollLeft;
-      el.classList.add('cursor-grabbing');
-      el.setPointerCapture(e.pointerId);
-    };
-
-    const onPointerMove = (e: PointerEvent) => {
-      if (!isDown) return;
-      const delta = e.clientX - startX;
-      el.scrollLeft = scrollStart - delta;
-    };
-
-    const onPointerUp = (e: PointerEvent) => {
-      isDown = false;
-      el.classList.remove('cursor-grabbing');
-      try {
-        el.releasePointerCapture(e.pointerId);
-      } catch {
-        /* ignore */
-      }
-    };
-
-    el.addEventListener('pointerdown', onPointerDown);
-    el.addEventListener('pointermove', onPointerMove);
-    el.addEventListener('pointerup', onPointerUp);
-    el.addEventListener('pointerleave', onPointerUp);
-
-    return () => {
-      el.removeEventListener('pointerdown', onPointerDown);
-      el.removeEventListener('pointermove', onPointerMove);
-      el.removeEventListener('pointerup', onPointerUp);
-      el.removeEventListener('pointerleave', onPointerUp);
-    };
-  }, []);
-
-  useEffect(() => {
-    const cleanup = registerDragScroll(buildScrollerRef.current);
-    return () => cleanup();
-  }, [registerDragScroll]);
 
   return (
     <div ref={rootRef} className="antialiased text-slate-300 selection:bg-cyan-500 selection:text-black relative bg-[#030303]">
@@ -652,81 +606,92 @@ export const TemplateLandingPage: React.FC = () => {
         </div>
 
         {/* Headshot */}
-        <div className="relative z-10 max-w-7xl mx-auto px-6 grid grid-cols-1 lg:grid-cols-12 gap-12 items-center w-full">
-          <div className="lg:col-span-8 space-y-6">
-            <div className="flex items-center gap-4">
-              <div className="relative w-48 h-48 sm:w-48 sm:h-48 rounded-full overflow-hidden shadow-[0_10px_30px_rgba(6,182,212,0.35)]">
+        <div className="relative z-10 max-w-7xl mx-auto px-6 w-full">
+          <div className="flex flex-col items-center lg:items-start space-y-8">
+            {/* Image - Always on top, centered on mobile, left-aligned on desktop */}
+            <div className="flex justify-center lg:justify-start w-full">
+              <div className="relative w-32 h-32 sm:w-40 sm:h-40 md:w-48 md:h-48 lg:w-56 lg:h-56 xl:w-64 xl:h-64 rounded-full overflow-hidden shadow-[0_10px_30px_rgba(6,182,212,0.35)] flex-shrink-0">
                 <Image
                   src="/photos/headshot_cut.png"
                   alt="Julius Willacker headshot"
                   fill
                   className="object-cover"
-                  sizes="200px"
+                  sizes="(max-width: 640px) 128px, (max-width: 768px) 160px, (max-width: 1024px) 192px, (max-width: 1280px) 224px, 256px"
                   priority
                 />
               </div>
             </div>
-            <p className="hero-line text-cyan-400 tracking-[0.2em] text-xs uppercase">Architecting Digital Experiences</p>
-            <h1 className="text-6xl md:text-7xl lg:text-8xl font-semibold text-white tracking-tight leading-[0.9]">
-              <span className="hero-line block">JULIUS</span>
-              <span className="hero-line block bg-cyan-500 text-black px-2 inline-block">WILLACKER</span>
-            </h1>
-            <p className="hero-subcopy text-lg md:text-xl text-slate-400 max-w-2xl font-light tracking-wide border-l-2 border-cyan-500 pl-6 bg-black/50 backdrop-blur-md p-2">
-              Full-stack partner for founders, small business owners, and teams who need modern, fast solutions that are easy to manage, automate tasks, and save time.
-            </p>
-            <div className="mt-8 flex items-center gap-4 text-slate-300">
-              <div className="hero-icon-chip p-2 border border-white/10 rounded bg-black/50 backdrop-blur hover:border-cyan-500/50 transition-colors">
-                <Code2 className="w-5 h-5 text-cyan-400" />
-              </div>
-              <div className="hero-icon-chip p-2 border border-white/10 rounded bg-black/50 backdrop-blur hover:border-cyan-500/50 transition-colors">
-                <Server className="w-5 h-5 text-cyan-400" />
-              </div>
-              <div className="hero-icon-chip p-2 border border-white/10 rounded bg-black/50 backdrop-blur hover:border-cyan-500/50 transition-colors">
-                <Layers className="w-5 h-5 text-cyan-400" />
+            
+            {/* Text Content - Always below the image */}
+            <div className="space-y-6 w-full text-center lg:text-left">
+              <p className="hero-line text-cyan-400 tracking-[0.2em] text-xs uppercase">Architecting Digital Experiences</p>
+              <h1 className="text-4xl sm:text-5xl md:text-6xl lg:text-7xl xl:text-8xl font-semibold text-white tracking-tight leading-[0.9]">
+                <span className="hero-line block">JULIUS</span>
+                <span className="hero-line block bg-cyan-500 text-black px-2 inline-block mt-2">WILLACKER</span>
+              </h1>
+              <p className="hero-subcopy text-base sm:text-lg md:text-xl text-slate-400 max-w-2xl mx-auto lg:mx-0 font-light tracking-wide border-l-2 border-cyan-500 pl-6 bg-black/50 backdrop-blur-md p-4">
+                Full-stack partner for founders, small business owners, and teams who need modern, fast solutions that are easy to manage, automate tasks, and save time.
+              </p>
+              <div className="mt-8 flex items-center justify-center lg:justify-start gap-4 text-slate-300">
+                <div className="hero-icon-chip p-2 border border-white/10 rounded bg-black/50 backdrop-blur hover:border-cyan-500/50 transition-colors">
+                  <Code2 className="w-5 h-5 text-cyan-400" />
+                </div>
+                <div className="hero-icon-chip p-2 border border-white/10 rounded bg-black/50 backdrop-blur hover:border-cyan-500/50 transition-colors">
+                  <Server className="w-5 h-5 text-cyan-400" />
+                </div>
+                <div className="hero-icon-chip p-2 border border-white/10 rounded bg-black/50 backdrop-blur hover:border-cyan-500/50 transition-colors">
+                  <Layers className="w-5 h-5 text-cyan-400" />
+                </div>
               </div>
             </div>
           </div>
         </div>
       </header>
 
-      {/* Build custom software carousel */}
-      <section className="build-section relative z-10 mb-24 -mt-48 mx-6">
-        <div
-          ref={buildScrollerRef}
-          className="w-full mx-auto px-6 py-16 overflow-x-auto cursor-grab"
-        >
-          <div className="build-track flex gap-8 md:gap-10 snap-x snap-mandatory">
-            {buildSlides.map((slide, idx) => (
+      {/* Build custom software staggered cards */}
+      <section className="build-section relative z-10 mb-24 -mt-48">
+        <div className="max-w-7xl mx-auto px-6 py-16 space-y-32">
+          {buildSlides.map((slide, idx) => {
+            const isEven = idx % 2 === 0;
+            return (
               <article
                 key={slide.title}
-                className="build-slide snap-start min-w-[85vw] md:min-w-[70vw] xl:min-w-[1100px] grid grid-cols-1 lg:grid-cols-2 gap-8 md:gap-10 items-center"
+                className={`build-slide relative grid grid-cols-1 lg:grid-cols-2 gap-12 items-center ${
+                  isEven ? 'lg:ml-0' : 'lg:ml-20'
+                }`}
               >
-                <div className="group relative overflow-hidden rounded-xl shadow-[0_10px_40px_rgba(0,0,0,0.45)] build-image">
-                  <Image
-                    src={slide.img}
-                    alt={slide.title}
-                    width={1600}
-                    height={900}
-                    className="object-cover w-full h-full grayscale transition duration-700 ease-out transform group-hover:grayscale-0 group-hover:scale-105"
-                    sizes="(min-width: 1280px) 50vw, 90vw"
-                    priority={idx === 0}
-                  />
+                {/* Card with glassmorphic effect */}
+                <div className={`relative ${isEven ? 'lg:order-1' : 'lg:order-2'}`}>
+                  <div className="group relative overflow-hidden rounded-3xl shadow-[0_20px_60px_rgba(0,0,0,0.6)] build-image border border-white/10 bg-gradient-to-br from-black/40 via-black/30 to-black/40 backdrop-blur-xl">
+                    <Image
+                      src={slide.img}
+                      alt={slide.title}
+                      width={1600}
+                      height={900}
+                      className="object-cover w-full h-[400px] grayscale transition duration-700 ease-out transform group-hover:grayscale-0 group-hover:scale-105 opacity-80"
+                      sizes="(min-width: 1024px) 50vw, 90vw"
+                      priority={idx === 0}
+                    />
+                    <div className="absolute inset-0 bg-gradient-to-t from-black/60 via-transparent to-transparent" />
+                  </div>
                 </div>
-                <div className="space-y-6 build-copy">
+
+                {/* Content */}
+                <div className={`space-y-6 build-copy relative z-10 ${isEven ? 'lg:order-2' : 'lg:order-1'}`}>
                   <div>
-                    <h2 className="text-4xl md:text-5xl font-semibold text-white leading-tight">
+                    <h2 className="text-4xl md:text-5xl lg:text-6xl font-semibold text-white leading-tight">
                       {slide.title}
                       <br />
-                      <span className="bg-cyan-500 text-black px-2 inline-block">{slide.highlight}</span>
+                      <span className="bg-cyan-500 text-black px-1 inline-block">{slide.highlight}</span>
                     </h2>
                   </div>
-                  <p className="text-slate-400 text-lg leading-relaxed max-w-xl bg-black/50 backdrop-blur-md p-2 border-l-2 border-cyan-500 pl-6">
+                  <p className="text-slate-400 text-lg md:text-xl leading-relaxed max-w-xl font-light tracking-wide border-l-2 border-cyan-500 pl-6 bg-black/50 backdrop-blur-md p-4">
                     {slide.copy}
                   </p>
                 </div>
               </article>
-            ))}
-          </div>
+            );
+          })}
         </div>
       </section>
 
