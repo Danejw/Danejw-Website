@@ -1152,8 +1152,8 @@ ${formData.name}`;
       {/* Navigation */}
       <nav className="fixed top-0 w-full z-40 border-b border-white/5 bg-black/60 backdrop-blur-md">
         <div className="max-w-7xl mx-auto px-6 py-4 flex justify-between items-center">
-          <a className="tracking-widest text-lg text-white hover:text-cyan-400 transition-colors flex items-center gap-1">
-            Danejw <span className="text-cyan-500 text-xs align-top">HI</span>
+          <a className="tracking-widest text-lg text-white hover:text-cyan-400 hover:scale-150 transition-all duration-300 ease-in-out flex items-center gap-1">
+            Dane<span className="text-cyan-500">jw</span>
           </a>
           <div className="hidden md:flex gap-8 text-xs font-medium tracking-widest uppercase text-slate-300">
             <a
@@ -1275,7 +1275,7 @@ ${formData.name}`;
       </header>
 
       {/* Build custom software staggered cards */}
-      <section id="build" ref={processRef} className="build-section relative z-10 mb-24 -mt-48">
+      <section id="build" ref={processRef} className="build-section relative z-10 mb-24 -mt-48 md:mt-0 lg:mt-8 xl:mt-12 2xl:mt-16">
         <div className="max-w-7xl mx-auto px-6 py-16 space-y-32">
           {buildSlides.map((slide, idx) => {
             const isEven = idx % 2 === 0;
