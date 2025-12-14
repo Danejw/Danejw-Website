@@ -481,7 +481,7 @@ ${formData.name}`;
     } finally {
       setIsSubmitting(false);
     }
-  }, [formData, formatQuestionAnswers, questionAnswers]);
+  }, [formData, formatQuestionAnswers]);
 
   // Prevent body scroll when modal is open
   useEffect(() => {
@@ -1364,13 +1364,15 @@ ${formData.name}`;
                     <Image
                       src={item.img}
                       alt={item.title}
-                      className={`w-full ${item.tall ? 'h-[500px]' : 'h-auto'} object-cover transform transition-transform duration-700 grayscale ${
+                      width={1600}
+                      height={1200}
+                      className={`w-full h-auto object-contain transform transition-transform duration-700 grayscale ${
                         videoReady[item.title] ? 'opacity-0 scale-100' : 'opacity-100 group-hover:scale-105 group-hover:grayscale-0'
                       }`}
                     />
                     {item.video && (
                       <video
-                        className={`absolute inset-0 w-full ${item.tall ? 'h-[500px]' : 'h-auto'} object-cover transition-opacity duration-500 ${
+                        className={`absolute top-0 left-0 w-full h-auto object-contain transition-opacity duration-500 ${
                           videoReady[item.title] ? 'opacity-100' : 'opacity-0 pointer-events-none'
                         }`}
                         src={item.video}
@@ -1665,7 +1667,8 @@ ${formData.name}`;
                 <Image
                   src={selectedProject.img}
                   alt={selectedProject.title}
-                  className="w-full h-full object-cover"
+                  fill
+                  className="object-cover"
                 />
               )}
               <div className="absolute inset-0 bg-gradient-to-t from-slate-900 via-transparent to-transparent" />
