@@ -356,6 +356,38 @@ const CursorRadialTint: React.FC = () => {
 };
 
 /**
+ * Social media icons component - displays social media links
+ */
+const SocialIcons: React.FC<{ className?: string; iconSize?: string }> = ({ className = '', iconSize = 'w-5 h-5' }) => {
+  const socialLinks = [
+    { icon: Twitter, url: 'https://x.com/Djw_learn', label: 'X.com (Twitter)' },
+    { icon: Linkedin, url: 'https://www.linkedin.com/in/dane-willacker/', label: 'LinkedIn' },
+    { icon: Github, url: 'https://github.com/Danejw', label: 'GitHub' },
+  ];
+
+  return (
+    <div className={`flex gap-6 ${className}`}>
+      {socialLinks.map((social, idx) => {
+        const Icon = social.icon;
+        return (
+          <a
+            key={idx}
+            href={social.url}
+            target="_blank"
+            rel="noopener noreferrer"
+            aria-label={social.label}
+            className="group relative p-2 text-slate-400 hover:text-cyan-400 hover:scale-150 transition-colors"
+          >
+            <div className="absolute inset-0 bg-cyan-500/20 blur-xl opacity-0 group-hover:opacity-100 transition-opacity" />
+            <Icon className={iconSize} />
+          </a>
+        );
+      })}
+    </div>
+  );
+};
+
+/**
  * Product Hunt badge component - displays the iconic Product Hunt badge
  */
 const ProductHuntBadge: React.FC<{ className?: string; url?: string }> = ({ className = '', url }) => {
@@ -925,6 +957,9 @@ export const TemplateLandingPage: React.FC = () => {
                 <span className="hero-word">save</span>{' '}
                 <span className="hero-word">time.</span>
               </p>
+              <div className="flex items-center justify-center lg:justify-start mt-6">
+                <SocialIcons />
+              </div>
             </div>
           </div>
         </div>
@@ -1148,28 +1183,7 @@ export const TemplateLandingPage: React.FC = () => {
             <h5 className="tracking-widest text-2xl text-white mb-2">DANE <span className="bg-cyan-500 text-black px-1 inline-block">WILLACKER</span></h5>
             <p className="text-slate-600 text-xs tracking-widest uppercase">© 2025. All Rights Reserved.</p>
           </div>
-          <div className="flex gap-6">
-            {[
-              { icon: Twitter, url: 'https://x.com/Djw_learn', label: 'X.com (Twitter)' },
-              { icon: Linkedin, url: 'https://www.linkedin.com/in/dane-willacker/', label: 'LinkedIn' },
-              { icon: Github, url: 'https://github.com/Danejw', label: 'GitHub' },
-            ].map((social, idx) => {
-              const Icon = social.icon;
-              return (
-                <a
-                  key={idx}
-                  href={social.url}
-                  target="_blank"
-                  rel="noopener noreferrer"
-                  aria-label={social.label}
-                  className="group relative p-2 text-slate-400 hover:text-cyan-400 hover:scale-150 transition-colors"
-                >
-                  <div className="absolute inset-0 bg-cyan-500/20 blur-xl opacity-0 group-hover:opacity-100 transition-opacity" />
-                  <Icon className="w-5 h-5" />
-                </a>
-              );
-            })}
-          </div>
+          <SocialIcons />
         </div>
       </footer>
 
