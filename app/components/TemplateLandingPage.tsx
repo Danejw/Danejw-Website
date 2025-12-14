@@ -435,6 +435,53 @@ export const TemplateLandingPage: React.FC = () => {
     };
   }, [updateActiveByScroll]);
 
+  // Page load animations for hero name and description
+  useEffect(() => {
+    if (typeof window === 'undefined' || !heroRef.current) return;
+
+    // Set initial state to prevent flash
+    gsap.set('.hero-name', { x: -200, opacity: 0, filter: 'blur(10px)' });
+    gsap.set('.hero-word', { x: 200, opacity: 0, filter: 'blur(8px)' });
+
+    // Create timeline for coordinated animations
+    const tl = gsap.timeline({ defaults: { ease: 'power3.out' } });
+
+    // Animate name from left - "DANE" first, then "WILLACKER"
+    tl.to('.hero-name-first', {
+      x: 0,
+      opacity: 1,
+      filter: 'blur(0px)',
+      duration: 1,
+      ease: 'power4.out',
+    })
+      .to(
+        '.hero-name-second',
+        {
+          x: 0,
+          opacity: 1,
+          filter: 'blur(0px)',
+          duration: 1,
+          ease: 'power4.out',
+        },
+        '-=0.5', // Start slightly before first name finishes
+      )
+      // Animate description words left, word by word
+      .to(
+        '.hero-word',
+        {
+          x: 0,
+          opacity: 1,
+          filter: 'blur(0px)',
+          duration: 0.6,
+          stagger: {
+            amount: 1.5,
+            from: 'start', // Start from the left (first word)
+          },
+        },
+        '-=0.3', // Start slightly before name animation completes
+      );
+  }, []);
+
   // Scroll-triggered animations (Lenis + GSAP)
   useEffect(() => {
     if (typeof window === 'undefined') return;
@@ -576,7 +623,117 @@ export const TemplateLandingPage: React.FC = () => {
             },
           },
         );
+
+        // Animate words in the copy text from left, word by word
+        const buildWords = card.querySelectorAll('.build-word');
+        if (buildWords.length > 0) {
+          // Set initial state
+          gsap.set(buildWords, { x: 200, opacity: 0, filter: 'blur(8px)' });
+          
+          gsap.to(
+            buildWords,
+            {
+              x: 0,
+              opacity: 1,
+              filter: 'blur(0px)',
+              ease: 'power3.out',
+              duration: 0.6,
+              stagger: {
+                amount: 1.5,
+                from: 'start', // Start from the left (first word)
+              },
+              scrollTrigger: {
+                trigger: card,
+                start: 'top 75%',
+                end: 'top 30%',
+                scrub: 1.2,
+                toggleActions: 'play none none reverse',
+              },
+            },
+          );
+        }
       });
+
+      // Animate portfolio items based on scroll position
+      if (workRef.current) {
+        gsap.utils.toArray<HTMLElement>('.portfolio-item').forEach((item, idx) => {
+          // Calculate stagger delay based on position in masonry layout
+          const columnIndex = idx % 3;
+          const rowIndex = Math.floor(idx / 3);
+          const staggerDelay = (columnIndex * 0.05) + (rowIndex * 0.1);
+          
+          // Smooth scroll-triggered animation for the entire card
+          gsap.fromTo(
+            item,
+            {
+              y: 80,
+              opacity: 0,
+              scale: 0.92,
+              filter: 'blur(10px)',
+            },
+            {
+              y: 0,
+              opacity: 1,
+              scale: 1,
+              filter: 'blur(0px)',
+              ease: 'power3.out',
+              scrollTrigger: {
+                trigger: item,
+                start: 'top 90%',
+                end: 'top 30%',
+                scrub: 1.2,
+                toggleActions: 'play none none reverse',
+              },
+            },
+          );
+
+          // Animate the image/video container separately for layered effect
+          const mediaContainer = item.querySelector('.portfolio-media');
+          if (mediaContainer) {
+            gsap.fromTo(
+              mediaContainer,
+              {
+                scale: 0.88,
+                opacity: 0,
+              },
+              {
+                scale: 1,
+                opacity: 1,
+                ease: 'power2.out',
+                scrollTrigger: {
+                  trigger: item,
+                  start: 'top 85%',
+                  end: 'top 35%',
+                  scrub: 1.5,
+                },
+              },
+            );
+          }
+
+          // Animate the overlay content (title, description, tech)
+          const overlay = item.querySelector('.portfolio-overlay');
+          if (overlay) {
+            gsap.fromTo(
+              overlay,
+              {
+                y: 40,
+                opacity: 0,
+              },
+              {
+                y: 0,
+                opacity: 1,
+                ease: 'power2.out',
+                scrollTrigger: {
+                  trigger: item,
+                  start: 'top 80%',
+                  end: 'top 40%',
+                  scrub: 1.8,
+                },
+              },
+            );
+          }
+        });
+      }
     }, rootRef);
 
     return () => {
@@ -698,11 +855,34 @@ export const TemplateLandingPage: React.FC = () => {
             <div className="space-y-6 w-full text-center lg:text-left">
               <p className="hero-line text-cyan-400 tracking-[0.2em] text-xs uppercase">Architecting Digital Experiences</p>
               <h1 className="text-4xl sm:text-5xl md:text-6xl lg:text-7xl xl:text-8xl font-semibold text-white tracking-tight leading-[0.9]">
-                <span className="hero-line block">DANE</span>
-                <span className="hero-line block bg-cyan-500 text-black px-2 inline-block mt-2">WILLACKER</span>
+                <span className="hero-name hero-name-first block">DANE</span>
+                <span className="hero-name hero-name-second block bg-cyan-500 text-black px-2 inline-block mt-2">WILLACKER</span>
               </h1>
-              <p className="hero-subcopy text-base sm:text-lg md:text-xl text-slate-400 max-w-2xl mx-auto lg:mx-0 font-light tracking-wide border-l-2 border-cyan-500 pl-6 bg-black/50 backdrop-blur-md p-4">
-                Full-stack partner for founders, small business owners, and teams who need modern, fast solutions that are easy to manage, automate tasks, and save time.
+              <p className="hero-subcopy hero-description text-base sm:text-lg md:text-xl text-slate-400 max-w-2xl mx-auto lg:mx-0 font-light tracking-wide border-l-2 border-cyan-500 pl-6 bg-black/50 backdrop-blur-md p-4">
+                <span className="hero-word">Full-stack</span>{' '}
+                <span className="hero-word">partner</span>{' '}
+                <span className="hero-word">for</span>{' '}
+                <span className="hero-word">founders,</span>{' '}
+                <span className="hero-word">small</span>{' '}
+                <span className="hero-word">business</span>{' '}
+                <span className="hero-word">owners,</span>{' '}
+                <span className="hero-word">and</span>{' '}
+                <span className="hero-word">teams</span>{' '}
+                <span className="hero-word">who</span>{' '}
+                <span className="hero-word">need</span>{' '}
+                <span className="hero-word">modern,</span>{' '}
+                <span className="hero-word">fast</span>{' '}
+                <span className="hero-word">solutions</span>{' '}
+                <span className="hero-word">that</span>{' '}
+                <span className="hero-word">are</span>{' '}
+                <span className="hero-word">easy</span>{' '}
+                <span className="hero-word">to</span>{' '}
+                <span className="hero-word">manage,</span>{' '}
+                <span className="hero-word">automate</span>{' '}
+                <span className="hero-word">tasks,</span>{' '}
+                <span className="hero-word">and</span>{' '}
+                <span className="hero-word">save</span>{' '}
+                <span className="hero-word">time.</span>
               </p>
             </div>
           </div>
@@ -747,7 +927,11 @@ export const TemplateLandingPage: React.FC = () => {
                     </h2>
                   </div>
                   <p className="text-slate-400 text-lg md:text-xl leading-relaxed max-w-xl font-light tracking-wide border-l-2 border-cyan-500 pl-6 bg-black/50 backdrop-blur-md p-4">
-                    {slide.copy}
+                    {slide.copy.split(' ').map((word, wordIdx) => (
+                      <span key={wordIdx} className="build-word">
+                        {word}{' '}
+                      </span>
+                    ))}
                   </p>
                 </div>
               </article>
@@ -791,7 +975,7 @@ export const TemplateLandingPage: React.FC = () => {
                 onClick={() => setSelectedProject(item)}
               >
                 <div className="absolute inset-0 bg-cyan-500/0 group-hover:bg-cyan-500/10 transition-colors z-20 border-2 border-transparent group-hover:border-cyan-400/50 rounded-xl" />
-                  <div className="relative w-full">
+                  <div className="portfolio-media relative w-full overflow-hidden">
                     <img
                       src={item.img}
                       alt={item.title}
@@ -814,7 +998,7 @@ export const TemplateLandingPage: React.FC = () => {
                       />
                     )}
                   </div>
-                <div className="absolute bottom-0 left-0 right-0 p-6 bg-gradient-to-t from-black via-black/80 to-transparent translate-y-4 group-hover:translate-y-0 transition-transform duration-300 z-30">
+                <div className="portfolio-overlay absolute bottom-0 left-0 right-0 p-6 bg-gradient-to-t from-black via-black/80 to-transparent translate-y-4 group-hover:translate-y-0 transition-transform duration-300 z-30">
                   <div className="flex justify-between items-end">
                     <div>
                       <h4 className="text-white font-medium text-lg">{item.title}</h4>
