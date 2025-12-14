@@ -1276,6 +1276,8 @@ ${formData.name}`;
 
       {/* Build custom software staggered cards */}
       <section id="build" ref={processRef} className="build-section relative z-10 mb-24 -mt-48 md:mt-0 lg:mt-8 xl:mt-12 2xl:mt-16">
+        <div className="absolute right-0 top-1/4 w-1/2 h-1/2 bg-cyan-500/5 blur-[120px] rounded-full pointer-events-none" />
+
         <div className="max-w-7xl mx-auto px-6 py-16 space-y-32">
           {buildSlides.map((slide, idx) => {
             const isEven = idx % 2 === 0;
@@ -1346,6 +1348,8 @@ ${formData.name}`;
 
       {/* Portfolio */}
       <section id="work" ref={workRef} className="py-20 relative z-10">
+        <div className="absolute left-0 top-1/4 w-1/2 h-1/2 bg-cyan-500/5 blur-[120px] rounded-full pointer-events-none" />
+
         <div className="max-w-7xl mx-auto px-6">
           <div className="flex items-end justify-between mb-16 pb-4">
             <h3 className="work-title text-4xl md:text-5xl lg:text-6xl font-semibold text-white leading-tight">The <span className="bg-cyan-500 text-black px-1 inline-block">Work</span></h3>
@@ -1409,6 +1413,8 @@ ${formData.name}`;
 
       {/* Prompt Questions Section */}
       <section ref={questionsRef} className="py-24 relative z-10">
+        <div className="absolute right-0 top-1/4 w-1/2 h-1/2 bg-cyan-500/5 blur-[120px] rounded-full pointer-events-none" />
+
         <div className="max-w-4xl mx-auto px-6">
           <div className="space-y-12">
             <div className="text-center mb-12 questions-header">
@@ -1491,7 +1497,7 @@ ${formData.name}`;
 
       {/* Contact */}
       <section id="contact" ref={contactRef} className="py-24 relative z-10">
-        <div className="absolute right-0 top-1/4 w-1/2 h-1/2 bg-cyan-500/5 blur-[120px] rounded-full pointer-events-none" />
+        <div className="absolute left-0 top-1/4 w-1/2 h-1/2 bg-cyan-500/5 blur-[120px] rounded-full pointer-events-none" />
         <div className="max-w-7xl mx-auto px-6 grid grid-cols-1 lg:grid-cols-2 gap-16 items-center">
           <div className="contact-copy">
             <div className="mb-6 flex flex-wrap items-center gap-6">
