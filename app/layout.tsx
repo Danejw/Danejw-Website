@@ -82,9 +82,7 @@ export default function RootLayout({
         <DottedGridBackground className="-z-5" opacity={0.15} />
 
         <ThemeProvider attribute="class" defaultTheme="dark" enableSystem={false} disableTransitionOnChange>
-          {/* <Header /> */}
           <main className="relative z-10 flex-1">{children}</main>
-          {/* <Footer /> */}
         </ThemeProvider>
       </body>
     </html>

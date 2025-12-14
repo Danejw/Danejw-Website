@@ -28,10 +28,14 @@ import {
   X,
   ExternalLink,
   Github,
+  CheckCircle,
+  XCircle,
+  Loader2,
 } from 'lucide-react';
 import { SocialIcons } from './SocialIcons';
 import { InputArea } from './InputArea';
 import { CustomCursor } from './CustomCursor';
+import { Button } from './ui/Button';
 
 type SectionKey = 'hero' | 'process' | 'work' | 'contact';
 
@@ -122,27 +126,6 @@ type PortfolioItem = {
   productHunt?: boolean;
   productHuntUrl?: string;
 };
-
-const processSteps = [
-  {
-    icon: <BrainCircuit className="w-6 h-6" />,
-    title: 'Ideate & Strategy',
-    copy: 'We start with your goals—not the tech. Map outcomes, shape a plan, and align on success.',
-    highlight: false,
-  },
-  {
-    icon: <Hammer className="w-6 h-6" />,
-    title: 'Build & Develop',
-    copy: 'Clean, type-safe code with React/Next frontends and scalable services. Zero fluff.',
-    highlight: true,
-  },
-  {
-    icon: <Rocket className="w-6 h-6" />,
-    title: 'Scale & Optimize',
-    copy: 'Performance tuning, SEO, and infra scaling so you stay fast globally.',
-    highlight: false,
-  },
-];
 
 const portfolio: PortfolioItem[] = [
   {
@@ -410,6 +393,8 @@ export const TemplateLandingPage: React.FC = () => {
     email: '',
     projectDetails: '',
   });
+  const [isSubmitting, setIsSubmitting] = useState(false);
+  const [submitStatus, setSubmitStatus] = useState<'idle' | 'success' | 'error'>('idle');
 
   const handleVideoLoaded = useCallback((key: string) => {
     setVideoReady((prev) => ({ ...prev, [key]: true }));
@@ -434,21 +419,70 @@ export const TemplateLandingPage: React.FC = () => {
 
   const handleFormSubmit = useCallback((e: React.FormEvent) => {
     e.preventDefault();
-    const questionAnswersText = formatQuestionAnswers();
-    const fullProjectDetails = questionAnswersText 
-      ? `${formData.projectDetails}${questionAnswersText ? '\n\n--- Question Answers ---\n' + questionAnswersText : ''}`
-      : formData.projectDetails;
     
-    // Here you would typically send the form data to your backend
-    // For now, we'll just log it
-    console.log('Form Data:', {
-      name: formData.name,
-      email: formData.email,
-      projectDetails: fullProjectDetails,
-    });
-    
-    // You can add your form submission logic here
-  }, [formData, formatQuestionAnswers]);
+    // Validate form
+    if (!formData.name.trim() || !formData.email.trim() || !formData.projectDetails.trim()) {
+      setSubmitStatus('error');
+      setTimeout(() => setSubmitStatus('idle'), 3000);
+      return;
+    }
+
+    setIsSubmitting(true);
+    setSubmitStatus('idle');
+
+    try {
+      const questionAnswersText = formatQuestionAnswers();
+      const fullProjectDetails = questionAnswersText 
+        ? `${formData.projectDetails}${questionAnswersText ? '\n\n--- Question Answers ---\n' + questionAnswersText : ''}`
+        : formData.projectDetails;
+
+      // Build email body with all form information
+      const emailBody = `Hello,
+
+I'm reaching out regarding a potential project.
+
+Name: ${formData.name}
+Email: ${formData.email}
+
+Project Details:
+${fullProjectDetails}
+
+Looking forward to hearing from you!
+
+Best regards,
+${formData.name}`;
+
+      // Create mailto link with pre-filled information
+      const subject = encodeURIComponent(`New Contact Form Submission from ${formData.name}`);
+      const body = encodeURIComponent(emailBody);
+      const mailtoLink = `mailto:yourindie101@gmail.com?subject=${subject}&body=${body}`;
+
+      // Open default email client
+      window.location.href = mailtoLink;
+
+      // Success - clear form and show success message
+      setSubmitStatus('success');
+      setFormData({
+        name: '',
+        email: '',
+        projectDetails: '',
+      });
+      setQuestionAnswers({
+        question1: '',
+        question2: '',
+        question3: '',
+      });
+
+      // Reset status after 5 seconds
+      setTimeout(() => setSubmitStatus('idle'), 5000);
+    } catch (error) {
+      console.error('Error opening email client:', error);
+      setSubmitStatus('error');
+      setTimeout(() => setSubmitStatus('idle'), 5000);
+    } finally {
+      setIsSubmitting(false);
+    }
+  }, [formData, formatQuestionAnswers, questionAnswers]);
 
   // Prevent body scroll when modal is open
   useEffect(() => {
@@ -780,12 +814,7 @@ export const TemplateLandingPage: React.FC = () => {
           },
         );
 
-        gsap.utils.toArray<HTMLElement>('.portfolio-item').forEach((item, idx) => {
-          // Calculate stagger delay based on position in masonry layout
-          const columnIndex = idx % 3;
-          const rowIndex = Math.floor(idx / 3);
-          const staggerDelay = (columnIndex * 0.05) + (rowIndex * 0.1);
-          
+        gsap.utils.toArray<HTMLElement>('.portfolio-item').forEach((item) => {
           // Smooth scroll-triggered animation for the entire card
           gsap.fromTo(
             item,
@@ -936,7 +965,7 @@ export const TemplateLandingPage: React.FC = () => {
         }
 
         // Animate each question group (question + input)
-        gsap.utils.toArray<HTMLElement>('.question-group').forEach((group, idx) => {
+        gsap.utils.toArray<HTMLElement>('.question-group').forEach((group) => {
           const question = group.querySelector('.question-item') as HTMLElement;
           const input = group.querySelector('.question-input') as HTMLElement;
           const isRight = group.classList.contains('question-group-right');
@@ -1494,7 +1523,7 @@ export const TemplateLandingPage: React.FC = () => {
                 <div className="p-3 border border-white/10 rounded-full group-hover:border-cyan-400 transition-colors">
                   <MapPin className="w-5 h-5" />
                 </div>
-                <span className="font-light tracking-wide">Based in Hawai'i — available remotely</span>
+                <span className="font-light tracking-wide">Based in Hawai&apos;i — available remotely</span>
               </div>
             </div>
           </div>
@@ -1506,7 +1535,7 @@ export const TemplateLandingPage: React.FC = () => {
               <form onSubmit={handleFormSubmit} className="space-y-6">
                 <div className="flex items-center justify-between gap-4">
                   <div className="flex items-center gap-2 text-xs text-slate-400">
-                    <span className="uppercase text-xl tracking-[0.25em]">Let's Connect</span>
+                    <span className="uppercase text-xl tracking-[0.25em]">Let&apos;s Connect</span>
                   </div>
                 </div>
                 <div className="space-y-1">
@@ -1542,9 +1571,36 @@ export const TemplateLandingPage: React.FC = () => {
                     </div>
                   )}
                 </div>
-                <button type="submit" className="w-full bg-cyan-600 hover:bg-cyan-500 text-white py-4 rounded font-medium tracking-widest uppercase transition-all shadow-[0_0_20px_rgba(6,182,212,0.3)] hover:shadow-[0_0_30px_rgba(6,182,212,0.5)]">
-                  Initiate Sequence
-                </button>
+                <div className="space-y-3">
+                  <Button
+                    variant="primary"
+                    type="submit"
+                    disabled={isSubmitting}
+                    isLoading={isSubmitting}
+                    className="w-full py-4"
+                  >
+                    {isSubmitting ? (
+                      <>
+                        <Loader2 className="w-5 h-5 animate-spin" />
+                        <span>Opening Email...</span>
+                      </>
+                    ) : (
+                      'Initiate Sequence'
+                    )}
+                  </Button>
+                  {submitStatus === 'success' && (
+                    <div className="flex items-center gap-2 p-3 bg-green-500/10 border border-green-500/30 rounded text-sm text-green-400 animate-fadeIn">
+                      <CheckCircle className="w-5 h-5" />
+                      <span>Email client opened! Please review and send the message from your email app.</span>
+                    </div>
+                  )}
+                  {submitStatus === 'error' && (
+                    <div className="flex items-center gap-2 p-3 bg-red-500/10 border border-red-500/30 rounded text-sm text-red-400 animate-fadeIn">
+                      <XCircle className="w-5 h-5" />
+                      <span>Failed to send message. Please try again or contact me directly at yourindie101@gmail.com</span>
+                    </div>
+                  )}
+                </div>
               </form>
             </div>
           </div>

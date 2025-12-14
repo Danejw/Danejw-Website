@@ -57,8 +57,14 @@ export const DottedGridBackground: React.FC<Props> = ({
     const deltaY = mousePosition.y - centerY;
     const maxDelta = Math.max(rect.width, rect.height) / 2;
     
+    // Calculate distance from mouse to center for radial falloff
+    const distanceFromCenter = Math.sqrt(deltaX * deltaX + deltaY * deltaY);
+    // Calculate radial falloff factor based on distortionRadius
+    // Effect is strongest at mouse position and fades out at distortionRadius
+    const radialFalloff = Math.max(0, 1 - (distanceFromCenter / distortionRadius));
+    
     // Normalize the intensity for dramatic effect
-    const normalizedIntensity = distortionIntensity / 100;
+    const normalizedIntensity = (distortionIntensity / 100) * radialFalloff;
     
     // Create a very strong 3D warping effect
     // The grid should appear to "bend" and "stretch" dramatically toward the mouse
