@@ -26,6 +26,8 @@ import {
   MapPin,
   Zap,
   Triangle,
+  X,
+  ExternalLink,
 } from 'lucide-react';
 
 type SectionKey = 'hero' | 'process' | 'work' | 'contact';
@@ -107,10 +109,12 @@ const buildSlides: BuildSlide[] = [
 type PortfolioItem = {
   title: string;
   description: string;
+  fullDescription?: string;
   tech: string;
   img: string;
   video?: string;
   tall?: boolean;
+  link?: string;
 };
 
 const processSteps = [
@@ -138,41 +142,101 @@ const portfolio: PortfolioItem[] = [
   {
     title: 'JustBuildNow.com',
     description: 'Build in public AI agent automaton',
+    fullDescription: 'JustBuildNow makes building in public effortless for creators. Sign up with GitHub to launch a public profile automatically, share project updates, and collaborate transparently with a progress-focused dashboard.',
     tech: 'NEXT.JS / TYPESCRIPT / PYTHON / FASTAPI / OPENAI / SUPABASE',
     img: '/photos/JustBuildNow.jpg',
+    video: '/videos/JustBuildNow_Video.mp4',
+    link: 'https://justbuildnow.com',
   },
   {
     title: 'ItsMemory.com',
     description: 'Persistent graph-backed memory layer for AI Agents',
+    fullDescription: 'Its Memory is an AI-powered knowledge management platform with Profiles, Dashboards, and collaborative Brains that keep personal knowledge organized. Users can sign in, explore pricing plans, and manage productivity, memories, and accounts in one place.',
     tech: 'NEXT.JS / TYPESCRIPT / PYTHON / FASTAPI / OPENAI / SUPABASE',
     img: '/photos/ItsMemory.jpg',
-    video: '/photos/ItsMemory.mp4',
+    video: '/videos/ItsMemory.mp4',
     tall: true,
+    link: 'https://itsmemory.com',
   },
   {
     title: 'ViziVibes.com',
     description: 'Generates data-driven infographics',
+    fullDescription: 'Transform your data into stunning, shareable infographics with AI-powered design. Perfect for presentations, social media, and visual storytelling.',
     tech: 'REACT / NEXT.JS / TYPESCRIPT / PYTHON / FASTAPI / GEMINI / SUPABASE',
     img: '/photos/ViziVibes.jpg',
+    video: '/videos/ViziVibes_Video.mp4',
+    link: 'https://vizivibes.com',
   },
   {
     title: 'GoodLooks.me',
     description: 'Try on hair styles and colors',
+    fullDescription: 'GoodLooks is an AI-powered beauty consultation platform for clients and stylists. Upload a selfie to preview photorealistic hairstyles, experiment with infinite cuts and colors, and share detailed notes to compare before-and-after transformations.',
     tech: 'REACT / NEXT.JS / TYPESCRIPT / PYTHON / FASTAPI / GEMINI / SUPABASE',
     img: '/photos/GoodLooks.gif',
+    link: 'https://goodlooks.me',
+  },
+  {
+    title: 'Knolia',
+    description: 'Therapeutical AI Voice Companion for your personal use',
+    fullDescription: 'Creator of an AI-driven companion application (Knolia.org) designed to combat loneliness. A personal AI that learns over time, available 24/7 to listen without judgment. Focuses on social good through empathetic conversational AI.',
+    tech: 'NEXT.JS / TYPESCRIPT / PYTHON / FASTAPI / OPENAI / SUPABASE',
+    img: '/photos/Knolia.jpg',
+    link: 'https://knolia.org',
   },
   {
     title: 'XR Medical Visualization',
     description: 'Immersive multiplayer anatomy visualizations',
+    fullDescription: 'Advanced VR/AR medical training platform for anatomy visualization in immersive environments. Built with Unity and Oculus for collaborative medical education.',
     tech: 'UNITY / C# / OCULUS',
-    img: 'https://images.unsplash.com/photo-1535223289827-42f1e9919769?q=80&w=1000&auto=format&fit=crop',
+    img: '/photos/ARMed.jpeg',
+    video: '/videos/ARMed.mp4',
   },
   {
     title: 'Neural Net Viz',
     description: 'Interactive neural network visualizer',
+    fullDescription: 'Visualize and interact with neural networks in 3D. Built with Three.js to help developers and researchers understand complex AI architectures through interactive visualization.',
     tech: 'Three.JS / REACT / GEMINI',
     img: '/photos/NNViz.jpg',
-    video: '/photos/NN3D.mp4'
+    video: '/videos/NN3D.mp4'
+  },
+  {
+    title: 'Golf Club Builder',
+    description: 'Shopify-integrated iron set configurator',
+    fullDescription: 'Built for client Oriekhalkos, this app lets golfers design custom iron sets and purchase them. It retrieves all product data and images through Shopify\'s Storefront API, with checkout handled directly by Shopify.',
+    tech: 'SHOPIFY / REACT / TYPESCRIPT',
+    img: '/photos/golf_club_builder.png',
+  },
+  {
+    title: 'Assistance For Unity',
+    description: 'AI assistant integrated into the Unity Editor',
+    fullDescription: 'AI chat assistant for the Unity Editor. Provides in-editor help via natural language queries to streamline coding and design tasks, merging AI with developer workflows.',
+    tech: 'UNITY / C# / OPENAI',
+    img: '/photos/AssistanceForUnity.webp',
+    link: 'https://assetstore.unity.com/packages/tools/ai-ml-integration/assistance-293407',
+  },
+  {
+    title: 'One-Click Docs',
+    description: 'Generate documentation for your codebase with a single click',
+    fullDescription: 'Automatically generate comprehensive documentation for your Unity projects with a single click. Saves hours of manual work and keeps documentation up to date.',
+    tech: 'UNITY / C# / OPENAI',
+    img: '/photos/One_click_documentation.webp',
+    link: 'https://assetstore.unity.com/packages/tools/ai-ml-integration/one-click-documentation-291665',
+  },
+  {
+    title: 'One-Click Translations',
+    description: 'Translate your game UI with a single click',
+    fullDescription: 'Instantly translate your Unity game UI into multiple languages with a single click. Perfect for reaching global audiences without manual translation work.',
+    tech: 'UNITY / C# / OPENAI',
+    img: '/photos/One_click_translations.webp',
+    link: 'https://assetstore.unity.com/packages/tools/localization/one-click-translations-291308',
+  },
+  {
+    title: 'ImprovForms.com',
+    description: 'Translate your game UI with a single click',
+    fullDescription: 'ImprovForms is a platform for creating and sharing forms with AI. It allows you to create forms with AI-powered questions and answers, and share them with your friends and family.',
+    tech: 'NEXT.JS / TYPESCRIPT / PYTHON / FASTAPI / OPENAI / SUPABASE',
+    img: '/photos/ImprovForms.jpg',
+    link: 'https://improvforms.com',
   },
 ];
 
@@ -290,10 +354,23 @@ export const TemplateLandingPage: React.FC = () => {
   const contactRef = useRef<HTMLElement | null>(null);
   const [activeSection, setActiveSection] = useState<SectionKey>('hero');
   const [videoReady, setVideoReady] = useState<Record<string, boolean>>({});
+  const [selectedProject, setSelectedProject] = useState<PortfolioItem | null>(null);
 
   const handleVideoLoaded = useCallback((key: string) => {
     setVideoReady((prev) => ({ ...prev, [key]: true }));
   }, []);
+
+  // Prevent body scroll when modal is open
+  useEffect(() => {
+    if (selectedProject) {
+      document.body.style.overflow = 'hidden';
+    } else {
+      document.body.style.overflow = 'unset';
+    }
+    return () => {
+      document.body.style.overflow = 'unset';
+    };
+  }, [selectedProject]);
 
   const updateActiveByScroll = useCallback(() => {
     const centerY = window.innerHeight / 2;
@@ -586,7 +663,7 @@ export const TemplateLandingPage: React.FC = () => {
 
       {/* Hero */}
       <header id="hero" ref={heroRef} className="relative min-h-screen flex items-center justify-center overflow-hidden pt-24 z-1">
-        <div className="absolute inset-0 z-0 opacity-80 hero-bg">
+        <div className="absolute inset-0 z-0 opacity-40 hero-bg">
           <Image
             src="/photos/hero_background_transparent.png"
             alt="Circuit landscape background"
@@ -715,41 +792,20 @@ export const TemplateLandingPage: React.FC = () => {
         </div>
       </section>
 
-      {/* Process */}
-      <section id="process" ref={processRef} className="py-24 relative z-10">
-        <div className="max-w-7xl mx-auto px-6">
-          <div className="flex items-end justify-between mb-16 border-b border-white/10 pb-4">
-            <h3 className="text-4xl font-light text-white tracking-tight">The Methodology, Built Around You</h3>
-            <span className="text-cyan-500 font-mono text-xs">01 // PROCESS</span>
-          </div>
-          <div className="grid grid-cols-1 md:grid-cols-3 gap-8 relative">
-            <div className="hidden md:block absolute top-1/2 left-0 w-full h-px bg-gradient-to-r from-transparent via-cyan-500/30 to-transparent -translate-y-1/2 z-0" />
-            {processSteps.map((step, idx) => (
-              <div key={step.title} className="tilt-card group relative z-10 p-1">
-                <div className={`h-full p-8 rounded-xl relative overflow-hidden ${step.highlight ? 'glass-panel border-cyan-500/30 shadow-[0_0_15px_rgba(6,182,212,0.1)]' : 'glass-panel border border-white/10'}`}>
-                  <div className="absolute -right-4 -top-4 w-24 h-24 bg-cyan-500/10 rounded-full blur-2xl group-hover:bg-cyan-500/20 transition-all" />
-                  <div className={`mb-6 inline-flex items-center justify-center w-12 h-12 rounded-full border ${step.highlight ? 'border-cyan-500/30 text-cyan-400 shadow-[0_0_10px_rgba(6,182,212,0.4)]' : 'border-white/10 text-cyan-400'} bg-black/50 group-hover:scale-110 transition-transform duration-300`}>
-                    {step.icon}
-                  </div>
-                  <h4 className="text-xl font-medium text-white mb-2">{step.title}</h4>
-                  <p className="text-sm text-slate-400 leading-relaxed">{step.copy}</p>
-                </div>
-              </div>
-            ))}
-          </div>
-        </div>
-      </section>
-
       {/* Portfolio */}
       <section id="work" ref={workRef} className="py-20 relative z-10">
         <div className="max-w-7xl mx-auto px-6">
-          <div className="flex items-end justify-between mb-16 border-b border-white/10 pb-4">
+          <div className="flex items-end justify-between mb-16 pb-4">
             <h3 className="text-4xl font-light text-white tracking-tight">Selected Works</h3>
             <span className="text-cyan-500 font-mono text-xs">PORTFOLIO</span>
           </div>
           <div className="columns-1 md:columns-2 lg:columns-3 gap-8 space-y-8">
             {portfolio.map((item) => (
-              <div key={item.title} className="group break-inside-avoid relative rounded-xl overflow-hidden cursor-pointer">
+              <div 
+                key={item.title} 
+                className="group break-inside-avoid relative rounded-xl overflow-hidden cursor-pointer"
+                onClick={() => setSelectedProject(item)}
+              >
                 <div className="absolute inset-0 bg-cyan-500/0 group-hover:bg-cyan-500/10 transition-colors z-20 border-2 border-transparent group-hover:border-cyan-400/50 rounded-xl" />
                   <div className="relative w-full">
                     <img
@@ -796,18 +852,18 @@ export const TemplateLandingPage: React.FC = () => {
         <div className="max-w-7xl mx-auto px-6 grid grid-cols-1 lg:grid-cols-2 gap-16 items-center">
           <div>
             <div className="mb-6 flex flex-wrap items-center gap-6">
-              <div className="flex items-center gap-2">
+              {/* <div className="flex items-center gap-2">
                 <div className="flex text-yellow-400">
                   {Array.from({ length: 5 }).map((_, idx) => (
                     <Star key={idx} className="w-4 h-4 fill-yellow-400 text-yellow-400" />
                   ))}
                 </div>
                 <span className="text-xs uppercase tracking-[0.25em] text-slate-400">20+ Client Reviews</span>
-              </div>
+              </div> */}
               <div className="flex flex-wrap gap-3 text-[0.65rem] tracking-[0.2em] uppercase text-slate-400">
                 <div className="flex items-center gap-1 px-3 py-1 rounded-full border border-emerald-500/40 bg-emerald-500/5">
                   <ShieldCheck className="w-3 h-3 text-emerald-400" />
-                  <span>Trusted by Startups</span>
+                  <span>Trusted by Small Businesses</span>
                 </div>
                 <div className="flex items-center gap-1 px-3 py-1 rounded-full border border-cyan-500/40 bg-cyan-500/5">
                   <Sparkles className="w-3 h-3 text-cyan-400" />
@@ -818,23 +874,24 @@ export const TemplateLandingPage: React.FC = () => {
             <h3 className="text-6xl md:text-7xl font-semibold text-white tracking-tight mb-6 leading-none">
               LET&apos;S BUILD
               <br />
-              <span className="text-transparent bg-clip-text bg-gradient-to-r from-cyan-300 to-cyan-600 animate-pulse">REVENUE</span>
+              
+              <span className="bg-cyan-500 text-black px-1 inline-block animate-pulse">REVENUE</span>
             </h3>
             <p className="text-slate-400 mb-10 max-w-md font-light text-lg">
-              Available for websites, product launches, and ongoing retainers. Clear pricing, weekly check-ins, and zero jargon—so you always know what&apos;s done and what&apos;s next.
+              Available for websites, web applications, AI Integrations, automations, product launches, and ongoing retainers.
             </p>
             <div className="flex flex-col gap-4">
-              <a href="mailto:hello@example.com" className="group flex items-center gap-4 text-xl text-white hover:text-cyan-400 transition-colors">
+              <a href="mailto:YourIndie101@gmail.com" className="group flex items-center gap-4 text-xl text-white hover:text-cyan-400 transition-colors">
                 <div className="p-3 border border-white/10 rounded-full group-hover:border-cyan-400 transition-colors">
                   <Mail className="w-5 h-5" />
                 </div>
-                <span className="font-light tracking-wide">hello@example.com</span>
+                <span className="font-light tracking-wide">yourindie101@gmail.com</span>
               </a>
               <div className="group flex items-center gap-4 text-xl text-white">
                 <div className="p-3 border border-white/10 rounded-full group-hover:border-cyan-400 transition-colors">
                   <MapPin className="w-5 h-5" />
                 </div>
-                <span className="font-light tracking-wide">Based in NYC — available remotely</span>
+                <span className="font-light tracking-wide">Based in Hawai'i — available remotely</span>
               </div>
             </div>
           </div>
@@ -842,20 +899,11 @@ export const TemplateLandingPage: React.FC = () => {
           {/* Form */}
           <div className="relative perspective-normal">
             <div className="glass-panel p-8 md:p-10 rounded-2xl border border-cyan-500/20 shadow-[0_0_30px_rgba(6,182,212,0.1)]">
-              <h4 className="text-2xl font-light text-white mb-6 tracking-tight">Booking Inquiry</h4>
+              {/* <h4 className="text-2xl font-light text-white mb-6 tracking-tight">Booking Inquiry</h4> */}
               <form className="space-y-6">
                 <div className="flex items-center justify-between gap-4">
                   <div className="flex items-center gap-2 text-xs text-slate-400">
-                    <div className="flex text-yellow-400">
-                      {Array.from({ length: 5 }).map((_, idx) => (
-                        <Star key={idx} className="w-3 h-3 fill-yellow-400 text-yellow-400" />
-                      ))}
-                    </div>
-                    <span className="uppercase tracking-[0.25em]">Avg. rating from recent builds</span>
-                  </div>
-                  <div className="hidden md:flex items-center gap-1 text-[0.65rem] uppercase tracking-[0.2em] text-emerald-400">
-                    <Sparkles className="w-3 h-3" />
-                    <span>Most projects launch in 4–8 weeks</span>
+                    <span className="uppercase tracking-[0.25em]">Let's Connect</span>
                   </div>
                 </div>
                 <div className="space-y-1">
@@ -896,6 +944,92 @@ export const TemplateLandingPage: React.FC = () => {
           </div>
         </div>
       </footer>
+
+      {/* Project Modal */}
+      {selectedProject && (
+        <div 
+          className="fixed inset-0 z-50 flex items-center justify-center p-4 animate-fadeIn"
+          onClick={() => setSelectedProject(null)}
+        >
+          {/* Backdrop */}
+          <div className="absolute inset-0 bg-black/80 backdrop-blur-md" />
+          
+          {/* Modal Content */}
+          <div 
+            className="relative z-10 w-full max-w-4xl max-h-[90vh] overflow-y-auto bg-gradient-to-br from-slate-900/95 via-slate-900/90 to-black/95 backdrop-blur-xl border border-cyan-500/30 rounded-2xl shadow-[0_20px_80px_rgba(6,182,212,0.3)] animate-scaleIn"
+            onClick={(e) => e.stopPropagation()}
+          >
+            {/* Close Button */}
+            <button
+              onClick={() => setSelectedProject(null)}
+              className="absolute top-4 right-4 z-20 p-2 rounded-full bg-black/50 hover:bg-black/80 border border-white/10 hover:border-cyan-500/50 transition-all group"
+              aria-label="Close modal"
+            >
+              <X className="w-6 h-6 text-white group-hover:text-white transition-colors" />
+            </button>
+
+            {/* Project Image/Video */}
+            <div className="relative w-full h-64 md:h-96 overflow-hidden rounded-t-2xl">
+              {selectedProject.video ? (
+                <video
+                  className="w-full h-full object-cover"
+                  src={selectedProject.video}
+                  poster={selectedProject.img}
+                  autoPlay
+                  loop
+                  muted
+                  playsInline
+                />
+              ) : (
+                <img
+                  src={selectedProject.img}
+                  alt={selectedProject.title}
+                  className="w-full h-full object-cover"
+                />
+              )}
+              <div className="absolute inset-0 bg-gradient-to-t from-slate-900 via-transparent to-transparent" />
+            </div>
+
+            {/* Project Details */}
+            <div className="p-8 md:p-10 space-y-6">
+              <div>
+                <h2 className="text-3xl md:text-4xl font-semibold text-white mb-2 tracking-tight">
+                  {selectedProject.title}
+                </h2>
+                <p className="text-cyan-400 font-mono text-xs md:text-sm uppercase tracking-widest">
+                  {selectedProject.tech}
+                </p>
+              </div>
+
+              <div className="space-y-4">
+                <p className="text-lg text-slate-300 leading-relaxed">
+                  {selectedProject.description}
+                </p>
+                {selectedProject.fullDescription && (
+                  <p className="text-base text-slate-400 leading-relaxed border-l-2 border-cyan-500 pl-6 bg-black/30 backdrop-blur-md p-4 rounded-r-lg">
+                    {selectedProject.fullDescription}
+                  </p>
+                )}
+              </div>
+
+              {/* Visit Project Button */}
+              {selectedProject.link && (
+                <div className="pt-4">
+                  <a
+                    href={selectedProject.link}
+                    target="_blank"
+                    rel="noopener noreferrer"
+                    className="inline-flex items-center gap-3 px-8 py-4 bg-cyan-600 hover:bg-cyan-500 text-white rounded-lg font-medium tracking-wide uppercase transition-all shadow-[0_0_20px_rgba(6,182,212,0.3)] hover:shadow-[0_0_30px_rgba(6,182,212,0.5)] group"
+                  >
+                    <span>Visit Project</span>
+                    <ExternalLink className="w-5 h-5 group-hover:translate-x-1 group-hover:-translate-y-1 transition-transform" />
+                  </a>
+                </div>
+              )}
+            </div>
+          </div>
+        </div>
+      )}
     </div>
   );
 };
