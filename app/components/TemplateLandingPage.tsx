@@ -40,7 +40,7 @@ type SectionKey = 'hero' | 'process' | 'work' | 'contact';
 
 const sectionIds: Record<SectionKey, string> = {
   hero: 'hero',
-  process: 'process',
+  process: 'build',
   work: 'work',
   contact: 'contact',
 };
@@ -51,8 +51,8 @@ const sectionInfo: Record<SectionKey, { label: string; detail: string }> = {
     detail: 'High-level positioning and credibility for Dane Willacker.',
   },
   process: {
-    label: 'Process',
-    detail: 'Three-step delivery framework tailored to founder timelines.',
+    label: 'Custom Build',
+    detail: 'Bespoke web applications tailored to your specific needs and workflows.',
   },
   work: {
     label: 'Portfolio',
@@ -395,8 +395,13 @@ export const TemplateLandingPage: React.FC = () => {
   const [isSubmitting, setIsSubmitting] = useState(false);
   const [submitStatus, setSubmitStatus] = useState<'idle' | 'success' | 'error'>('idle');
 
-  const handleVideoLoaded = useCallback((key: string) => {
+  const handleVideoLoaded = useCallback((key: string, videoElement: HTMLVideoElement) => {
     setVideoReady((prev) => ({ ...prev, [key]: true }));
+    // Ensure video plays when it becomes ready
+    videoElement.play().catch((error) => {
+      // Autoplay might be blocked by browser, but video will play when visible
+      console.debug('Video autoplay prevented:', error);
+    });
   }, []);
 
   const formatQuestionAnswers = useCallback(() => {
@@ -1154,14 +1159,14 @@ ${formData.name}`;
             <a
               href="#work"
               onClick={(event) => handleNavClick(event, 'work')}
-              className={`hover:text-cyan-400 transition-colors ${activeSection === 'work' ? 'text-cyan-400' : ''}`}
+              className={`hover:text-cyan-400 hover:scale-150 transition-all duration-300 ease-in-out ${activeSection === 'work' ? 'text-cyan-400' : ''}`}
             >
               Work
             </a>
             <a
               href="#contact"
               onClick={(event) => handleNavClick(event, 'contact')}
-              className={`hover:text-cyan-400 transition-colors ${activeSection === 'contact' ? 'text-cyan-400' : ''}`}
+              className={`hover:text-cyan-400 hover:scale-150 transition-all duration-300 ease-in-out ${activeSection === 'contact' ? 'text-cyan-400' : ''}`}
             >
               Contact
             </a>
@@ -1270,7 +1275,7 @@ ${formData.name}`;
       </header>
 
       {/* Build custom software staggered cards */}
-      <section className="build-section relative z-10 mb-24 -mt-48">
+      <section id="build" ref={processRef} className="build-section relative z-10 mb-24 -mt-48">
         <div className="max-w-7xl mx-auto px-6 py-16 space-y-32">
           {buildSlides.map((slide, idx) => {
             const isEven = idx % 2 === 0;
@@ -1284,14 +1289,13 @@ ${formData.name}`;
                 {/* Card with glassmorphic effect */}
                 <div className={`relative ${isEven ? 'lg:order-1' : 'lg:order-2'}`}>
                   <div className="group relative overflow-hidden rounded-3xl shadow-[0_20px_60px_rgba(0,0,0,0.6)] build-image border border-white/10 bg-gradient-to-br from-black/40 via-black/30 to-black/40 backdrop-blur-xl">
-                    <Image
+                    <img
                       src={slide.img}
                       alt={slide.title}
                       width={1600}
                       height={900}
                       className="object-cover w-full h-[400px] grayscale transition duration-700 ease-out transform group-hover:grayscale-0 group-hover:scale-105 opacity-80"
                       sizes="(min-width: 1024px) 50vw, 90vw"
-                      priority={idx === 0}
                     />
                     <div className="absolute inset-0 bg-gradient-to-t from-black/60 via-transparent to-transparent" />
                   </div>
@@ -1361,18 +1365,16 @@ ${formData.name}`;
                         <ProductHuntBadge url={item.productHuntUrl} />
                       </div>
                     )}
-                    <Image
+                    <img
                       src={item.img}
                       alt={item.title}
-                      width={1600}
-                      height={1200}
-                      className={`w-full h-auto object-contain transform transition-transform duration-700 grayscale ${
+                      className={`w-full ${item.tall ? 'h-[500px]' : 'h-auto'} object-cover transform transition-transform duration-700 grayscale ${
                         videoReady[item.title] ? 'opacity-0 scale-100' : 'opacity-100 group-hover:scale-105 group-hover:grayscale-0'
                       }`}
                     />
                     {item.video && (
                       <video
-                        className={`absolute top-0 left-0 w-full h-auto object-contain transition-opacity duration-500 ${
+                        className={`absolute inset-0 w-full ${item.tall ? 'h-[500px]' : 'h-auto'} object-cover transition-opacity duration-500 ${
                           videoReady[item.title] ? 'opacity-100' : 'opacity-0 pointer-events-none'
                         }`}
                         src={item.video}
@@ -1381,7 +1383,11 @@ ${formData.name}`;
                         muted
                         loop
                         autoPlay
-                        onLoadedData={() => handleVideoLoaded(item.title)}
+                        preload="metadata"
+                        onCanPlayThrough={(e) => {
+                          const video = e.currentTarget;
+                          handleVideoLoaded(item.title, video);
+                        }}
                       />
                     )}
                   </div>
@@ -1664,11 +1670,10 @@ ${formData.name}`;
                   playsInline
                 />
               ) : (
-                <Image
+                <img
                   src={selectedProject.img}
                   alt={selectedProject.title}
-                  fill
-                  className="object-cover"
+                  className="w-full h-full object-cover"
                 />
               )}
               <div className="absolute inset-0 bg-gradient-to-t from-slate-900 via-transparent to-transparent" />
