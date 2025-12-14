@@ -1103,7 +1103,7 @@ export const TemplateLandingPage: React.FC = () => {
     <div ref={rootRef} className="antialiased text-slate-300 selection:bg-cyan-500 selection:text-black relative bg-[#030303]">
       {/* Overlays */}
       <div className="fixed inset-0 scanlines pointer-events-none h-screen w-screen z-20" />
-      <div className="fixed inset-0 dot-grid-tight pointer-events-none h-screen w-screen z-0 opacity-90" />
+      <div className="fixed inset-0 dot-grid-tight pointer-events-none h-screen w-screen z-0 opacity-50" />
       <CursorRadialTint />
       <div className="fixed inset-0 z-[-2] overflow-hidden pointer-events-none">
         <div className="absolute w-full h-full bg-void opacity-60" />
