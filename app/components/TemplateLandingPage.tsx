@@ -28,6 +28,7 @@ import {
   Triangle,
   X,
   ExternalLink,
+  Github,
 } from 'lucide-react';
 
 type SectionKey = 'hero' | 'process' | 'work' | 'contact';
@@ -70,6 +71,7 @@ const marqueeItems = [
   { icon: <Server className="w-5 h-5 text-cyan-400" />, label: 'Anthropic' },
   { icon: <Cloud className="w-5 h-5 text-cyan-400" />, label: 'Gemini' },
   { icon: <Layers className="w-5 h-5 text-cyan-400" />, label: 'Cursor' },
+  { icon: <Github className="w-5 h-5 text-cyan-400" />, label: 'GitHub' },
   { icon: <Cpu className="w-5 h-5 text-cyan-400" />, label: 'Unity' },
   { icon: <Triangle className="w-5 h-5 text-cyan-400" />, label: 'Vercel' },
   { icon: <ShieldCheck className="w-5 h-5 text-cyan-400" />, label: 'Render' },
@@ -140,6 +142,23 @@ const processSteps = [
 
 const portfolio: PortfolioItem[] = [
   {
+    title: 'ViziVibes.com',
+    description: 'Generates data-driven infographics',
+    fullDescription: 'Transform your data into stunning, shareable infographics with AI-powered design. Perfect for presentations, social media, and visual storytelling.',
+    tech: 'REACT / NEXT.JS / TYPESCRIPT / PYTHON / FASTAPI / GEMINI / SUPABASE',
+    img: '/photos/ViziVibes.jpg',
+    video: '/videos/ViziVibes_Video.mp4',
+    link: 'https://vizivibes.com',
+  },
+  {
+    title: 'GoodLooks.me',
+    description: 'Try on hair styles and colors',
+    fullDescription: 'GoodLooks is an AI-powered beauty consultation platform for clients and stylists. Upload a selfie to preview photorealistic hairstyles, experiment with infinite cuts and colors, and share detailed notes to compare before-and-after transformations.',
+    tech: 'REACT / NEXT.JS / TYPESCRIPT / PYTHON / FASTAPI / GEMINI / SUPABASE',
+    img: '/photos/GoodLooks.gif',
+    link: 'https://goodlooks.me',
+  },
+  {
     title: 'JustBuildNow.com',
     description: 'Build in public AI agent automaton',
     fullDescription: 'JustBuildNow makes building in public effortless for creators. Sign up with GitHub to launch a public profile automatically, share project updates, and collaborate transparently with a progress-focused dashboard.',
@@ -157,23 +176,6 @@ const portfolio: PortfolioItem[] = [
     video: '/videos/ItsMemory.mp4',
     tall: true,
     link: 'https://itsmemory.com',
-  },
-  {
-    title: 'ViziVibes.com',
-    description: 'Generates data-driven infographics',
-    fullDescription: 'Transform your data into stunning, shareable infographics with AI-powered design. Perfect for presentations, social media, and visual storytelling.',
-    tech: 'REACT / NEXT.JS / TYPESCRIPT / PYTHON / FASTAPI / GEMINI / SUPABASE',
-    img: '/photos/ViziVibes.jpg',
-    video: '/videos/ViziVibes_Video.mp4',
-    link: 'https://vizivibes.com',
-  },
-  {
-    title: 'GoodLooks.me',
-    description: 'Try on hair styles and colors',
-    fullDescription: 'GoodLooks is an AI-powered beauty consultation platform for clients and stylists. Upload a selfie to preview photorealistic hairstyles, experiment with infinite cuts and colors, and share detailed notes to compare before-and-after transformations.',
-    tech: 'REACT / NEXT.JS / TYPESCRIPT / PYTHON / FASTAPI / GEMINI / SUPABASE',
-    img: '/photos/GoodLooks.gif',
-    link: 'https://goodlooks.me',
   },
   {
     title: 'Knolia',
@@ -612,16 +614,9 @@ export const TemplateLandingPage: React.FC = () => {
       <nav className="fixed top-0 w-full z-40 border-b border-white/5 bg-black/60 backdrop-blur-md">
         <div className="max-w-7xl mx-auto px-6 py-4 flex justify-between items-center">
           <a className="tracking-widest text-lg text-white hover:text-cyan-400 transition-colors flex items-center gap-1">
-            JW <span className="text-cyan-500 text-xs align-top">HI</span>
+            Danejw <span className="text-cyan-500 text-xs align-top">HI</span>
           </a>
           <div className="hidden md:flex gap-8 text-xs font-medium tracking-widest uppercase text-slate-300">
-            <a
-              href="#process"
-              onClick={(event) => handleNavClick(event, 'process')}
-              className={`hover:text-cyan-400 transition-colors ${activeSection === 'process' ? 'text-cyan-400' : ''}`}
-            >
-              Process
-            </a>
             <a
               href="#work"
               onClick={(event) => handleNavClick(event, 'work')}
@@ -653,7 +648,7 @@ export const TemplateLandingPage: React.FC = () => {
               onClick={(event) => handleNavClick(event, key)}
               className={`h-2.5 w-2.5 rounded-full transition-all duration-200 ${
                 activeSection === key
-                  ? 'bg-white border-white shadow-[0_0_12px_rgba(255,255,255,0.35)] scale-110'
+                  ? 'bg-cyan-400 border-white shadow-[0_0_12px_rgba(255,255,255,0.35)] scale-110'
                   : 'bg-white/10 border-white/20 hover:bg-white/30'
               }`}
             />
@@ -687,7 +682,7 @@ export const TemplateLandingPage: React.FC = () => {
           <div className="flex flex-col items-center lg:items-start space-y-8">
             {/* Image - Always on top, centered on mobile, left-aligned on desktop */}
             <div className="flex justify-center lg:justify-start w-full">
-              <div className="relative w-32 h-32 sm:w-40 sm:h-40 md:w-48 md:h-48 lg:w-56 lg:h-56 xl:w-64 xl:h-64 rounded-full overflow-hidden shadow-[0_10px_30px_rgba(6,182,212,0.35)] flex-shrink-0">
+              <div className="relative w-32 h-32 sm:w-40 sm:h-40 md:w-48 md:h-48 lg:w-56 lg:h-56 xl:w-64 xl:h-64 rounded-full overflow-hidden shadow-[0_10px_30px_rgba(6,182,212,0.35)] flex-shrink-0 animate-headshot">
                 <Image
                   src="/photos/headshot_cut.png"
                   alt="Julius Willacker headshot"
@@ -703,23 +698,12 @@ export const TemplateLandingPage: React.FC = () => {
             <div className="space-y-6 w-full text-center lg:text-left">
               <p className="hero-line text-cyan-400 tracking-[0.2em] text-xs uppercase">Architecting Digital Experiences</p>
               <h1 className="text-4xl sm:text-5xl md:text-6xl lg:text-7xl xl:text-8xl font-semibold text-white tracking-tight leading-[0.9]">
-                <span className="hero-line block">JULIUS</span>
+                <span className="hero-line block">DANE</span>
                 <span className="hero-line block bg-cyan-500 text-black px-2 inline-block mt-2">WILLACKER</span>
               </h1>
               <p className="hero-subcopy text-base sm:text-lg md:text-xl text-slate-400 max-w-2xl mx-auto lg:mx-0 font-light tracking-wide border-l-2 border-cyan-500 pl-6 bg-black/50 backdrop-blur-md p-4">
                 Full-stack partner for founders, small business owners, and teams who need modern, fast solutions that are easy to manage, automate tasks, and save time.
               </p>
-              <div className="mt-8 flex items-center justify-center lg:justify-start gap-4 text-slate-300">
-                <div className="hero-icon-chip p-2 border border-white/10 rounded bg-black/50 backdrop-blur hover:border-cyan-500/50 transition-colors">
-                  <Code2 className="w-5 h-5 text-cyan-400" />
-                </div>
-                <div className="hero-icon-chip p-2 border border-white/10 rounded bg-black/50 backdrop-blur hover:border-cyan-500/50 transition-colors">
-                  <Server className="w-5 h-5 text-cyan-400" />
-                </div>
-                <div className="hero-icon-chip p-2 border border-white/10 rounded bg-black/50 backdrop-blur hover:border-cyan-500/50 transition-colors">
-                  <Layers className="w-5 h-5 text-cyan-400" />
-                </div>
-              </div>
             </div>
           </div>
         </div>
@@ -796,14 +780,14 @@ export const TemplateLandingPage: React.FC = () => {
       <section id="work" ref={workRef} className="py-20 relative z-10">
         <div className="max-w-7xl mx-auto px-6">
           <div className="flex items-end justify-between mb-16 pb-4">
-            <h3 className="text-4xl font-light text-white tracking-tight">Selected Works</h3>
+            <h3 className="text-4xl md:text-5xl lg:text-6xl font-semibold text-white leading-tight">The Work</h3>
             <span className="text-cyan-500 font-mono text-xs">PORTFOLIO</span>
           </div>
           <div className="columns-1 md:columns-2 lg:columns-3 gap-8 space-y-8">
             {portfolio.map((item) => (
               <div 
                 key={item.title} 
-                className="group break-inside-avoid relative rounded-xl overflow-hidden cursor-pointer"
+                className="portfolio-item group break-inside-avoid relative rounded-xl overflow-hidden cursor-pointer"
                 onClick={() => setSelectedProject(item)}
               >
                 <div className="absolute inset-0 bg-cyan-500/0 group-hover:bg-cyan-500/10 transition-colors z-20 border-2 border-transparent group-hover:border-cyan-400/50 rounded-xl" />
@@ -928,11 +912,11 @@ export const TemplateLandingPage: React.FC = () => {
       </section>
 
       {/* Footer */}
-      <footer className="border-t border-white/5 bg-black pt-16 pb-8 relative z-20">
+      <footer className="border-t border-white/5 bg-black pt-4 pb-4 relative z-20">
         <div className="max-w-7xl mx-auto px-6 flex flex-col md:flex-row justify-between items-center gap-8">
           <div className="text-center md:text-left">
-            <h5 className="tracking-widest text-2xl text-white mb-2">JULIUS WILLACKER</h5>
-            <p className="text-slate-600 text-xs tracking-widest uppercase">© 2024. All Rights Reserved.</p>
+            <h5 className="tracking-widest text-2xl text-white mb-2">DANE WILLACKER</h5>
+            <p className="text-slate-600 text-xs tracking-widest uppercase">© 2025. All Rights Reserved.</p>
           </div>
           <div className="flex gap-6">
             {[<LayoutTemplate key="gh" />, <Box key="li" />, <Cpu key="tw" />].map((Icon, idx) => (
@@ -952,11 +936,11 @@ export const TemplateLandingPage: React.FC = () => {
           onClick={() => setSelectedProject(null)}
         >
           {/* Backdrop */}
-          <div className="absolute inset-0 bg-black/80 backdrop-blur-md" />
+          <div className="absolute inset-0 bg-black/80 backdrop-blur-xl" />
           
           {/* Modal Content */}
           <div 
-            className="relative z-10 w-full max-w-4xl max-h-[90vh] overflow-y-auto bg-gradient-to-br from-slate-900/95 via-slate-900/90 to-black/95 backdrop-blur-xl border border-cyan-500/30 rounded-2xl shadow-[0_20px_80px_rgba(6,182,212,0.3)] animate-scaleIn"
+            className="relative z-10 w-full max-w-4xl max-h-[90vh] overflow-y-auto bg-gradient-to-br from-slate-900/95 via-slate-900/90 to-black/95 backdrop-blur-xl border border-cyan-400/30 rounded-2xl shadow-[0_20px_80px_rgba(6,182,212,0.3)] animate-scaleIn"
             onClick={(e) => e.stopPropagation()}
           >
             {/* Close Button */}
@@ -1019,7 +1003,7 @@ export const TemplateLandingPage: React.FC = () => {
                     href={selectedProject.link}
                     target="_blank"
                     rel="noopener noreferrer"
-                    className="inline-flex items-center gap-3 px-8 py-4 bg-cyan-600 hover:bg-cyan-500 text-white rounded-lg font-medium tracking-wide uppercase transition-all shadow-[0_0_20px_rgba(6,182,212,0.3)] hover:shadow-[0_0_30px_rgba(6,182,212,0.5)] group"
+                    className="inline-flex items-center gap-3 px-8 py-4 bg-cyan-400/70 hover:bg-cyan-500 text-white rounded-lg font-medium tracking-wide uppercase transition-all shadow-[0_0_20px_rgba(6,182,212,0.3)] hover:shadow-[0_0_30px_rgba(6,182,212,0.5)] group"
                   >
                     <span>Visit Project</span>
                     <ExternalLink className="w-5 h-5 group-hover:translate-x-1 group-hover:-translate-y-1 transition-transform" />

@@ -200,6 +200,18 @@
     animation: float-soft 6s ease-in-out infinite;
   }
 
+  @keyframes headshot-float {
+    0%, 100% { 
+      transform: translateY(0px) scale(1);
+    }
+    50% { 
+      transform: translateY(-8px) scale(1.02);
+    }
+  }
+  .animate-headshot {
+    animation: headshot-float 4s ease-in-out infinite;
+  }
+
   @keyframes marquee {
     0% { transform: translateX(0); }
     100% { transform: translateX(-50%); }
