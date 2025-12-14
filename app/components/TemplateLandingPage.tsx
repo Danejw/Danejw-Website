@@ -117,6 +117,8 @@ type PortfolioItem = {
   video?: string;
   tall?: boolean;
   link?: string;
+  productHunt?: boolean;
+  productHuntUrl?: string;
 };
 
 const processSteps = [
@@ -149,6 +151,8 @@ const portfolio: PortfolioItem[] = [
     img: '/photos/ViziVibes.jpg',
     video: '/videos/ViziVibes_Video.mp4',
     link: 'https://vizivibes.com',
+    productHunt: true,
+    productHuntUrl: 'https://www.producthunt.com/posts/vizivibes',
   },
   {
     title: 'GoodLooks.me',
@@ -157,6 +161,8 @@ const portfolio: PortfolioItem[] = [
     tech: 'REACT / NEXT.JS / TYPESCRIPT / PYTHON / FASTAPI / GEMINI / SUPABASE',
     img: '/photos/GoodLooks.gif',
     link: 'https://goodlooks.me',
+    productHunt: true,
+    productHuntUrl: 'https://www.producthunt.com/posts/goodlooks',
   },
   {
     title: 'JustBuildNow.com',
@@ -345,6 +351,39 @@ const CursorRadialTint: React.FC = () => {
       ))}
     </div>
   );
+};
+
+/**
+ * Product Hunt badge component - displays the iconic Product Hunt badge
+ */
+const ProductHuntBadge: React.FC<{ className?: string; url?: string }> = ({ className = '', url }) => {
+  const badgeContent = (
+    <div className={`inline-flex items-center justify-center shadow-lg hover:shadow-xl transition-all hover:scale-105 cursor-pointer ${className}`}>
+      <Image
+        src="/photos/product-hunt-logo-orange-240.png"
+        alt="Product Hunt"
+        width={40}
+        height={40}
+        className="w-10 h-10 rounded-lg"
+      />
+    </div>
+  );
+
+  if (url) {
+    return (
+      <a
+        href={url}
+        target="_blank"
+        rel="noopener noreferrer"
+        onClick={(e) => e.stopPropagation()}
+        className="inline-block"
+      >
+        {badgeContent}
+      </a>
+    );
+  }
+
+  return badgeContent;
 };
 
 export const TemplateLandingPage: React.FC = () => {
@@ -964,7 +1003,7 @@ export const TemplateLandingPage: React.FC = () => {
       <section id="work" ref={workRef} className="py-20 relative z-10">
         <div className="max-w-7xl mx-auto px-6">
           <div className="flex items-end justify-between mb-16 pb-4">
-            <h3 className="text-4xl md:text-5xl lg:text-6xl font-semibold text-white leading-tight">The Work</h3>
+            <h3 className="text-4xl md:text-5xl lg:text-6xl font-semibold text-white leading-tight">The <span className="bg-cyan-500 text-black px-1 inline-block">Work</span></h3>
             <span className="text-cyan-500 font-mono text-xs">PORTFOLIO</span>
           </div>
           <div className="columns-1 md:columns-2 lg:columns-3 gap-8 space-y-8">
@@ -976,6 +1015,11 @@ export const TemplateLandingPage: React.FC = () => {
               >
                 <div className="absolute inset-0 bg-cyan-500/0 group-hover:bg-cyan-500/10 transition-colors z-20 border-2 border-transparent group-hover:border-cyan-400/50 rounded-xl" />
                   <div className="portfolio-media relative w-full overflow-hidden">
+                    {item.productHunt && (
+                      <div className="absolute top-3 right-3 z-40 grayscale group-hover:grayscale-0 transition-all duration-700">
+                        <ProductHuntBadge url={item.productHuntUrl} />
+                      </div>
+                    )}
                     <img
                       src={item.img}
                       alt={item.title}
@@ -1138,6 +1182,11 @@ export const TemplateLandingPage: React.FC = () => {
 
             {/* Project Image/Video */}
             <div className="relative w-full h-64 md:h-96 overflow-hidden rounded-t-2xl">
+              {selectedProject.productHunt && (
+                <div className="absolute top-4 right-4 z-20">
+                  <ProductHuntBadge url={selectedProject.productHuntUrl} />
+                </div>
+              )}
               {selectedProject.video ? (
                 <video
                   className="w-full h-full object-cover"
@@ -1189,7 +1238,7 @@ export const TemplateLandingPage: React.FC = () => {
                     rel="noopener noreferrer"
                     className="inline-flex items-center gap-3 px-8 py-4 bg-cyan-400/70 hover:bg-cyan-500 text-white rounded-lg font-medium tracking-wide uppercase transition-all shadow-[0_0_20px_rgba(6,182,212,0.3)] hover:shadow-[0_0_30px_rgba(6,182,212,0.5)] group"
                   >
-                    <span>Visit Project</span>
+                    <span>Visit</span>
                     <ExternalLink className="w-5 h-5 group-hover:translate-x-1 group-hover:-translate-y-1 transition-transform" />
                   </a>
                 </div>
