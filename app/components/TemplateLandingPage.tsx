@@ -19,7 +19,6 @@ import {
   ShieldCheck,
   BrainCircuit,
   Hammer,
-  Rocket,
   ArrowUpRight,
   Mail,
   MapPin,
@@ -1122,7 +1121,11 @@ ${formData.name}`;
     const target = document.getElementById(sectionIds[key]);
 
     if (target) {
-      lenisRef.current?.scrollTo(target, { offset: -64 }) ?? target.scrollIntoView({ behavior: 'smooth' });
+      if (lenisRef.current) {
+        lenisRef.current.scrollTo(target, { offset: -64 });
+      } else {
+        target.scrollIntoView({ behavior: 'smooth' });
+      }
       setActiveSection(key);
     }
   };
@@ -1358,7 +1361,7 @@ ${formData.name}`;
                         <ProductHuntBadge url={item.productHuntUrl} />
                       </div>
                     )}
-                    <img
+                    <Image
                       src={item.img}
                       alt={item.title}
                       className={`w-full ${item.tall ? 'h-[500px]' : 'h-auto'} object-cover transform transition-transform duration-700 grayscale ${
@@ -1659,7 +1662,7 @@ ${formData.name}`;
                   playsInline
                 />
               ) : (
-                <img
+                <Image
                   src={selectedProject.img}
                   alt={selectedProject.title}
                   className="w-full h-full object-cover"

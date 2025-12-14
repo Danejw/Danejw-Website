@@ -5,8 +5,7 @@ import { ThemeProvider } from "@/app/components/ThemeProvider";
 import { cn } from '@/lib/utils';
 import { ThemeAwareCircuitBackground } from '@/app/components/ThemeAwareCircuitBackground';
 import { DottedGridBackground } from '@/app/components/DottedGridBackground';
-import { Header } from '@/app/components/Header';
-import { Footer } from '@/app/components/Footer';
+
 
 const geistSans = Geist({
   variable: "--font-geist-sans",
