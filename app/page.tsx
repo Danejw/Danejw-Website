@@ -1,9 +1,9 @@
-import PersonalLandingPage from "@/app/components/PersonalLandingPage";
+import { TemplateLandingPage } from "@/app/components/TemplateLandingPage";
 
 export default function Home() {
   return (
     <main className="font-[family-name:var(--font-geist-sans)]">
-      <PersonalLandingPage />
+      <TemplateLandingPage />
     </main>
   );
 }

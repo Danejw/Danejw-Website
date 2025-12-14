@@ -31,6 +31,7 @@ import {
 } from 'lucide-react';
 import { SocialIcons } from './SocialIcons';
 import { InputArea } from './InputArea';
+import { CustomCursor } from './CustomCursor';
 
 type SectionKey = 'hero' | 'process' | 'work' | 'contact';
 
@@ -1105,6 +1106,7 @@ export const TemplateLandingPage: React.FC = () => {
       <div className="fixed inset-0 scanlines pointer-events-none h-screen w-screen z-20" />
       <div className="fixed inset-0 dot-grid-tight pointer-events-none h-screen w-screen z-0 opacity-50" />
       <CursorRadialTint />
+      <CustomCursor />
       <div className="fixed inset-0 z-[-2] overflow-hidden pointer-events-none">
         <div className="absolute w-full h-full bg-void opacity-60" />
         <div className="absolute inset-0 bg-[radial-gradient(circle_at_30%_30%,rgba(6,182,212,0.08),transparent_40%)] opacity-25" />

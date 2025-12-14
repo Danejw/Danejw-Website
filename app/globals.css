@@ -282,4 +282,14 @@
   .rotate-x--5 { transform: rotateX(-5deg); }
   .rotate-y-5 { transform: rotateY(5deg); }
   .rotate-y--5 { transform: rotateY(-5deg); }
+
+  /* Hide default cursor for custom cursor */
+  * {
+    cursor: none !important;
+  }
+  
+  /* Ensure interactive elements also hide cursor */
+  a, button, input, textarea, select, [role="button"], .cursor-pointer {
+    cursor: none !important;
+  }
 }
