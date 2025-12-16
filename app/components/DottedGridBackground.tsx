@@ -1,7 +1,7 @@
 // Reusable dotted grid overlay with SVG pattern, kept lightweight for perf.
 'use client'
 
-import React, { useState, useRef, useCallback } from 'react';
+import React, { useState, useRef, useCallback, useMemo } from 'react';
 import clsx from 'clsx';
 
 const dotPattern = encodeURIComponent(
@@ -17,76 +17,59 @@ type Props = {
   distortionRadius?: number; // Controls the radius of the distortion effect in pixels
 };
 
-export const DottedGridBackground: React.FC<Props> = ({ 
-  className, 
+export const DottedGridBackground: React.FC<Props> = ({
+  className,
   opacity = 1,
   distortionIntensity = 25, // Increased default for more noticeable effect
   distortionRadius = 200 // Increased default radius
 }) => {
   const [mousePosition, setMousePosition] = useState<{ x: number; y: number } | null>(null);
+  const [distortionStyle, setDistortionStyle] = useState<React.CSSProperties>({});
   const containerRef = useRef<HTMLDivElement>(null);
 
-  const handleMouseMove = useCallback((e: React.MouseEvent<HTMLDivElement>) => {
-    if (containerRef.current) {
-      const rect = containerRef.current.getBoundingClientRect();
-      setMousePosition({
-        x: e.clientX - rect.left,
-        y: e.clientY - rect.top,
-      });
-    }
-  }, []);
+  const calculateDistortion = useCallback(
+    (rect: DOMRect, position: { x: number; y: number }) => {
+      // Calculate transform origin at mouse position (percentage)
+      const originX = (position.x / rect.width) * 100;
+      const originY = (position.y / rect.height) * 100;
 
-  const handleMouseLeave = useCallback(() => {
-    setMousePosition(null);
-  }, []);
+      // Calculate mouse position relative to center for directional warping
+      const centerX = rect.width / 2;
+      const centerY = rect.height / 2;
+      const deltaX = position.x - centerX;
+      const deltaY = position.y - centerY;
+      const maxDelta = Math.max(rect.width, rect.height) / 2;
 
-  // Calculate the distortion effect based on mouse position
-  const getDistortionStyle = () => {
-    if (!mousePosition || !containerRef.current) return {};
+      // Calculate distance from mouse to center for radial falloff
+      const distanceFromCenter = Math.sqrt(deltaX * deltaX + deltaY * deltaY);
+      // Calculate radial falloff factor based on distortionRadius
+      // Effect is strongest at mouse position and fades out at distortionRadius
+      const radialFalloff = Math.max(0, 1 - distanceFromCenter / distortionRadius);
 
-    const rect = containerRef.current.getBoundingClientRect();
-    
-    // Calculate transform origin at mouse position (percentage)
-    const originX = (mousePosition.x / rect.width) * 100;
-    const originY = (mousePosition.y / rect.height) * 100;
-    
-    // Calculate mouse position relative to center for directional warping
-    const centerX = rect.width / 2;
-    const centerY = rect.height / 2;
-    const deltaX = mousePosition.x - centerX;
-    const deltaY = mousePosition.y - centerY;
-    const maxDelta = Math.max(rect.width, rect.height) / 2;
-    
-    // Calculate distance from mouse to center for radial falloff
-    const distanceFromCenter = Math.sqrt(deltaX * deltaX + deltaY * deltaY);
-    // Calculate radial falloff factor based on distortionRadius
-    // Effect is strongest at mouse position and fades out at distortionRadius
-    const radialFalloff = Math.max(0, 1 - (distanceFromCenter / distortionRadius));
-    
-    // Normalize the intensity for dramatic effect
-    const normalizedIntensity = (distortionIntensity / 100) * radialFalloff;
-    
-    // Create a very strong 3D warping effect
-    // The grid should appear to "bend" and "stretch" dramatically toward the mouse
-    const perspective = 400; // Lower perspective = more dramatic 3D effect
-    
-    // Very strong rotation effects - creates highly visible 3D tilt
-    const rotateX = (deltaY / maxDelta) * normalizedIntensity * 35;
-    const rotateY = -(deltaX / maxDelta) * normalizedIntensity * 35;
-    
-    // Strong scale effect - creates the "magnifying glass" or "lens" distortion
-    // This makes the effect very noticeable
-    const scale = 1 + normalizedIntensity * 1.2;
-    
-    // Strong skew for additional warping - creates the "stretching" effect
-    const skewX = (deltaX / maxDelta) * normalizedIntensity * 12;
-    const skewY = (deltaY / maxDelta) * normalizedIntensity * 12;
-    
-    // Combine all transforms for maximum visible distortion
-    // The transform origin at mouse position ensures the warping is centered there
-    return {
-      transformOrigin: `${originX}% ${originY}%`,
-      transform: `
+      // Normalize the intensity for dramatic effect
+      const normalizedIntensity = (distortionIntensity / 100) * radialFalloff;
+
+      // Create a very strong 3D warping effect
+      // The grid should appear to "bend" and "stretch" dramatically toward the mouse
+      const perspective = 400; // Lower perspective = more dramatic 3D effect
+
+      // Very strong rotation effects - creates highly visible 3D tilt
+      const rotateX = (deltaY / maxDelta) * normalizedIntensity * 35;
+      const rotateY = -(deltaX / maxDelta) * normalizedIntensity * 35;
+
+      // Strong scale effect - creates the "magnifying glass" or "lens" distortion
+      // This makes the effect very noticeable
+      const scale = 1 + normalizedIntensity * 1.2;
+
+      // Strong skew for additional warping - creates the "stretching" effect
+      const skewX = (deltaX / maxDelta) * normalizedIntensity * 12;
+      const skewY = (deltaY / maxDelta) * normalizedIntensity * 12;
+
+      // Combine all transforms for maximum visible distortion
+      // The transform origin at mouse position ensures the warping is centered there
+      return {
+        transformOrigin: `${originX}% ${originY}%`,
+        transform: `
         perspective(${perspective}px)
         scale(${scale})
         rotateX(${rotateX}deg)
@@ -94,9 +77,43 @@ export const DottedGridBackground: React.FC<Props> = ({
         skewX(${skewX}deg)
         skewY(${skewY}deg)
       `,
-      filter: `blur(${normalizedIntensity * 1.0}px)`,
-    };
-  };
+        filter: `blur(${normalizedIntensity * 1.0}px)`,
+      } as React.CSSProperties;
+    },
+    [distortionIntensity, distortionRadius]
+  );
+
+  const handleMouseMove = useCallback(
+    (e: React.MouseEvent<HTMLDivElement>) => {
+      const rect = containerRef.current?.getBoundingClientRect();
+
+      if (rect) {
+        const position = {
+          x: e.clientX - rect.left,
+          y: e.clientY - rect.top,
+        };
+
+        setMousePosition(position);
+        setDistortionStyle(calculateDistortion(rect, position));
+      }
+    },
+    [calculateDistortion]
+  );
+
+  const handleMouseLeave = useCallback(() => {
+    setMousePosition(null);
+    setDistortionStyle({});
+  }, []);
+
+  const staticBackgroundStyle = useMemo(
+    () => ({
+      backgroundImage: `url("data:image/svg+xml,${dotPattern}")`,
+      backgroundRepeat: 'repeat',
+      backgroundSize: '12px 12px',
+      opacity,
+    }),
+    [opacity]
+  );
 
   return (
     <div
@@ -113,11 +130,8 @@ export const DottedGridBackground: React.FC<Props> = ({
       <div
         className="absolute inset-0 transition-all duration-150 ease-out"
         style={{
-          backgroundImage: `url("data:image/svg+xml,${dotPattern}")`,
-          backgroundRepeat: 'repeat',
-          backgroundSize: '12px 12px',
-          opacity,
-          ...getDistortionStyle(),
+          ...staticBackgroundStyle,
+          ...distortionStyle,
         }}
       />
     </div>
