@@ -1357,7 +1357,7 @@ ${formData.name}`;
 
       {/* Build custom software staggered cards */}
       <section id="build" ref={processRef} className="build-section relative z-10 mb-24 -mt-48 md:mt-0 lg:mt-8 xl:mt-12 2xl:mt-16">
-        <div className="absolute right-0 top-1/4 w-1/2 h-1/2 bg-cyan-500/5 blur-[120px] rounded-full pointer-events-none" />
+        <div className="absolute right-0 top-1/4 w-1/2 h-1/2 bg-cyan-500/5 blur-[120px] rounded-full pointer-events-none animate-glow-drift-right" />
 
         <div className="max-w-7xl mx-auto px-6 py-16 space-y-32">
           {buildSlides.map((slide, idx) => {
@@ -1429,7 +1429,7 @@ ${formData.name}`;
 
       {/* Portfolio */}
       <section id="work" ref={workRef} className="py-20 relative z-10">
-        <div className="absolute left-0 top-1/4 w-1/2 h-1/2 bg-cyan-500/5 blur-[120px] rounded-full pointer-events-none" />
+        <div className="absolute left-0 top-1/4 w-1/2 h-1/2 bg-cyan-500/5 blur-[120px] rounded-full pointer-events-none animate-glow-drift-left" />
 
         <div className="max-w-7xl mx-auto px-6">
           <div className="flex items-end justify-between mb-16 pb-4">
@@ -1494,7 +1494,7 @@ ${formData.name}`;
 
       {/* Prompt Questions Section */}
       <section ref={questionsRef} className="py-24 relative z-10">
-        <div className="absolute right-0 top-1/4 w-1/2 h-1/2 bg-cyan-500/5 blur-[120px] rounded-full pointer-events-none" />
+        <div className="absolute right-0 top-1/4 w-1/2 h-1/2 bg-cyan-500/5 blur-[120px] rounded-full pointer-events-none animate-glow-drift-right" />
 
         <div className="max-w-4xl mx-auto px-6">
           <div className="space-y-12">
@@ -1578,7 +1578,7 @@ ${formData.name}`;
 
       {/* Contact */}
       <section id="contact" ref={contactRef} className="py-24 relative z-10">
-        <div className="absolute left-0 top-1/4 w-1/2 h-1/2 bg-cyan-500/5 blur-[120px] rounded-full pointer-events-none" />
+        <div className="absolute left-0 top-1/4 w-1/2 h-1/2 bg-cyan-500/5 blur-[120px] rounded-full pointer-events-none animate-glow-drift-left" />
         <div className="max-w-7xl mx-auto px-6 grid grid-cols-1 lg:grid-cols-2 gap-16 items-center">
           <div className="contact-copy">
             <div className="mb-6 flex flex-wrap items-center gap-6">

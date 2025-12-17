@@ -255,6 +255,31 @@
     animation: scaleIn 0.3s cubic-bezier(0.16, 1, 0.3, 1) forwards;
   }
 
+  /* Glow drift animations - slow ambient movement */
+  @keyframes glow-drift-right {
+    0%, 100% {
+      transform: translateX(0);
+    }
+    50% {
+      transform: translateX(-50%);
+    }
+  }
+  .animate-glow-drift-right {
+    animation: glow-drift-right 20s ease-in-out infinite;
+  }
+
+  @keyframes glow-drift-left {
+    0%, 100% {
+      transform: translateX(0);
+    }
+    50% {
+      transform: translateX(50%);
+    }
+  }
+  .animate-glow-drift-left {
+    animation: glow-drift-left 20s ease-in-out infinite;
+  }
+
   /* 3D tilt helpers */
   .tilt-card {
     transition: transform 0.2s ease, box-shadow 0.3s ease;
