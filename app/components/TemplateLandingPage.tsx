@@ -1681,12 +1681,12 @@ ${formData.name}`;
       </section>
 
       {/* Footer */}
-      <footer className="bg-gradient-to-t from-black via-black/80 to-transparent py-16 relative z-20">
-        <div className="footer-content max-w-7xl mx-auto px-6 flex flex-col items-center gap-6">
-          <h5 className="tracking-[0.3em] text-6xl md:text-8xl font-bold text-slate-700/50 select-none">DANEJW</h5>
+      <footer className="bg-gradient-to-t from-black via-black/80 to-transparent pt-16 pb-0 relative z-20 overflow-hidden">
+        <div className="footer-content max-w-7xl mx-auto px-6 flex flex-col items-center gap-8">
           <SocialIcons />
-          <p className="text-slate-600 text-xs tracking-widest uppercase">© 2025. All Rights Reserved.</p>
+          {/* <p className="text-slate-600 text-xs tracking-widest uppercase">© 2025. All Rights Reserved.</p> */}
         </div>
+        <h4 className="tracking-[0.2em] text-[10vw] md:text-[8vw] font-semibold text-gray-400/10 select-none text-center leading-none -mb-[0.15em]">DANEJW</h4>
       </footer>
 
       {/* Project Modal */}
