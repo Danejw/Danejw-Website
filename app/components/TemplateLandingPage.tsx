@@ -379,6 +379,7 @@ export const TemplateLandingPage: React.FC = () => {
   const questionsRef = useRef<HTMLElement | null>(null);
   const techMarqueeRef = useRef<HTMLElement | null>(null);
   const contactRef = useRef<HTMLElement | null>(null);
+  const footerRef = useRef<HTMLElement | null>(null);
   const [activeSection, setActiveSection] = useState<SectionKey>('hero');
   const [videoReady, setVideoReady] = useState<Record<string, boolean>>({});
   const [mobileMenuOpen, setMobileMenuOpen] = useState(false);
@@ -1114,25 +1115,49 @@ ${formData.name}`;
       }
 
       // Animate footer from bottom up
-      gsap.fromTo(
-        '.footer-content',
-        {
-          y: 80,
-          opacity: 0,
-        },
-        {
-          y: 0,
-          opacity: 1,
-          ease: 'power3.out',
-          scrollTrigger: {
-            trigger: '.footer-content',
-            start: 'top 95%',
-            end: 'top 70%',
-            scrub: 1.2,
-            toggleActions: 'play none none reverse',
+      if (footerRef.current) {
+        // Animate social icons
+        gsap.fromTo(
+          '.footer-content',
+          {
+            y: 60,
+            opacity: 0,
           },
-        },
-      );
+          {
+            y: 0,
+            opacity: 1,
+            ease: 'power3.out',
+            scrollTrigger: {
+              trigger: footerRef.current,
+              start: 'top 95%',
+              end: 'top 70%',
+              scrub: 1.2,
+              toggleActions: 'play none none reverse',
+            },
+          },
+        );
+
+        // Animate big DANEJW text from bottom
+        gsap.fromTo(
+          '.footer-name',
+          {
+            y: 100,
+            opacity: 0,
+          },
+          {
+            y: 0,
+            opacity: 1,
+            ease: 'power3.out',
+            scrollTrigger: {
+              trigger: footerRef.current,
+              start: 'top 85%',
+              end: 'top 50%',
+              scrub: 1.5,
+              toggleActions: 'play none none reverse',
+            },
+          },
+        );
+      }
     }, rootRef);
 
     return () => {
@@ -1681,12 +1706,12 @@ ${formData.name}`;
       </section>
 
       {/* Footer */}
-      <footer className="bg-gradient-to-t from-black via-black/80 to-transparent pt-16 pb-0 relative z-20 overflow-hidden">
+      <footer ref={footerRef} className="bg-gradient-to-t from-black via-black/80 to-transparent pt-16 pb-0 relative z-20 overflow-hidden">
         <div className="footer-content max-w-7xl mx-auto px-6 flex flex-col items-center gap-8">
           <SocialIcons />
           {/* <p className="text-slate-600 text-xs tracking-widest uppercase">© 2025. All Rights Reserved.</p> */}
         </div>
-        <h4 className="tracking-[0.2em] text-[10vw] md:text-[8vw] font-semibold text-gray-400/10 select-none text-center leading-none -mb-[0.15em]">DANEJW</h4>
+        <h4 className="footer-name tracking-[0.2em] text-[10vw] md:text-[8vw] font-semibold text-gray-400/10 select-none text-center leading-none -mb-[0.15em]">DANEJW</h4>
       </footer>
 
       {/* Project Modal */}
