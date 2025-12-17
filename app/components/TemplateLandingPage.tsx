@@ -1112,6 +1112,27 @@ ${formData.name}`;
           },
         );
       }
+
+      // Animate footer from bottom up
+      gsap.fromTo(
+        '.footer-content',
+        {
+          y: 80,
+          opacity: 0,
+        },
+        {
+          y: 0,
+          opacity: 1,
+          ease: 'power3.out',
+          scrollTrigger: {
+            trigger: '.footer-content',
+            start: 'top 95%',
+            end: 'top 70%',
+            scrub: 1.2,
+            toggleActions: 'play none none reverse',
+          },
+        },
+      );
     }, rootRef);
 
     return () => {
@@ -1660,13 +1681,11 @@ ${formData.name}`;
       </section>
 
       {/* Footer */}
-      <footer className="border-t border-white/5 bg-black pt-4 pb-4 relative z-20">
-        <div className="max-w-7xl mx-auto px-6 flex flex-col md:flex-row justify-between items-center gap-8">
-          <div className="text-center md:text-left">
-            <h5 className="tracking-widest text-2xl text-white mb-2">DANE <span className="bg-cyan-500 text-black px-1 inline-block">WILLACKER</span></h5>
-            <p className="text-slate-600 text-xs tracking-widest uppercase">© 2025. All Rights Reserved.</p>
-          </div>
+      <footer className="bg-gradient-to-t from-black via-black/80 to-transparent py-16 relative z-20">
+        <div className="footer-content max-w-7xl mx-auto px-6 flex flex-col items-center gap-6">
+          <h5 className="tracking-[0.3em] text-6xl md:text-8xl font-bold text-slate-700/50 select-none">DANEJW</h5>
           <SocialIcons />
+          <p className="text-slate-600 text-xs tracking-widest uppercase">© 2025. All Rights Reserved.</p>
         </div>
       </footer>
 
