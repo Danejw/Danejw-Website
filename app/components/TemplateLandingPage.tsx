@@ -381,6 +381,7 @@ export const TemplateLandingPage: React.FC = () => {
   const contactRef = useRef<HTMLElement | null>(null);
   const [activeSection, setActiveSection] = useState<SectionKey>('hero');
   const [videoReady, setVideoReady] = useState<Record<string, boolean>>({});
+  const [mobileMenuOpen, setMobileMenuOpen] = useState(false);
   const [selectedProject, setSelectedProject] = useState<PortfolioItem | null>(null);
   const [questionAnswers, setQuestionAnswers] = useState({
     question1: '',
@@ -1171,9 +1172,43 @@ ${formData.name}`;
               Contact
             </a>
           </div>
-          <button className="md:hidden text-white">
+          <button 
+            className="md:hidden text-white hover:text-cyan-400 hover:scale-150 transition-all duration-300 ease-in-out"
+            onClick={() => setMobileMenuOpen(!mobileMenuOpen)}
+            aria-label="Toggle menu"
+          >
             <svg width="24" height="24" fill="none" stroke="currentColor"><path d="M4 7h16M4 12h16M4 17h16" strokeWidth="2" strokeLinecap="round"/></svg>
           </button>
+        </div>
+        
+        {/* Mobile Dropdown Menu */}
+        <div 
+          className={`md:hidden overflow-hidden transition-all duration-300 ease-in-out ${
+            mobileMenuOpen ? 'max-h-48 opacity-100' : 'max-h-0 opacity-0'
+          }`}
+        >
+          <div className="px-6 py-4 flex flex-col gap-4 text-xs font-medium tracking-widest uppercase text-slate-300 border-t border-white/5">
+            <a
+              href="#work"
+              onClick={(event) => {
+                handleNavClick(event, 'work');
+                setMobileMenuOpen(false);
+              }}
+              className={`hover:text-cyan-400 hover:scale-150 transition-all duration-300 ease-in-out origin-left ${activeSection === 'work' ? 'text-cyan-400' : ''}`}
+            >
+              Work
+            </a>
+            <a
+              href="#contact"
+              onClick={(event) => {
+                handleNavClick(event, 'contact');
+                setMobileMenuOpen(false);
+              }}
+              className={`hover:text-cyan-400 hover:scale-150 transition-all duration-300 ease-in-out origin-left ${activeSection === 'contact' ? 'text-cyan-400' : ''}`}
+            >
+              Contact
+            </a>
+          </div>
         </div>
       </nav>
 
