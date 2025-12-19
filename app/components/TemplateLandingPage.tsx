@@ -20,6 +20,7 @@ import {
   BrainCircuit,
   Hammer,
   ArrowUpRight,
+  ArrowRight,
   Mail,
   MapPin,
   Zap,
@@ -99,7 +100,7 @@ const buildSlides: BuildSlide[] = [
     title: 'Build Custom',
     highlight: 'Software.',
     copy:
-      'I architect, design, and ship bespoke web applications. From greenfield builds to modernizing legacy stacks, you get battle-tested execution, and solutions made for you rather than generalized one fit all solutions.',
+      'Architect, design, and ship bespoke web applications. From greenfield builds to modernizing legacy stacks, you get battle-tested execution, and solutions made for you rather than generalized one fit all solutions.',
     img: '/photos/blurred_look.jpeg',
   },
   {
@@ -127,8 +128,8 @@ type ServiceTier = {
 
 const serviceTiers: ServiceTier[] = [
   {
-    title: 'One-Page Landing Website',
-    price: 'Starting at $1,000',
+    title: 'Single-Page Website',
+    price: '$1,000',
     summary:
       'A focused, high-quality landing page designed to clearly communicate what you do and convert visitors into contacts or customers. This is ideal for personal brands, early startups, campaigns, or product launches.',
     details: [
@@ -138,7 +139,7 @@ const serviceTiers: ServiceTier[] = [
   },
   {
     title: 'Multi-Page Website',
-    price: 'Starting at $2,500',
+    price: '$2,500',
     summary:
       'A full website with multiple pages such as Home, About, Services, and Contact. This is best for small businesses that need structure, credibility, and room to explain what they offer.',
     details: [
@@ -147,7 +148,7 @@ const serviceTiers: ServiceTier[] = [
   },
   {
     title: 'Multi-Page Website With Database',
-    price: 'Starting at $4,500',
+    price: '$4,500',
     summary:
       'A dynamic website backed by a database for storing and managing content or user data. This is useful for blogs, directories, content platforms, or internal tools.',
     details: [
@@ -156,7 +157,7 @@ const serviceTiers: ServiceTier[] = [
   },
   {
     title: 'Custom Web Application',
-    price: 'Starting at $7,500+',
+    price: '$7,500+',
     summary:
       'A fully custom web application with backend logic, authentication, dashboards, and integrations. This is real software built to solve a specific business problem.',
     details: [
@@ -165,7 +166,7 @@ const serviceTiers: ServiceTier[] = [
   },
   {
     title: 'AI Integrations',
-    price: 'Starting at $1,500',
+    price: '+$1,500',
     summary:
       'Add AI capabilities to your product or workflow. This can include chat interfaces, assistants, content generation, decision support tools, or voice interactions.',
     details: [
@@ -174,7 +175,7 @@ const serviceTiers: ServiceTier[] = [
   },
   {
     title: 'Automation and Workflow Integrations',
-    price: 'Starting at $1,000',
+    price: '+$1,000',
     summary:
       'Automate repetitive processes and connect your tools together. This includes system-to-system integrations, background jobs, and trigger-based workflows.',
     details: [
@@ -578,8 +579,8 @@ ${formData.name}`;
     const candidates: { key: SectionKey; el: HTMLElement | null }[] = [
       { key: 'hero', el: heroRef.current },
       { key: 'process', el: processRef.current },
-      { key: 'services', el: servicesRef.current },
       { key: 'work', el: workRef.current },
+      { key: 'services', el: servicesRef.current },
       { key: 'contact', el: contactRef.current },
     ];
 
@@ -867,43 +868,26 @@ ${formData.name}`;
         }
       });
 
-      if (servicesRef.current) {
+      // Animate tech marquee section with Y-axis scale
+      if (techMarqueeRef.current) {
         gsap.fromTo(
-          '.services-grid-header',
-          { y: 60, opacity: 0 },
+          techMarqueeRef.current,
           {
-            y: 0,
-            opacity: 1,
+            scaleY: 0,
+            transformOrigin: 'center center',
+          },
+          {
+            scaleY: 1,
             ease: 'power3.out',
             scrollTrigger: {
-              trigger: servicesRef.current,
-              start: 'top 80%',
+              trigger: techMarqueeRef.current,
+              start: 'top 90%',
               end: 'top 50%',
               scrub: 1.2,
+              toggleActions: 'play none none reverse',
             },
           },
         );
-
-        gsap.utils.toArray<HTMLElement>('.service-card').forEach((card, idx) => {
-          gsap.fromTo(
-            card,
-            { y: 80, opacity: 0, rotateX: -12, scale: 0.96 },
-            {
-              y: 0,
-              opacity: 1,
-              rotateX: 0,
-              scale: 1,
-              ease: 'power3.out',
-              scrollTrigger: {
-                trigger: card,
-                start: 'top 85%',
-                end: 'top 45%',
-                scrub: 1.2,
-              },
-              delay: idx * 0.05,
-            },
-          );
-        });
       }
 
       // Animate portfolio items based on scroll position
@@ -1005,26 +989,44 @@ ${formData.name}`;
         });
       }
 
-      // Animate tech marquee section with Y-axis scale
-      if (techMarqueeRef.current) {
+      // Animate services section
+      if (servicesRef.current) {
         gsap.fromTo(
-          techMarqueeRef.current,
+          '.services-grid-header',
+          { y: 60, opacity: 0 },
           {
-            scaleY: 0,
-            transformOrigin: 'center center',
-          },
-          {
-            scaleY: 1,
+            y: 0,
+            opacity: 1,
             ease: 'power3.out',
             scrollTrigger: {
-              trigger: techMarqueeRef.current,
-              start: 'top 90%',
+              trigger: servicesRef.current,
+              start: 'top 80%',
               end: 'top 50%',
               scrub: 1.2,
-              toggleActions: 'play none none reverse',
             },
           },
         );
+
+        gsap.utils.toArray<HTMLElement>('.service-card').forEach((card, idx) => {
+          gsap.fromTo(
+            card,
+            { y: 80, opacity: 0, rotateX: -12, scale: 0.96 },
+            {
+              y: 0,
+              opacity: 1,
+              rotateX: 0,
+              scale: 1,
+              ease: 'power3.out',
+              scrollTrigger: {
+                trigger: card,
+                start: 'top 85%',
+                end: 'top 45%',
+                scrub: 1.2,
+              },
+              delay: idx * 0.05,
+            },
+          );
+        });
       }
 
       // Animate questions section
@@ -1537,90 +1539,6 @@ ${formData.name}`;
         </div>
       </section>
 
-      {/* Services */}
-      <section id="services" ref={servicesRef} className="relative z-10 py-24">
-        <div className="absolute left-0 top-1/4 w-1/2 h-1/2 bg-cyan-500/5 blur-[120px] rounded-full pointer-events-none animate-glow-drift-left" />
-        <div className="absolute right-10 bottom-10 w-64 h-64 bg-cyan-400/10 blur-3xl rounded-full pointer-events-none" />
-
-        <div className="max-w-7xl mx-auto px-6 space-y-14">
-          <div className="services-grid-header grid grid-cols-1 lg:grid-cols-5 gap-10 items-end">
-            <div className="lg:col-span-3 space-y-4">
-              <p className="text-xs uppercase tracking-[0.35em] text-cyan-400">Services</p>
-              <h2 className="text-4xl md:text-5xl lg:text-6xl font-semibold text-white leading-tight">
-                I design and build modern websites and web applications that scale with your needs.
-              </h2>
-              <p className="text-lg text-slate-400 font-light leading-relaxed">
-                Some clients just need a clean, professional web presence. Others need real software with data, logic, automation, and AI working behind the scenes. The work is always custom, but the structure is simple and transparent so you know exactly what you are getting.
-              </p>
-              <div className="inline-flex items-center gap-3 px-4 py-3 rounded-full border border-cyan-500/30 bg-cyan-500/5 text-sm uppercase tracking-[0.2em] text-cyan-200">
-                <Sparkles className="w-4 h-4" />
-                You can start small and grow over time. Each tier builds on the one before it.
-              </div>
-            </div>
-            <div className="lg:col-span-2 lg:ml-auto space-y-4">
-              <div className="glass-panel p-5 rounded-2xl border border-white/10 shadow-[0_20px_60px_rgba(0,0,0,0.4)] bg-black/60">
-                <p className="text-sm uppercase tracking-[0.3em] text-slate-400">Approach</p>
-                <p className="text-xl text-white font-semibold mt-2">Modern, scalable, and intentionally built.</p>
-                <p className="text-slate-400 font-light mt-3 leading-relaxed">
-                  Every engagement focuses on clarity first, then layered capability. We move quickly, keep you in the loop, and build so the next upgrade is easy.
-                </p>
-              </div>
-            </div>
-          </div>
-
-          <div className="grid grid-cols-1 md:grid-cols-2 xl:grid-cols-3 gap-8">
-            {serviceTiers.map((tier) => (
-              <article
-                key={tier.title}
-                className="service-card relative h-full rounded-2xl border border-white/10 bg-gradient-to-br from-black/60 via-black/50 to-black/40 p-8 shadow-[0_20px_60px_rgba(0,0,0,0.5)] hover:border-cyan-400/50 transition transform hover:-translate-y-2"
-              >
-                <div className="flex items-start justify-between gap-4">
-                  <div className="space-y-2">
-                    <p className="text-[0.7rem] uppercase tracking-[0.3em] text-slate-400">Tier</p>
-                    <h3 className="text-2xl text-white font-semibold leading-tight">{tier.title}</h3>
-                  </div>
-                  <span className="px-3 py-2 rounded-full bg-cyan-500/15 text-cyan-200 text-xs tracking-[0.2em] uppercase border border-cyan-500/40">
-                    {tier.price}
-                  </span>
-                </div>
-                <p className="text-slate-300 font-light mt-4 leading-relaxed">{tier.summary}</p>
-                <ul className="mt-5 space-y-3 text-slate-400 font-light">
-                  {tier.details.map((detail) => (
-                    <li key={detail} className="flex items-start gap-3">
-                      <CheckCircle className="w-4 h-4 text-cyan-400 mt-[2px]" />
-                      <span>{detail}</span>
-                    </li>
-                  ))}
-                </ul>
-              </article>
-            ))}
-          </div>
-
-          <div className="service-card relative grid grid-cols-1 lg:grid-cols-3 gap-6 items-center rounded-2xl border border-cyan-500/20 bg-gradient-to-r from-cyan-500/10 via-black/70 to-black/60 p-8 shadow-[0_20px_60px_rgba(0,0,0,0.6)]">
-            <div className="lg:col-span-2 space-y-3">
-              <p className="text-xs uppercase tracking-[0.3em] text-cyan-300">How pricing works</p>
-              <h3 className="text-3xl md:text-4xl text-white font-semibold leading-tight">Transparent, scoped, and built to grow with you.</h3>
-              <p className="text-slate-300 font-light leading-relaxed">
-                Each project starts with a short scope discussion to make sure the solution fits your goals. Fixed pricing is used whenever possible. Larger or evolving projects may move to milestone-based pricing. If you are unsure where you fit, start with the simplest tier. Everything is built so it can grow with you.
-              </p>
-            </div>
-            <div className="lg:col-span-1">
-              <div className="glass-panel rounded-2xl p-6 border border-white/10 bg-black/60 flex flex-col gap-3">
-                <p className="text-sm uppercase tracking-[0.25em] text-slate-400">Next step</p>
-                <p className="text-white text-xl font-semibold">Share where you are and where you want to go.</p>
-                <p className="text-slate-400 font-light">Pick the nearest tier and we will right-size the build together.</p>
-                <Button
-                  onClick={(event) => handleNavClick(event, 'contact')}
-                  className="mt-2"
-                >
-                  Start a scope chat
-                </Button>
-              </div>
-            </div>
-          </div>
-        </div>
-      </section>
-
       {/* Tech marquee */}
       <section ref={techMarqueeRef} className="relative z-10 border-y bg-white">
         <div className="max-w-7xl mx-auto px-6 py-6 flex items-center gap-10 overflow-hidden">
@@ -1702,6 +1620,93 @@ ${formData.name}`;
                 </div>
               </div>
             ))}
+          </div>
+        </div>
+      </section>
+
+      {/* Services */}
+      <section id="services" ref={servicesRef} className="relative z-10 py-24">
+        <div className="absolute left-0 top-1/4 w-1/2 h-1/2 bg-cyan-500/5 blur-[120px] rounded-full pointer-events-none animate-glow-drift-left" />
+
+        <div className="max-w-7xl mx-auto px-6 space-y-14">
+          <div className="services-grid-header grid grid-cols-1 lg:grid-cols-5 gap-10 items-end">
+            <div className="lg:col-span-3 space-y-4">
+              <p className="text-xs uppercase tracking-[0.35em] text-cyan-400">Services</p>
+              <h2 className="text-4xl md:text-5xl lg:text-6xl font-semibold text-white leading-tight">
+                Design and <br/>
+                <span className="bg-cyan-500 text-black px-2 inline-block">Build</span>
+              </h2>
+              <p className="text-lg text-slate-400 font-light leading-relaxed">
+                Some clients just need a clean, professional web presence. Others need real software with data, logic, automation, and AI working behind the scenes. The work is always custom, but the structure is simple and transparent so you know exactly what you are getting.
+              </p>
+              <div className="inline-flex items-center gap-3 px-4 py-3 rounded-full border border-cyan-500/30 bg-cyan-500/5 text-sm uppercase tracking-[0.2em] text-cyan-200">
+                <Sparkles className="w-4 h-4" />
+                You can start small and grow over time. Each tier builds on the one before it.
+              </div>
+            </div>
+            <div className="lg:col-span-2 lg:ml-auto space-y-4">
+              <div className="glass-panel p-5 rounded-2xl border border-white/10 shadow-[0_20px_60px_rgba(0,0,0,0.4)] bg-black/60">
+                <p className="text-sm uppercase tracking-[0.3em] text-slate-400">Approach</p>
+                <p className="text-xl text-white font-semibold mt-2">Modern, scalable, and intentionally built.</p>
+                <p className="text-slate-400 font-light mt-3 leading-relaxed">
+                  Every engagement focuses on clarity first, then layered capability. We move quickly, keep you in the loop, and build so the next upgrade is easy.
+                </p>
+              </div>
+            </div>
+          </div>
+
+          <div className="grid grid-cols-1 md:grid-cols-2 xl:grid-cols-3 gap-8">
+            {serviceTiers.map((tier) => (
+              <article
+                key={tier.title}
+                className="service-card group relative h-full rounded-2xl border border-white/10 bg-gradient-to-br from-black/60 via-black/50 to-black/40 p-8 shadow-[0_0_30px_rgba(6,182,212,0.1)] transition transform hover:-translate-y-2 hover:scale-110 overflow-hidden"
+              >
+                <div className="absolute inset-0 bg-gradient-to-r from-cyan-500/0 via-cyan-500/0 to-cyan-500/0 group-hover:from-cyan-500/15 group-hover:via-cyan-500/8 group-hover:to-cyan-500/0 transition-all duration-300 z-10 border-2 border-transparent group-hover:border-cyan-400/50 rounded-2xl" />
+                <div className="relative z-20">
+                  <div className="flex items-start justify-between gap-4">
+                    <div className="space-y-2">
+                      <p className="text-[0.7rem] uppercase tracking-[0.3em] text-slate-400">Tier</p>
+                      <h3 className="text-2xl text-white font-semibold leading-tight">{tier.title}</h3>
+                    </div>
+                    <span className="px-3 py-2 rounded-full bg-cyan-500/15 text-cyan-200 text-xs tracking-[0.2em] uppercase border border-cyan-500/40">
+                      {tier.price}
+                    </span>
+                  </div>
+                  <p className="text-slate-300 font-light mt-4 leading-relaxed">{tier.summary}</p>
+                  <ul className="mt-5 space-y-3 text-slate-400 font-light">
+                    {tier.details.map((detail) => (
+                      <li key={detail} className="flex items-start gap-3">
+                        <CheckCircle className="w-4 h-4 text-cyan-400 mt-[2px] flex-shrink-0" />
+                        <span>{detail}</span>
+                      </li>
+                    ))}
+                  </ul>
+                </div>
+              </article>
+            ))}
+          </div>
+
+          <div className="service-card relative grid grid-cols-1 lg:grid-cols-3 gap-6 items-center rounded-2xl border border-cyan-500/20 bg-gradient-to-r from-cyan-500/10 via-black/70 to-black/60 p-8 shadow-[0_20px_60px_rgba(0,0,0,0.6)]">
+            <div className="lg:col-span-2 space-y-3">
+              <p className="text-xs uppercase tracking-[0.3em] text-cyan-300">How pricing works</p>
+              <h3 className="text-3xl md:text-4xl text-white font-semibold leading-tight">Transparent, scoped, and built to grow with you.</h3>
+              <p className="text-slate-300 font-light leading-relaxed">
+                Each project starts with a short scope discussion to make sure the solution fits your goals. Fixed pricing is used whenever possible. Larger or evolving projects may move to milestone-based pricing. If you are unsure where you fit, start with the simplest tier. Everything is built so it can grow with you.
+              </p>
+            </div>
+            <div className="lg:col-span-1">
+              <div className="glass-panel rounded-2xl p-6 border border-white/10 bg-black/60 flex flex-col gap-3">
+                <p className="text-sm uppercase tracking-[0.25em] text-slate-400">Next step</p>
+                <p className="text-white text-xl font-semibold">Share where you are and where you want to go.</p>
+                <p className="text-slate-400 font-light">Pick the nearest tier and we will right-size the build together.</p>
+                <Button
+                  onClick={(event) => handleNavClick(event, 'contact')}
+                  className="mt-2"
+                >
+                  Start a scope chat
+                </Button>
+              </div>
+            </div>
           </div>
         </div>
       </section>
@@ -1835,7 +1840,9 @@ ${formData.name}`;
                 <div className="p-3 border border-white/10 rounded-full group-hover:border-cyan-400 transition-colors">
                   <MapPin className="w-5 h-5" />
                 </div>
-                <span className="font-light tracking-wide">Based in Hawai&apos;i — available remotely</span>
+                <span className="font-light tracking-wide">
+                  Based in <span className="text-cyan-500">Hawai&apos;i</span> <ArrowRight className="w-4 h-4 inline-block align-middle mx-1" /> available remotely
+                </span>
               </div>
             </div>
           </div>
@@ -1920,12 +1927,12 @@ ${formData.name}`;
       </section>
 
       {/* Footer */}
-      <footer ref={footerRef} className="bg-gradient-to-t from-black via-black/80 to-transparent pt-16 pb-0 relative z-20 overflow-hidden">
+      <footer ref={footerRef} className="bg-gradient-to-t from-black via-black/80 to-transparent pt-10 relative z-20 overflow-visible">
         <div className="footer-content max-w-7xl mx-auto px-6 flex flex-col items-center gap-8">
           <SocialIcons />
           {/* <p className="text-slate-600 text-xs tracking-widest uppercase">© 2025. All Rights Reserved.</p> */}
         </div>
-        <h4 className="footer-name tracking-[0.2em] text-[10vw] md:text-[8vw] font-semibold text-gray-400/10 select-none text-center leading-none -mb-[0.15em]">DANEJW</h4>
+        <h4 className="footer-name tracking-[0.2em] text-[10vw] md:text-[8vw] font-semibold text-gray-400/10 select-none text-center leading-none mb-0">DANEJW</h4>
       </footer>
 
       {/* Project Modal */}
