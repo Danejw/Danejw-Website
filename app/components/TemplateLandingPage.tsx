@@ -1007,6 +1007,90 @@ ${formData.name}`;
           },
         );
 
+        // Animate services paragraph words from left to right
+        const servicesWords = servicesRef.current.querySelectorAll('.services-word');
+        if (servicesWords.length > 0) {
+          gsap.set(servicesWords, { x: 200, opacity: 0, filter: 'blur(8px)' });
+          
+          gsap.to(
+            servicesWords,
+            {
+              x: 0,
+              opacity: 1,
+              filter: 'blur(0px)',
+              ease: 'power3.out',
+              duration: 0.6,
+              stagger: {
+                amount: 1.5,
+                from: 'start',
+              },
+              scrollTrigger: {
+                trigger: servicesRef.current,
+                start: 'top 75%',
+                end: 'top 40%',
+                scrub: 1.2,
+                toggleActions: 'play none none reverse',
+              },
+            },
+          );
+        }
+
+        // Animate "You can start small..." text words
+        const servicesGrowWords = servicesRef.current.querySelectorAll('.services-grow-word');
+        if (servicesGrowWords.length > 0) {
+          gsap.set(servicesGrowWords, { x: 200, opacity: 0, filter: 'blur(8px)' });
+          
+          gsap.to(
+            servicesGrowWords,
+            {
+              x: 0,
+              opacity: 1,
+              filter: 'blur(0px)',
+              ease: 'power3.out',
+              duration: 0.6,
+              stagger: {
+                amount: 1.5,
+                from: 'start',
+              },
+              scrollTrigger: {
+                trigger: servicesRef.current,
+                start: 'top 70%',
+                end: 'top 35%',
+                scrub: 1.2,
+                toggleActions: 'play none none reverse',
+              },
+            },
+          );
+        }
+
+        // Animate Approach section words
+        const approachWords = servicesRef.current.querySelectorAll('.approach-word');
+        if (approachWords.length > 0) {
+          gsap.set(approachWords, { x: 200, opacity: 0, filter: 'blur(8px)' });
+          
+          gsap.to(
+            approachWords,
+            {
+              x: 0,
+              opacity: 1,
+              filter: 'blur(0px)',
+              ease: 'power3.out',
+              duration: 0.6,
+              stagger: {
+                amount: 1.5,
+                from: 'start',
+              },
+              scrollTrigger: {
+                trigger: servicesRef.current,
+                start: 'top 75%',
+                end: 'top 40%',
+                scrub: 1.2,
+                toggleActions: 'play none none reverse',
+              },
+            },
+          );
+        }
+
         gsap.utils.toArray<HTMLElement>('.service-card').forEach((card, idx) => {
           gsap.fromTo(
             card,
@@ -1026,7 +1110,165 @@ ${formData.name}`;
               delay: idx * 0.05,
             },
           );
+
+          // Animate tier summary words from left to right
+          const tierSummaryWords = card.querySelectorAll('.tier-summary-word');
+          if (tierSummaryWords.length > 0) {
+            gsap.set(tierSummaryWords, { x: 200, opacity: 0, filter: 'blur(8px)' });
+            
+            gsap.to(
+              tierSummaryWords,
+              {
+                x: 0,
+                opacity: 1,
+                filter: 'blur(0px)',
+                ease: 'power3.out',
+                duration: 0.6,
+                stagger: {
+                  amount: 1.5,
+                  from: 'start',
+                },
+                scrollTrigger: {
+                  trigger: card,
+                  start: 'top 80%',
+                  end: 'top 40%',
+                  scrub: 1.2,
+                  toggleActions: 'play none none reverse',
+                },
+              },
+            );
+          }
+
+          // Animate tier detail words from left to right
+          const tierDetailWords = card.querySelectorAll('.tier-detail-word');
+          if (tierDetailWords.length > 0) {
+            gsap.set(tierDetailWords, { x: 200, opacity: 0, filter: 'blur(8px)' });
+            
+            gsap.to(
+              tierDetailWords,
+              {
+                x: 0,
+                opacity: 1,
+                filter: 'blur(0px)',
+                ease: 'power3.out',
+                duration: 0.6,
+                stagger: {
+                  amount: 1.5,
+                  from: 'start',
+                },
+                scrollTrigger: {
+                  trigger: card,
+                  start: 'top 75%',
+                  end: 'top 35%',
+                  scrub: 1.2,
+                  toggleActions: 'play none none reverse',
+                },
+              },
+            );
+          }
         });
+
+        // Animate "How pricing works" paragraph words
+        const pricingWorksWords = servicesRef.current?.querySelectorAll('.pricing-works-word');
+        if (pricingWorksWords && pricingWorksWords.length > 0) {
+          // Find the parent card element
+          const firstWord = pricingWorksWords[0] as HTMLElement;
+          const pricingWorksCard = firstWord.closest('.service-card') as HTMLElement;
+          
+          if (pricingWorksCard) {
+            gsap.set(pricingWorksWords, { x: 200, opacity: 0, filter: 'blur(8px)' });
+            
+            gsap.to(
+              pricingWorksWords,
+              {
+                x: 0,
+                opacity: 1,
+                filter: 'blur(0px)',
+                ease: 'power3.out',
+                duration: 0.6,
+                stagger: {
+                  amount: 1.5,
+                  from: 'start',
+                },
+                scrollTrigger: {
+                  trigger: pricingWorksCard,
+                  start: 'top 85%',
+                  end: 'top 45%',
+                  scrub: 1.2,
+                  toggleActions: 'play none none reverse',
+                },
+              },
+            );
+          }
+        }
+
+        // Animate "Next step" card words
+        const nextStepTitleWords = servicesRef.current?.querySelectorAll('.next-step-title-word');
+        const nextStepTextWords = servicesRef.current?.querySelectorAll('.next-step-text-word');
+        
+        if (nextStepTitleWords && nextStepTitleWords.length > 0) {
+          // Find the parent card element (same card contains both title and text)
+          const firstTitleWord = nextStepTitleWords[0] as HTMLElement;
+          const nextStepCard = firstTitleWord.closest('.service-card') as HTMLElement;
+          
+          if (nextStepCard) {
+            gsap.set(nextStepTitleWords, { x: 200, opacity: 0, filter: 'blur(8px)' });
+            
+            gsap.to(
+              nextStepTitleWords,
+              {
+                x: 0,
+                opacity: 1,
+                filter: 'blur(0px)',
+                ease: 'power3.out',
+                duration: 0.6,
+                stagger: {
+                  amount: 1.5,
+                  from: 'start',
+                },
+                scrollTrigger: {
+                  trigger: nextStepCard,
+                  start: 'top 85%',
+                  end: 'top 45%',
+                  scrub: 1.2,
+                  toggleActions: 'play none none reverse',
+                },
+              },
+            );
+          }
+        }
+
+        if (nextStepTextWords && nextStepTextWords.length > 0) {
+          // Find the parent card element
+          const firstTextWord = nextStepTextWords[0] as HTMLElement;
+          const nextStepCard = firstTextWord.closest('.service-card') as HTMLElement;
+          
+          if (nextStepCard) {
+            gsap.set(nextStepTextWords, { x: 200, opacity: 0, filter: 'blur(8px)' });
+            
+            gsap.to(
+              nextStepTextWords,
+              {
+                x: 0,
+                opacity: 1,
+                filter: 'blur(0px)',
+                ease: 'power3.out',
+                duration: 0.6,
+                stagger: {
+                  amount: 1.5,
+                  from: 'start',
+                },
+                scrollTrigger: {
+                  trigger: nextStepCard,
+                  start: 'top 80%',
+                  end: 'top 40%',
+                  scrub: 1.2,
+                  toggleActions: 'play none none reverse',
+                },
+              },
+            );
+          }
+        }
       }
 
       // Animate questions section
@@ -1637,19 +1879,33 @@ ${formData.name}`;
                 <span className="bg-cyan-500 text-black px-2 inline-block">Build</span>
               </h2>
               <p className="text-lg text-slate-400 font-light leading-relaxed">
-                Some clients just need a clean, professional web presence. Others need real software with data, logic, automation, and AI working behind the scenes. The work is always custom, but the structure is simple and transparent so you know exactly what you are getting.
+                {'Some clients just need a clean, professional web presence. Others need real software with data, logic, automation, and AI working behind the scenes. The work is always custom, but the structure is simple and transparent so you know exactly what you are getting.'.split(' ').map((word, wordIdx) => (
+                  <span key={wordIdx} className="services-word">
+                    {word}{' '}
+                  </span>
+                ))}
               </p>
               <div className="inline-flex items-center gap-3 px-4 py-3 rounded-full border border-cyan-500/30 bg-cyan-500/5 text-sm uppercase tracking-[0.2em] text-cyan-200">
                 <Sparkles className="w-4 h-4" />
-                You can start small and grow over time. Each tier builds on the one before it.
+                <span>
+                  {'You can start small and grow over time. Each tier builds on the one before it.'.split(' ').map((word, wordIdx) => (
+                    <span key={wordIdx} className="services-grow-word">
+                      {word}{' '}
+                    </span>
+                  ))}
+                </span>
               </div>
             </div>
             <div className="lg:col-span-2 lg:ml-auto space-y-4">
               <div className="glass-panel p-5 rounded-2xl border border-white/10 shadow-[0_20px_60px_rgba(0,0,0,0.4)] bg-black/60">
-                <p className="text-sm uppercase tracking-[0.3em] text-slate-400">Approach</p>
+                <p className="text-sm uppercase tracking-[0.3em] text-cyan-500">Approach</p>
                 <p className="text-xl text-white font-semibold mt-2">Modern, scalable, and intentionally built.</p>
                 <p className="text-slate-400 font-light mt-3 leading-relaxed">
-                  Every engagement focuses on clarity first, then layered capability. We move quickly, keep you in the loop, and build so the next upgrade is easy.
+                  {'Every engagement focuses on clarity first, then layered capability. We move quickly, keep you in the loop, and build so the next upgrade is easy.'.split(' ').map((word, wordIdx) => (
+                    <span key={wordIdx} className="approach-word">
+                      {word}{' '}
+                    </span>
+                  ))}
                 </p>
               </div>
             </div>
@@ -1659,25 +1915,37 @@ ${formData.name}`;
             {serviceTiers.map((tier) => (
               <article
                 key={tier.title}
-                className="service-card group relative h-full rounded-2xl border border-white/10 bg-gradient-to-br from-black/60 via-black/50 to-black/40 p-8 shadow-[0_0_30px_rgba(6,182,212,0.1)] transition transform hover:-translate-y-2 hover:scale-110 overflow-hidden"
+                className="service-card group relative h-full rounded-2xl border border-white/10 bg-gradient-to-br from-black/60 via-black/50 to-black/40 p-8 shadow-[0_0_30px_rgba(6,182,212,0.1)] transition-all duration-300 ease-out origin-center will-change-transform overflow-hidden group-hover:-translate-y-2 group-hover:scale-[1.1]"
               >
-                <div className="absolute inset-0 bg-gradient-to-r from-cyan-500/0 via-cyan-500/0 to-cyan-500/0 group-hover:from-cyan-500/15 group-hover:via-cyan-500/8 group-hover:to-cyan-500/0 transition-all duration-300 z-10 border-2 border-transparent group-hover:border-cyan-400/50 rounded-2xl" />
+                <div className="absolute inset-0 bg-gradient-to-r from-cyan-500/15 via-cyan-500/8 to-cyan-500/0 opacity-0 group-hover:opacity-100 transition-all duration-700 ease-in-out z-10 border-2 border-transparent group-hover:border-cyan-400/50 rounded-2xl" />
                 <div className="relative z-20">
                   <div className="flex items-start justify-between gap-4">
                     <div className="space-y-2">
-                      <p className="text-[0.7rem] uppercase tracking-[0.3em] text-slate-400">Tier</p>
+                      <p className="text-[0.7rem] uppercase tracking-[0.3em] text-cyan-500">Tier</p>
                       <h3 className="text-2xl text-white font-semibold leading-tight">{tier.title}</h3>
                     </div>
                     <span className="px-3 py-2 rounded-full bg-cyan-500/15 text-cyan-200 text-xs tracking-[0.2em] uppercase border border-cyan-500/40">
                       {tier.price}
                     </span>
                   </div>
-                  <p className="text-slate-300 font-light mt-4 leading-relaxed">{tier.summary}</p>
+                  <p className="text-slate-300 font-light mt-4 leading-relaxed">
+                    {tier.summary.split(' ').map((word, wordIdx) => (
+                      <span key={wordIdx} className="tier-summary-word">
+                        {word}{' '}
+                      </span>
+                    ))}
+                  </p>
                   <ul className="mt-5 space-y-3 text-slate-400 font-light">
                     {tier.details.map((detail) => (
                       <li key={detail} className="flex items-start gap-3">
                         <CheckCircle className="w-4 h-4 text-cyan-400 mt-[2px] flex-shrink-0" />
-                        <span>{detail}</span>
+                        <span>
+                          {detail.split(' ').map((word, wordIdx) => (
+                            <span key={wordIdx} className="tier-detail-word">
+                              {word}{' '}
+                            </span>
+                          ))}
+                        </span>
                       </li>
                     ))}
                   </ul>
@@ -1691,14 +1959,30 @@ ${formData.name}`;
               <p className="text-xs uppercase tracking-[0.3em] text-cyan-300">How pricing works</p>
               <h3 className="text-3xl md:text-4xl text-white font-semibold leading-tight">Transparent, scoped, and built to grow with you.</h3>
               <p className="text-slate-300 font-light leading-relaxed">
-                Each project starts with a short scope discussion to make sure the solution fits your goals. Fixed pricing is used whenever possible. Larger or evolving projects may move to milestone-based pricing. If you are unsure where you fit, start with the simplest tier. Everything is built so it can grow with you.
+                {'Each project starts with a short scope discussion to make sure the solution fits your goals. Fixed pricing is used whenever possible. Larger or evolving projects may move to milestone-based pricing. If you are unsure where you fit, start with the simplest tier. Everything is built so it can grow with you.'.split(' ').map((word, wordIdx) => (
+                  <span key={wordIdx} className="pricing-works-word">
+                    {word}{' '}
+                  </span>
+                ))}
               </p>
             </div>
             <div className="lg:col-span-1">
               <div className="glass-panel rounded-2xl p-6 border border-white/10 bg-black/60 flex flex-col gap-3">
-                <p className="text-sm uppercase tracking-[0.25em] text-slate-400">Next step</p>
-                <p className="text-white text-xl font-semibold">Share where you are and where you want to go.</p>
-                <p className="text-slate-400 font-light">Pick the nearest tier and we will right-size the build together.</p>
+                <p className="text-sm uppercase tracking-[0.25em] text-cyan-500">Next step</p>
+                <p className="text-white text-xl font-semibold">
+                  {'Share where you are and where you want to go.'.split(' ').map((word, wordIdx) => (
+                    <span key={wordIdx} className="next-step-title-word">
+                      {word}{' '}
+                    </span>
+                  ))}
+                </p>
+                <p className="text-slate-400 font-light">
+                  {'Pick the nearest tier and we will right-size the build together.'.split(' ').map((word, wordIdx) => (
+                    <span key={wordIdx} className="next-step-text-word">
+                      {word}{' '}
+                    </span>
+                  ))}
+                </p>
                 <Button
                   onClick={(event) => handleNavClick(event, 'contact')}
                   className="mt-2"
