@@ -34,6 +34,7 @@ type ScopeReply = {
 };
 
 const quickPrompts = [
+  'Build a simple landing page for my business',
   'Build a multi-page site with a booking form',
   'Add AI chat support for my existing app',
   'Automate weekly client reporting with my CRM',
@@ -613,11 +614,20 @@ export function ScopeChat({ questionAnswers }: ScopeChatProps = {}) {
           <span>Scope Chat</span>
         </div>
         <div className="flex items-baseline justify-between gap-4">
-          <h3 className="text-2xl md:text-3xl font-semibold text-white">Scope your build instantly</h3>
+          <h3 className="text-2xl md:text-3xl font-semibold text-white">
+            {'Scope your build instantly'.split(' ').map((word, wordIdx) => (
+              <span key={wordIdx} className="scope-chat-title-word">
+                {word}{' '}
+              </span>
+            ))}
+          </h3>
         </div>
         <p className="text-slate-400 max-w-3xl">
-          Share what you want to build or automate. The assistant will map it to the closest service tier, give a budget range,
-          and list next steps.
+          {'Share what you want to build or automate. The assistant will map it to the closest service tier, give a budget range, and list next steps.'.split(' ').map((word, wordIdx) => (
+            <span key={wordIdx} className="scope-chat-description-word">
+              {word}{' '}
+            </span>
+          ))}
         </p>
       </div>
 

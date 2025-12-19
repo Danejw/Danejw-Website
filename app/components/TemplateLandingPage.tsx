@@ -1351,19 +1351,19 @@ export const TemplateLandingPage: React.FC = () => {
           },
         );
 
-        // Animate ScopeChat component upward
+        // Animate ScopeChat component from left
         gsap.fromTo(
           '.contact-chat',
           {
-            y: 100,
+            x: 300,
             opacity: 0,
             filter: 'blur(10px)',
           },
           {
-            y: 0,
+            x: 0,
             opacity: 1,
             filter: 'blur(0px)',
-            ease: 'power3.out',
+            ease: 'power4.out',
             scrollTrigger: {
               trigger: contactRef.current,
               start: 'top 80%',
@@ -1373,6 +1373,62 @@ export const TemplateLandingPage: React.FC = () => {
             },
           },
         );
+
+        // Animate ScopeChat title words from left to right
+        const scopeChatTitleWords = contactRef.current.querySelectorAll('.scope-chat-title-word');
+        if (scopeChatTitleWords.length > 0) {
+          gsap.set(scopeChatTitleWords, { x: 200, opacity: 0, filter: 'blur(8px)' });
+          
+          gsap.to(
+            scopeChatTitleWords,
+            {
+              x: 0,
+              opacity: 1,
+              filter: 'blur(0px)',
+              ease: 'power3.out',
+              duration: 0.6,
+              stagger: {
+                amount: 1.5,
+                from: 'start',
+              },
+              scrollTrigger: {
+                trigger: contactRef.current,
+                start: 'top 80%',
+                end: 'top 40%',
+                scrub: 1.2,
+                toggleActions: 'play none none reverse',
+              },
+            },
+          );
+        }
+
+        // Animate ScopeChat description words from left to right
+        const scopeChatDescriptionWords = contactRef.current.querySelectorAll('.scope-chat-description-word');
+        if (scopeChatDescriptionWords.length > 0) {
+          gsap.set(scopeChatDescriptionWords, { x: 200, opacity: 0, filter: 'blur(8px)' });
+          
+          gsap.to(
+            scopeChatDescriptionWords,
+            {
+              x: 0,
+              opacity: 1,
+              filter: 'blur(0px)',
+              ease: 'power3.out',
+              duration: 0.6,
+              stagger: {
+                amount: 1.5,
+                from: 'start',
+              },
+              scrollTrigger: {
+                trigger: contactRef.current,
+                start: 'top 75%',
+                end: 'top 35%',
+                scrub: 1.2,
+                toggleActions: 'play none none reverse',
+              },
+            },
+          );
+        }
       }
 
       // Animate footer from bottom up
