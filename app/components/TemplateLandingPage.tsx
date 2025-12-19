@@ -1636,7 +1636,7 @@ export const TemplateLandingPage: React.FC = () => {
       </header>
 
       {/* Build custom software staggered cards */}
-      <section id="build" ref={processRef} className="build-section relative z-10 mb-24 -mt-48 md:mt-0 lg:mt-8 xl:mt-12 2xl:mt-16">
+      <section id="build" ref={processRef} className="build-section relative z-10 mb-20 -mt-12 sm:mt-0 md:mt-0 lg:mt-8 xl:mt-12 2xl:mt-16">
         <div className="absolute right-0 top-1/4 w-1/2 h-1/2 bg-cyan-500/5 blur-[120px] rounded-full pointer-events-none animate-glow-drift-right" />
 
         <div className="max-w-7xl mx-auto px-6 py-16 space-y-32">
@@ -1645,7 +1645,7 @@ export const TemplateLandingPage: React.FC = () => {
             return (
               <article
                 key={slide.title}
-                className={`build-slide relative grid grid-cols-1 lg:grid-cols-2 gap-12 items-center ${
+                className={`build-slide relative grid grid-cols-1 lg:grid-cols-2 gap-12 sm:gap-6 md:gap-8 lg:gap-12 items-center ${
                   isEven ? 'lg:ml-0' : 'lg:ml-20'
                 }`}
               >
@@ -1861,7 +1861,7 @@ export const TemplateLandingPage: React.FC = () => {
           </div>
 
           <div className="flex items-center justify-center">
-            <div className="inline-flex items-center gap-3 px-6 text-sm text-cyan-400/60">
+            <div className="inline-flex items-center text-center justify-center gap-3 px-6 text-sm text-cyan-400/60">
               <span>Maintenance costs apply, including AI token usage, website, database, and automation hosting</span>
             </div>
           </div>
