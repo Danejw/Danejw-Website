@@ -1569,14 +1569,6 @@ export const TemplateLandingPage: React.FC = () => {
           />
         </div>
 
-        {/* Floating icons */}
-        <div className="absolute top-1/4 left-10 opacity-30 animate-float hero-float-1">
-          <Box className="w-24 h-24 text-cyan-500" />
-        </div>
-        <div className="absolute bottom-1/3 right-20 opacity-30 animate-float hero-float-2" style={{ animationDelay: '1.5s' }}>
-          <Cpu className="w-16 h-16 text-cyan-500" />
-        </div>
-
         {/* Headshot */}
         <div className="relative z-10 max-w-7xl mx-auto px-6 w-full">
           <div className="flex flex-col items-center lg:items-start space-y-8">
