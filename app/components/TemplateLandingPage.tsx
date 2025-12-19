@@ -20,17 +20,12 @@ import {
   BrainCircuit,
   Hammer,
   ArrowUpRight,
-  ArrowRight,
-  Mail,
-  MapPin,
   Zap,
   Triangle,
   X,
   ExternalLink,
   Github,
   CheckCircle,
-  XCircle,
-  Loader2,
 } from 'lucide-react';
 import { SocialIcons } from './SocialIcons';
 import { InputArea } from './InputArea';
@@ -462,13 +457,6 @@ export const TemplateLandingPage: React.FC = () => {
     question2: '',
     question3: '',
   });
-  const [formData, setFormData] = useState({
-    name: '',
-    email: '',
-    projectDetails: '',
-  });
-  const [isSubmitting, setIsSubmitting] = useState(false);
-  const [submitStatus, setSubmitStatus] = useState<'idle' | 'success' | 'error'>('idle');
 
   const handleVideoLoaded = useCallback((key: string, videoElement: HTMLVideoElement) => {
     setVideoReady((prev) => ({ ...prev, [key]: true }));
@@ -479,89 +467,6 @@ export const TemplateLandingPage: React.FC = () => {
     });
   }, []);
 
-  const formatQuestionAnswers = useCallback(() => {
-    const answers = [];
-    if (questionAnswers.question1) {
-      answers.push('Q1: What is the one annoying thing you do over and over every week that you secretly know a computer should be doing for you by now?');
-      answers.push(`A: ${questionAnswers.question1}`);
-    }
-    if (questionAnswers.question2) {
-      answers.push('\nQ2: If you had a piece of software built just for you that understood your exact workflow, what is the first thing you would stop doing manually tomorrow?');
-      answers.push(`A: ${questionAnswers.question2}`);
-    }
-    if (questionAnswers.question3) {
-      answers.push('\nQ3: Where in your day are you copy-pasting, double entering data, or babysitting a process that could quietly run itself while you do something that actually matters?');
-      answers.push(`A: ${questionAnswers.question3}`);
-    }
-    return answers.join('\n');
-  }, [questionAnswers]);
-
-  const handleFormSubmit = useCallback((e: React.FormEvent) => {
-    e.preventDefault();
-    
-    // Validate form
-    if (!formData.name.trim() || !formData.email.trim() || !formData.projectDetails.trim()) {
-      setSubmitStatus('error');
-      setTimeout(() => setSubmitStatus('idle'), 3000);
-      return;
-    }
-
-    setIsSubmitting(true);
-    setSubmitStatus('idle');
-
-    try {
-      const questionAnswersText = formatQuestionAnswers();
-      const fullProjectDetails = questionAnswersText 
-        ? `${formData.projectDetails}${questionAnswersText ? '\n\n--- Question Answers ---\n' + questionAnswersText : ''}`
-        : formData.projectDetails;
-
-      // Build email body with all form information
-      const emailBody = `Hello,
-
-I'm reaching out regarding a potential project.
-
-Name: ${formData.name}
-Email: ${formData.email}
-
-Project Details:
-${fullProjectDetails}
-
-Looking forward to hearing from you!
-
-Best regards,
-${formData.name}`;
-
-      // Create mailto link with pre-filled information
-      const subject = encodeURIComponent(`New Contact Form Submission from ${formData.name}`);
-      const body = encodeURIComponent(emailBody);
-      const mailtoLink = `mailto:yourindie101@gmail.com?subject=${subject}&body=${body}`;
-
-      // Open default email client
-      window.location.href = mailtoLink;
-
-      // Success - clear form and show success message
-      setSubmitStatus('success');
-      setFormData({
-        name: '',
-        email: '',
-        projectDetails: '',
-      });
-      setQuestionAnswers({
-        question1: '',
-        question2: '',
-        question3: '',
-      });
-
-      // Reset status after 5 seconds
-      setTimeout(() => setSubmitStatus('idle'), 5000);
-    } catch (error) {
-      console.error('Error opening email client:', error);
-      setSubmitStatus('error');
-      setTimeout(() => setSubmitStatus('idle'), 5000);
-    } finally {
-      setIsSubmitting(false);
-    }
-  }, [formData, formatQuestionAnswers]);
 
   // Prevent body scroll when modal is open
   useEffect(() => {
@@ -1421,21 +1326,21 @@ ${formData.name}`;
         });
       }
 
-      // Animate contact section - copy and form upward
+      // Animate contact section - heading and chat component
       if (contactRef.current) {
-        // Animate contact copy (left side) upward
+        // Animate contact heading from left
         gsap.fromTo(
-          '.contact-copy',
+          '.contact-heading',
           {
-            y: 100,
+            x: -300,
             opacity: 0,
             filter: 'blur(10px)',
           },
           {
-            y: 0,
+            x: 0,
             opacity: 1,
             filter: 'blur(0px)',
-            ease: 'power3.out',
+            ease: 'power4.out',
             scrollTrigger: {
               trigger: contactRef.current,
               start: 'top 85%',
@@ -1446,9 +1351,9 @@ ${formData.name}`;
           },
         );
 
-        // Animate contact form (right side) upward
+        // Animate ScopeChat component upward
         gsap.fromTo(
-          '.contact-form',
+          '.contact-chat',
           {
             y: 100,
             opacity: 0,
@@ -2088,135 +1993,18 @@ ${formData.name}`;
 
       {/* Contact */}
       <section id="contact" ref={contactRef} className="py-24 relative z-10">
-        <div className="absolute left-0 top-1/4 w-1/2 h-1/2 bg-cyan-500/5 blur-[120px] rounded-full pointer-events-none animate-glow-drift-left" />
-        <div className="max-w-7xl mx-auto px-6 grid grid-cols-1 lg:grid-cols-2 gap-16 items-center">
-          <div className="contact-copy">
-            <div className="mb-6 flex flex-wrap items-center gap-6">
-              {/* <div className="flex items-center gap-2">
-                <div className="flex text-yellow-400">
-                  {Array.from({ length: 5 }).map((_, idx) => (
-                    <Star key={idx} className="w-4 h-4 fill-yellow-400 text-yellow-400" />
-                  ))}
-                </div>
-                <span className="text-xs uppercase tracking-[0.25em] text-slate-400">20+ Client Reviews</span>
-              </div> */}
-              <div className="flex flex-wrap gap-3 text-[0.65rem] tracking-[0.2em] uppercase text-slate-400">
-                <div className="flex items-center gap-1 px-3 py-1 rounded-full border border-emerald-500/40 bg-emerald-500/5">
-                  <ShieldCheck className="w-3 h-3 text-emerald-400" />
-                  <span>Trusted by Small Businesses</span>
-                </div>
-                <div className="flex items-center gap-1 px-3 py-1 rounded-full border border-cyan-500/40 bg-cyan-500/5">
-                  <Sparkles className="w-3 h-3 text-cyan-400" />
-                  <span>On-Time Delivery</span>
-                </div>
-              </div>
-            </div>
-            <h3 className="text-6xl md:text-7xl font-semibold text-white tracking-tight mb-6 leading-none">
-              LET&apos;S BUILD
-              <br />
-              
-              <span className="bg-cyan-500 text-black px-1 inline-block animate-pulse">REVENUE</span>
-            </h3>
-            <p className="text-slate-400 mb-10 max-w-md font-light text-lg">
-              Available for websites, web applications, AI Integrations, automations, product launches, and ongoing retainers.
-            </p>
-            <div className="flex flex-col gap-4">
-              <a href="mailto:YourIndie101@gmail.com" className="group flex items-center gap-4 text-xl text-white hover:text-cyan-400 transition-colors">
-                <div className="p-3 border border-white/10 rounded-full group-hover:border-cyan-400 transition-colors">
-                  <Mail className="w-5 h-5" />
-                </div>
-                <span className="font-light tracking-wide">yourindie101@gmail.com</span>
-              </a>
-              <div className="group flex items-center gap-4 text-xl text-white">
-                <div className="p-3 border border-white/10 rounded-full group-hover:border-cyan-400 transition-colors">
-                  <MapPin className="w-5 h-5" />
-                </div>
-                <span className="font-light tracking-wide">
-                  Based in <span className="text-cyan-500">Hawai&apos;i</span> <ArrowRight className="w-4 h-4 inline-block align-middle mx-1" /> available remotely
-                </span>
-              </div>
-            </div>
+        <div className="absolute left-0 top-1/10 w-1/2 h-1/2 bg-cyan-500/5 blur-[120px] rounded-full pointer-events-none animate-glow-drift-left" />
+        
+        <div className="max-w-7xl mx-auto px-6">
+          <div className="mb-12 contact-heading text-center justify-center items-center">
+            <h2 className="text-4xl md:text-5xl lg:text-6xl font-semibold text-white leading-tight">
+              Let&apos;s Build 
+              <br/>
+              <span className="bg-cyan-500 text-black px-1 inline-block">Something</span>
+            </h2>
           </div>
-
-          {/* Form */}
-          <div className="relative perspective-normal">
-            <div className="glass-panel p-8 md:p-10 rounded-2xl border border-cyan-500/20 shadow-[0_0_30px_rgba(6,182,212,0.1)]">
-              {/* <h4 className="text-2xl font-light text-white mb-6 tracking-tight">Booking Inquiry</h4> */}
-              <form onSubmit={handleFormSubmit} className="space-y-6">
-                <div className="flex items-center justify-between gap-4">
-                  <div className="flex items-center gap-2 text-xs text-slate-400">
-                    <span className="uppercase text-xl tracking-[0.25em]">Let&apos;s Connect</span>
-                  </div>
-                </div>
-                <div className="space-y-1">
-                  <label className="text-xs uppercase tracking-widest text-slate-500">Name</label>
-                  <InputArea
-                    type="text"
-                    value={formData.name}
-                    onChange={(value) => setFormData(prev => ({ ...prev, name: value }))}
-                    placeholder="John Doe"
-                  />
-                </div>
-                <div className="space-y-1">
-                  <label className="text-xs uppercase tracking-widest text-slate-500">Email</label>
-                  <InputArea
-                    type="email"
-                    value={formData.email}
-                    onChange={(value) => setFormData(prev => ({ ...prev, email: value }))}
-                    placeholder="john@company.com"
-                  />
-                </div>
-                <div className="space-y-1">
-                  <label className="text-xs uppercase tracking-widest text-slate-500">Project Details</label>
-                  <InputArea
-                    type="textarea"
-                    rows={6}
-                    value={formData.projectDetails}
-                    onChange={(value) => setFormData(prev => ({ ...prev, projectDetails: value }))}
-                    placeholder="Tell me about your vision..."
-                  />
-                  {Object.values(questionAnswers).some(answer => answer.trim() !== '') && (
-                    <div className="mt-2 p-3 bg-cyan-500/10 border border-cyan-500/30 rounded text-xs text-cyan-400">
-                      <p className="font-semibold mb-1">Note: Your question answers will be included when you submit.</p>
-                    </div>
-                  )}
-                </div>
-                <div className="space-y-3">
-                  <Button
-                    variant="primary"
-                    type="submit"
-                    disabled={isSubmitting}
-                    isLoading={isSubmitting}
-                    className="w-full py-4"
-                  >
-                    {isSubmitting ? (
-                      <>
-                        <Loader2 className="w-5 h-5 animate-spin" />
-                        <span>Opening Email...</span>
-                      </>
-                    ) : (
-                      'Initiate Sequence'
-                    )}
-                  </Button>
-                  {submitStatus === 'success' && (
-                    <div className="flex items-center gap-2 p-3 bg-green-500/10 border border-green-500/30 rounded text-sm text-green-400 animate-fadeIn">
-                      <CheckCircle className="w-5 h-5" />
-                      <span>Email client opened! Please review and send the message from your email app.</span>
-                    </div>
-                  )}
-                  {submitStatus === 'error' && (
-                    <div className="flex items-center gap-2 p-3 bg-red-500/10 border border-red-500/30 rounded text-sm text-red-400 animate-fadeIn">
-                      <XCircle className="w-5 h-5" />
-                      <span>Failed to send message. Please try again or contact me directly at yourindie101@gmail.com</span>
-                    </div>
-                  )}
-                </div>
-              </form>
-            </div>
-          </div>
-
-          <div className="lg:col-span-2">
-            <ScopeChat />
+          <div className="contact-chat">
+            <ScopeChat questionAnswers={questionAnswers} />
           </div>
         </div>
       </section>

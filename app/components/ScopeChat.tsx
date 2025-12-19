@@ -74,7 +74,17 @@ const defaultInitialMessage: ChatMessage = {
     "Tell me what you're trying to build or automate. I'll suggest a scope, budget range, and the best tier to start with.",
 };
 
-export function ScopeChat() {
+type QuestionAnswers = {
+  question1: string;
+  question2: string;
+  question3: string;
+};
+
+type ScopeChatProps = {
+  questionAnswers?: QuestionAnswers;
+};
+
+export function ScopeChat({ questionAnswers }: ScopeChatProps = {}) {
   // Load initial state from localStorage or use defaults
   const [messages, setMessages] = useState<ChatMessage[]>(() => {
     const cached = loadFromStorage<ChatMessage[]>(STORAGE_KEYS.MESSAGES, []);
@@ -340,6 +350,24 @@ export function ScopeChat() {
     setEmailSent(false);
 
     try {
+      // Format question answers if provided
+      const formattedQuestionAnswers = questionAnswers 
+        ? {
+            question1: questionAnswers.question1 ? {
+              question: 'What is the one annoying thing you do over and over every week that you secretly know a computer should be doing for you by now?',
+              answer: questionAnswers.question1
+            } : null,
+            question2: questionAnswers.question2 ? {
+              question: 'If you had a piece of software built just for you that understood your exact workflow, what is the first thing you would stop doing manually tomorrow?',
+              answer: questionAnswers.question2
+            } : null,
+            question3: questionAnswers.question3 ? {
+              question: 'Where in your day are you copy-pasting, double entering data, or babysitting a process that could quietly run itself while you do something that actually matters?',
+              answer: questionAnswers.question3
+            } : null,
+          }
+        : undefined;
+
       const response = await fetch('/api/scope-chat-summary', {
         method: 'POST',
         headers: { 'Content-Type': 'application/json' },
@@ -348,6 +376,7 @@ export function ScopeChat() {
           estimate: lastEstimate, // Include budget estimate and recommended tier
           userEmail: userEmail, // Explicitly provide email
           contactInfo: contactInfo || undefined, // Include contact info if provided
+          questionAnswers: formattedQuestionAnswers, // Include question answers if provided
         }),
       });
 
@@ -585,10 +614,6 @@ export function ScopeChat() {
         </div>
         <div className="flex items-baseline justify-between gap-4">
           <h3 className="text-2xl md:text-3xl font-semibold text-white">Scope your build instantly</h3>
-          <div className="hidden md:flex items-center gap-2 text-xs text-cyan-200/70">
-            <span className="inline-flex h-2 w-2 rounded-full bg-emerald-400 animate-pulse" />
-            Live estimate
-          </div>
         </div>
         <p className="text-slate-400 max-w-3xl">
           Share what you want to build or automate. The assistant will map it to the closest service tier, give a budget range,

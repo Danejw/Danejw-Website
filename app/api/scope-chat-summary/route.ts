@@ -44,7 +44,24 @@ export async function POST(request: Request) {
   //   );
   // }
 
-  let body: { messages?: ChatMessage[]; estimate?: Estimate; userEmail?: string; contactInfo?: string };
+  type QuestionAnswer = {
+    question: string;
+    answer: string;
+  };
+
+  type QuestionAnswers = {
+    question1: QuestionAnswer | null;
+    question2: QuestionAnswer | null;
+    question3: QuestionAnswer | null;
+  };
+
+  let body: { 
+    messages?: ChatMessage[]; 
+    estimate?: Estimate; 
+    userEmail?: string; 
+    contactInfo?: string;
+    questionAnswers?: QuestionAnswers;
+  };
   try {
     body = await request.json();
   } catch {
@@ -164,6 +181,18 @@ Write this as a quick overview that someone can read in 30 seconds to understand
     // Get contact info from request body (if provided)
     const userContactInfo: string | null = body.contactInfo || null;
 
+    // Get question answers from request body (if provided)
+    const questionAnswers: QuestionAnswers | null = body.questionAnswers || null;
+    
+    // Format question answers for email display
+    const formattedQuestionAnswers = questionAnswers 
+      ? [
+          questionAnswers.question1,
+          questionAnswers.question2,
+          questionAnswers.question3,
+        ].filter((qa): qa is QuestionAnswer => qa !== null)
+      : [];
+
     // Sanitize content for email
     const sanitizedSummary = escapeHtml(summary);
     const sanitizedConversation = escapeHtml(conversationText);
@@ -235,6 +264,20 @@ Write this as a quick overview that someone can read in 30 seconds to understand
           </div>
           ` : ''}
 
+          ${formattedQuestionAnswers.length > 0 ? `
+          <div style="margin-top: 25px;">
+            <h3 style="color: #333; margin-bottom: 15px;">Questions to Consider - Client Responses</h3>
+            <div style="background: #f0f9ff; padding: 20px; border-radius: 8px; border-left: 4px solid #06b6d4;">
+              ${formattedQuestionAnswers.map((qa, idx) => `
+                <div style="margin-bottom: ${idx < formattedQuestionAnswers.length - 1 ? '20px' : '0'};">
+                  <p style="margin: 0 0 8px 0; font-weight: 600; color: #0c4a6e; font-size: 14px;">${escapeHtml(qa.question)}</p>
+                  <p style="margin: 0; color: #1e293b; line-height: 1.6; font-size: 14px; padding-left: 15px; border-left: 2px solid #06b6d4;">${escapeHtml(qa.answer)}</p>
+                </div>
+              `).join('')}
+            </div>
+          </div>
+          ` : ''}
+
           <div style="margin-top: 30px; padding-top: 20px; border-top: 1px solid #eee;">
             <h3 style="color: #333; margin-bottom: 10px;">Full Conversation</h3>
             <div style="background: #f9f9f9; padding: 15px; border-radius: 5px; max-height: 400px; overflow-y: auto; font-family: monospace; font-size: 12px; line-height: 1.5;">
@@ -268,6 +311,8 @@ ${budgetRange ? `Budget Estimate: ${budgetRange}\n` : ''}
 ${recommendedPackage ? `Recommended Tier: ${recommendedPackage}\n` : ''}
 ${userEmail ? `Client Email: ${userEmail}\n` : ''}
 ${userContactInfo ? `Contact Information: ${userContactInfo}\n` : ''}
+
+${formattedQuestionAnswers.length > 0 ? `\nQuestions to Consider - Client Responses:\n${formattedQuestionAnswers.map((qa, idx) => `\n${idx + 1}. ${qa.question}\n   Answer: ${qa.answer}`).join('\n')}\n` : ''}
 
 ${nextSteps.length > 0 ? `\nNext Steps:\n${nextSteps.map((step, idx) => `${idx + 1}. ${step}`).join('\n')}\n` : ''}
 
