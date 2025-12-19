@@ -2010,12 +2010,12 @@ export const TemplateLandingPage: React.FC = () => {
       </section>
 
       {/* Footer */}
-      <footer ref={footerRef} className="bg-gradient-to-t from-black via-black/80 to-transparent pt-10 relative z-20 overflow-visible">
+      <footer ref={footerRef} className="bg-gradient-to-t from-black via-black/80 to-transparent pt-10 pb-0 relative z-20 overflow-hidden">
         <div className="footer-content max-w-7xl mx-auto px-6 flex flex-col items-center gap-8">
           <SocialIcons />
           {/* <p className="text-slate-600 text-xs tracking-widest uppercase">© 2025. All Rights Reserved.</p> */}
         </div>
-        <h4 className="footer-name tracking-[0.2em] text-[10vw] md:text-[8vw] font-semibold text-gray-400/10 select-none text-center leading-none mb-0">DANEJW</h4>
+        <h4 className="footer-name tracking-[0.2em] text-[10vw] md:text-[8vw] font-semibold text-gray-400/20 select-none text-center leading-none mb-0 pb-0">DANEJW</h4>
       </footer>
 
       {/* Project Modal */}

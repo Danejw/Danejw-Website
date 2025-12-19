@@ -836,8 +836,8 @@ export function ScopeChat({ questionAnswers }: ScopeChatProps = {}) {
           className="hidden"
           aria-label="Upload images"
         />
-        <div className="flex justify-end">
-          <Button onClick={sendMessage} disabled={isLoading || (!input.trim() && attachedImages.length === 0)} className="px-5 rounded-md">
+        <div className="w-full">
+          <Button onClick={sendMessage} disabled={isLoading || (!input.trim() && attachedImages.length === 0)} className="w-full px-5 rounded-md">
             {isLoading ? (
               <>
                 <ThreeDotLoader size="sm" />
