@@ -36,11 +36,12 @@ import { InputArea } from './InputArea';
 import { CustomCursor } from './CustomCursor';
 import { Button } from './ui/Button';
 
-type SectionKey = 'hero' | 'process' | 'work' | 'contact';
+type SectionKey = 'hero' | 'process' | 'services' | 'work' | 'contact';
 
 const sectionIds: Record<SectionKey, string> = {
   hero: 'hero',
   process: 'build',
+  services: 'services',
   work: 'work',
   contact: 'contact',
 };
@@ -53,6 +54,10 @@ const sectionInfo: Record<SectionKey, { label: string; detail: string }> = {
   process: {
     label: 'Custom Build',
     detail: 'Bespoke web applications tailored to your specific needs and workflows.',
+  },
+  services: {
+    label: 'Services',
+    detail: 'Service tiers, pricing, and how engagements scale over time.',
   },
   work: {
     label: 'Portfolio',
@@ -111,6 +116,71 @@ const buildSlides: BuildSlide[] = [
       'Tailored experiences that feel crafted for you. Personalized to fit your needs and solve your problems to save you time and money.',
     img: '/photos/blurred_look_2.jpeg',
   }
+];
+
+type ServiceTier = {
+  title: string;
+  price: string;
+  summary: string;
+  details: string[];
+};
+
+const serviceTiers: ServiceTier[] = [
+  {
+    title: 'One-Page Landing Website',
+    price: 'Starting at $1,000',
+    summary:
+      'A focused, high-quality landing page designed to clearly communicate what you do and convert visitors into contacts or customers. This is ideal for personal brands, early startups, campaigns, or product launches.',
+    details: [
+      'Includes custom design, mobile responsiveness, basic SEO setup, and a contact or signup form.',
+      'Built fast and optimized for clarity.',
+    ],
+  },
+  {
+    title: 'Multi-Page Website',
+    price: 'Starting at $2,500',
+    summary:
+      'A full website with multiple pages such as Home, About, Services, and Contact. This is best for small businesses that need structure, credibility, and room to explain what they offer.',
+    details: [
+      'Includes custom layout, navigation, responsive design, and scalable structure so new pages can be added later.',
+    ],
+  },
+  {
+    title: 'Multi-Page Website With Database',
+    price: 'Starting at $4,500',
+    summary:
+      'A dynamic website backed by a database for storing and managing content or user data. This is useful for blogs, directories, content platforms, or internal tools.',
+    details: [
+      'Includes database setup, dynamic content rendering, and basic backend functionality to support real data instead of static pages.',
+    ],
+  },
+  {
+    title: 'Custom Web Application',
+    price: 'Starting at $7,500+',
+    summary:
+      'A fully custom web application with backend logic, authentication, dashboards, and integrations. This is real software built to solve a specific business problem.',
+    details: [
+      'Includes custom backend development, API integrations, database design, user flows, and scalable architecture. Pricing depends on scope and complexity.',
+    ],
+  },
+  {
+    title: 'AI Integrations',
+    price: 'Starting at $1,500',
+    summary:
+      'Add AI capabilities to your product or workflow. This can include chat interfaces, assistants, content generation, decision support tools, or voice interactions.',
+    details: [
+      'AI is integrated intentionally to reduce manual work or unlock new capabilities, not as a gimmick.',
+    ],
+  },
+  {
+    title: 'Automation and Workflow Integrations',
+    price: 'Starting at $1,000',
+    summary:
+      'Automate repetitive processes and connect your tools together. This includes system-to-system integrations, background jobs, and trigger-based workflows.',
+    details: [
+      'Ideal for saving time, reducing errors, and letting your software run without constant human input.',
+    ],
+  },
 ];
 
 type PortfolioItem = {
@@ -375,6 +445,7 @@ export const TemplateLandingPage: React.FC = () => {
   const rootRef = useRef<HTMLDivElement | null>(null);
   const heroRef = useRef<HTMLElement | null>(null);
   const processRef = useRef<HTMLElement | null>(null);
+  const servicesRef = useRef<HTMLElement | null>(null);
   const workRef = useRef<HTMLElement | null>(null);
   const questionsRef = useRef<HTMLElement | null>(null);
   const techMarqueeRef = useRef<HTMLElement | null>(null);
@@ -507,6 +578,7 @@ ${formData.name}`;
     const candidates: { key: SectionKey; el: HTMLElement | null }[] = [
       { key: 'hero', el: heroRef.current },
       { key: 'process', el: processRef.current },
+      { key: 'services', el: servicesRef.current },
       { key: 'work', el: workRef.current },
       { key: 'contact', el: contactRef.current },
     ];
@@ -794,6 +866,45 @@ ${formData.name}`;
           );
         }
       });
+
+      if (servicesRef.current) {
+        gsap.fromTo(
+          '.services-grid-header',
+          { y: 60, opacity: 0 },
+          {
+            y: 0,
+            opacity: 1,
+            ease: 'power3.out',
+            scrollTrigger: {
+              trigger: servicesRef.current,
+              start: 'top 80%',
+              end: 'top 50%',
+              scrub: 1.2,
+            },
+          },
+        );
+
+        gsap.utils.toArray<HTMLElement>('.service-card').forEach((card, idx) => {
+          gsap.fromTo(
+            card,
+            { y: 80, opacity: 0, rotateX: -12, scale: 0.96 },
+            {
+              y: 0,
+              opacity: 1,
+              rotateX: 0,
+              scale: 1,
+              ease: 'power3.out',
+              scrollTrigger: {
+                trigger: card,
+                start: 'top 85%',
+                end: 'top 45%',
+                scrub: 1.2,
+              },
+              delay: idx * 0.05,
+            },
+          );
+        });
+      }
 
       // Animate portfolio items based on scroll position
       if (workRef.current) {
@@ -1204,6 +1315,15 @@ ${formData.name}`;
           </a>
           <div className="hidden md:flex gap-8 text-xs font-medium tracking-widest uppercase text-slate-300">
             <a
+              href="#services"
+              onClick={(event) => handleNavClick(event, 'services')}
+              className={`hover:text-cyan-400 hover:scale-150 transition-all duration-300 ease-in-out ${
+                activeSection === 'services' ? 'text-cyan-400' : ''
+              }`}
+            >
+              Services
+            </a>
+            <a
               href="#work"
               onClick={(event) => handleNavClick(event, 'work')}
               className={`hover:text-cyan-400 hover:scale-150 transition-all duration-300 ease-in-out ${activeSection === 'work' ? 'text-cyan-400' : ''}`}
@@ -1228,12 +1348,22 @@ ${formData.name}`;
         </div>
         
         {/* Mobile Dropdown Menu */}
-        <div 
+        <div
           className={`md:hidden overflow-hidden transition-all duration-300 ease-in-out ${
-            mobileMenuOpen ? 'max-h-48 opacity-100' : 'max-h-0 opacity-0'
+            mobileMenuOpen ? 'max-h-64 opacity-100' : 'max-h-0 opacity-0'
           }`}
         >
           <div className="px-6 py-4 flex flex-col gap-4 text-xs font-medium tracking-widest uppercase text-slate-300 border-t border-white/5">
+            <a
+              href="#services"
+              onClick={(event) => {
+                handleNavClick(event, 'services');
+                setMobileMenuOpen(false);
+              }}
+              className={`hover:text-cyan-400 hover:scale-150 transition-all duration-300 ease-in-out origin-left ${activeSection === 'services' ? 'text-cyan-400' : ''}`}
+            >
+              Services
+            </a>
             <a
               href="#work"
               onClick={(event) => {
@@ -1404,6 +1534,90 @@ ${formData.name}`;
               </article>
             );
           })}
+        </div>
+      </section>
+
+      {/* Services */}
+      <section id="services" ref={servicesRef} className="relative z-10 py-24">
+        <div className="absolute left-0 top-1/4 w-1/2 h-1/2 bg-cyan-500/5 blur-[120px] rounded-full pointer-events-none animate-glow-drift-left" />
+        <div className="absolute right-10 bottom-10 w-64 h-64 bg-cyan-400/10 blur-3xl rounded-full pointer-events-none" />
+
+        <div className="max-w-7xl mx-auto px-6 space-y-14">
+          <div className="services-grid-header grid grid-cols-1 lg:grid-cols-5 gap-10 items-end">
+            <div className="lg:col-span-3 space-y-4">
+              <p className="text-xs uppercase tracking-[0.35em] text-cyan-400">Services</p>
+              <h2 className="text-4xl md:text-5xl lg:text-6xl font-semibold text-white leading-tight">
+                I design and build modern websites and web applications that scale with your needs.
+              </h2>
+              <p className="text-lg text-slate-400 font-light leading-relaxed">
+                Some clients just need a clean, professional web presence. Others need real software with data, logic, automation, and AI working behind the scenes. The work is always custom, but the structure is simple and transparent so you know exactly what you are getting.
+              </p>
+              <div className="inline-flex items-center gap-3 px-4 py-3 rounded-full border border-cyan-500/30 bg-cyan-500/5 text-sm uppercase tracking-[0.2em] text-cyan-200">
+                <Sparkles className="w-4 h-4" />
+                You can start small and grow over time. Each tier builds on the one before it.
+              </div>
+            </div>
+            <div className="lg:col-span-2 lg:ml-auto space-y-4">
+              <div className="glass-panel p-5 rounded-2xl border border-white/10 shadow-[0_20px_60px_rgba(0,0,0,0.4)] bg-black/60">
+                <p className="text-sm uppercase tracking-[0.3em] text-slate-400">Approach</p>
+                <p className="text-xl text-white font-semibold mt-2">Modern, scalable, and intentionally built.</p>
+                <p className="text-slate-400 font-light mt-3 leading-relaxed">
+                  Every engagement focuses on clarity first, then layered capability. We move quickly, keep you in the loop, and build so the next upgrade is easy.
+                </p>
+              </div>
+            </div>
+          </div>
+
+          <div className="grid grid-cols-1 md:grid-cols-2 xl:grid-cols-3 gap-8">
+            {serviceTiers.map((tier) => (
+              <article
+                key={tier.title}
+                className="service-card relative h-full rounded-2xl border border-white/10 bg-gradient-to-br from-black/60 via-black/50 to-black/40 p-8 shadow-[0_20px_60px_rgba(0,0,0,0.5)] hover:border-cyan-400/50 transition transform hover:-translate-y-2"
+              >
+                <div className="flex items-start justify-between gap-4">
+                  <div className="space-y-2">
+                    <p className="text-[0.7rem] uppercase tracking-[0.3em] text-slate-400">Tier</p>
+                    <h3 className="text-2xl text-white font-semibold leading-tight">{tier.title}</h3>
+                  </div>
+                  <span className="px-3 py-2 rounded-full bg-cyan-500/15 text-cyan-200 text-xs tracking-[0.2em] uppercase border border-cyan-500/40">
+                    {tier.price}
+                  </span>
+                </div>
+                <p className="text-slate-300 font-light mt-4 leading-relaxed">{tier.summary}</p>
+                <ul className="mt-5 space-y-3 text-slate-400 font-light">
+                  {tier.details.map((detail) => (
+                    <li key={detail} className="flex items-start gap-3">
+                      <CheckCircle className="w-4 h-4 text-cyan-400 mt-[2px]" />
+                      <span>{detail}</span>
+                    </li>
+                  ))}
+                </ul>
+              </article>
+            ))}
+          </div>
+
+          <div className="service-card relative grid grid-cols-1 lg:grid-cols-3 gap-6 items-center rounded-2xl border border-cyan-500/20 bg-gradient-to-r from-cyan-500/10 via-black/70 to-black/60 p-8 shadow-[0_20px_60px_rgba(0,0,0,0.6)]">
+            <div className="lg:col-span-2 space-y-3">
+              <p className="text-xs uppercase tracking-[0.3em] text-cyan-300">How pricing works</p>
+              <h3 className="text-3xl md:text-4xl text-white font-semibold leading-tight">Transparent, scoped, and built to grow with you.</h3>
+              <p className="text-slate-300 font-light leading-relaxed">
+                Each project starts with a short scope discussion to make sure the solution fits your goals. Fixed pricing is used whenever possible. Larger or evolving projects may move to milestone-based pricing. If you are unsure where you fit, start with the simplest tier. Everything is built so it can grow with you.
+              </p>
+            </div>
+            <div className="lg:col-span-1">
+              <div className="glass-panel rounded-2xl p-6 border border-white/10 bg-black/60 flex flex-col gap-3">
+                <p className="text-sm uppercase tracking-[0.25em] text-slate-400">Next step</p>
+                <p className="text-white text-xl font-semibold">Share where you are and where you want to go.</p>
+                <p className="text-slate-400 font-light">Pick the nearest tier and we will right-size the build together.</p>
+                <Button
+                  onClick={(event) => handleNavClick(event, 'contact')}
+                  className="mt-2"
+                >
+                  Start a scope chat
+                </Button>
+              </div>
+            </div>
+          </div>
         </div>
       </section>
 
