@@ -36,6 +36,7 @@ import { SocialIcons } from './SocialIcons';
 import { InputArea } from './InputArea';
 import { CustomCursor } from './CustomCursor';
 import { Button } from './ui/Button';
+import { ScopeChat } from './ScopeChat';
 
 type SectionKey = 'hero' | 'process' | 'services' | 'work' | 'contact';
 
@@ -2212,6 +2213,10 @@ ${formData.name}`;
                 </div>
               </form>
             </div>
+          </div>
+
+          <div className="lg:col-span-2">
+            <ScopeChat />
           </div>
         </div>
       </section>
