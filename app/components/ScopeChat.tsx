@@ -773,8 +773,9 @@ export function ScopeChat({ questionAnswers }: ScopeChatProps = {}) {
               </>
             ) : (
               <>
-                <Mail className="w-4 h-4 mr-2" />
-                When You're Ready Send Your Email Summary By Clicking Here
+                <Mail className="w-4 h-4 mr-2 hidden md:inline-block" />
+                <span className="hidden md:inline">When You're Ready Send Your Email Summary By Clicking Here</span>
+                <span className="md:hidden">Send Email Summary</span>
               </>
             )}
           </Button>
