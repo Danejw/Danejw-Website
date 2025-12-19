@@ -1,7 +1,7 @@
 'use client';
 
 import { useMemo, useRef, useState, useEffect } from 'react';
-import { ArrowUpRight, Loader2, Sparkles, Wand2, Image as ImageIcon, X, Plus } from 'lucide-react';
+import { ArrowUpRight, Loader2, Sparkles, Wand2, Image as ImageIcon, X, Plus, Mail, CheckCircle2 } from 'lucide-react';
 import ReactMarkdown from 'react-markdown';
 import { Button } from './ui/Button';
 import { cn } from '@/lib/utils';
@@ -23,6 +23,13 @@ type ScopeReply = {
   recommendedPackage?: string;
   nextSteps?: string[];
   missingInfo?: string[];
+  functionCall?: {
+    name: 'fillContactInfo';
+    arguments: {
+      email?: string;
+      contactInfo?: string;
+    };
+  };
 };
 
 const quickPrompts = [
@@ -34,6 +41,7 @@ const quickPrompts = [
 const STORAGE_KEYS = {
   MESSAGES: 'scope-chat-messages',
   LAST_ESTIMATE: 'scope-chat-last-estimate',
+  USER_EMAIL: 'scope-chat-user-email',
 } as const;
 
 // Helper functions for localStorage
@@ -78,6 +86,13 @@ export function ScopeChat() {
   });
   const [error, setError] = useState<string | null>(null);
   const [attachedImages, setAttachedImages] = useState<string[]>([]);
+  const [isSendingEmail, setIsSendingEmail] = useState(false);
+  const [emailSent, setEmailSent] = useState(false);
+  const [userEmail, setUserEmail] = useState<string>(() => {
+    return loadFromStorage<string>(STORAGE_KEYS.USER_EMAIL, '');
+  });
+  const [contactInfo, setContactInfo] = useState<string>('');
+  const [emailError, setEmailError] = useState<string | null>(null);
   const inputRef = useRef<HTMLTextAreaElement | null>(null);
   const messagesEndRef = useRef<HTMLDivElement | null>(null);
   const messagesContainerRef = useRef<HTMLDivElement | null>(null);
@@ -125,6 +140,68 @@ export function ScopeChat() {
       }
     }
   }, [lastEstimate]);
+
+  // Save userEmail to localStorage whenever it changes
+  useEffect(() => {
+    if (userEmail) {
+      saveToStorage(STORAGE_KEYS.USER_EMAIL, userEmail);
+    } else {
+      if (typeof window !== 'undefined') {
+        try {
+          localStorage.removeItem(STORAGE_KEYS.USER_EMAIL);
+        } catch (error) {
+          console.warn('Failed to remove userEmail from localStorage:', error);
+        }
+      }
+    }
+  }, [userEmail]);
+
+  // Email validation function
+  const validateEmail = (email: string): boolean => {
+    const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
+    return emailRegex.test(email);
+  };
+
+  // Auto-extract email from conversation messages
+  useEffect(() => {
+    if (userEmail && validateEmail(userEmail)) {
+      // Email already set and valid, skip extraction
+      return;
+    }
+
+    // Extract email addresses from all user messages
+    const emailRegex = /[\w\.-]+@[\w\.-]+\.\w+/g;
+    const extractedEmails: string[] = [];
+
+    messages.forEach((message) => {
+      if (message.role === 'user') {
+        if (typeof message.content === 'string') {
+          const matches = message.content.match(emailRegex);
+          if (matches) {
+            extractedEmails.push(...matches);
+          }
+        } else if (Array.isArray(message.content)) {
+          message.content.forEach((item) => {
+            if (item.type === 'input_text') {
+              const matches = item.text.match(emailRegex);
+              if (matches) {
+                extractedEmails.push(...matches);
+              }
+            }
+          });
+        }
+      }
+    });
+
+    // Use the last extracted email if found and valid
+    if (extractedEmails.length > 0) {
+      const lastEmail = extractedEmails[extractedEmails.length - 1];
+      if (validateEmail(lastEmail) && lastEmail !== userEmail) {
+        setUserEmail(lastEmail);
+        setEmailError(null);
+      }
+    }
+  }, [messages, userEmail]);
 
   // Convert file to base64 data URI
   const fileToDataURI = (file: File): Promise<string> => {
@@ -242,6 +319,82 @@ export function ScopeChat() {
     setAttachedImages((prev) => prev.filter((_, i) => i !== index));
   };
 
+  // Send conversation summary via email
+  const sendSummaryEmail = async () => {
+    if (messages.length <= 1 || isSendingEmail) return; // Don't send if only initial message
+
+    // Validate email before sending
+    if (!userEmail || !validateEmail(userEmail)) {
+      setEmailError('Please provide a valid email address to send the summary');
+      setError('Please provide a valid email address to send the summary');
+      
+      // Optionally trigger AI to ask for email by adding a system message
+      // This will be handled by the system prompt in the API route
+      return;
+    }
+
+    setIsSendingEmail(true);
+    setError(null);
+    setEmailError(null);
+    setEmailSent(false);
+
+    try {
+      const response = await fetch('/api/scope-chat-summary', {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({ 
+          messages,
+          estimate: lastEstimate, // Include budget estimate and recommended tier
+          userEmail: userEmail, // Explicitly provide email
+          contactInfo: contactInfo || undefined, // Include contact info if provided
+        }),
+      });
+
+      if (!response.ok) {
+        const errorData = await response.json().catch(() => ({}));
+        throw new Error(errorData.error || 'Failed to generate summary email');
+      }
+
+      const data = await response.json();
+      
+      // Log email content to browser console
+      console.log('='.repeat(80));
+      console.log('📋 QUICK OVERVIEW - CONVERSATION SUMMARY:');
+      console.log('='.repeat(80));
+      console.log(data.overview || 'No overview available');
+      console.log('='.repeat(80));
+      console.log('📧 EMAIL SUMMARY - ESTIMATE INFORMATION:');
+      console.log('='.repeat(80));
+      if (data.estimate?.budgetRange) console.log('💰 Budget Estimate:', data.estimate.budgetRange);
+      if (data.estimate?.recommendedPackage) console.log('📦 Recommended Tier:', data.estimate.recommendedPackage);
+      if (data.estimate?.nextSteps?.length > 0) console.log('✅ Next Steps:', data.estimate.nextSteps);
+      if (data.estimate?.missingInfo?.length > 0) console.log('❓ Missing Info:', data.estimate.missingInfo);
+      console.log('='.repeat(80));
+      console.log('📧 EMAIL METADATA:');
+      console.log('='.repeat(80));
+      console.log('Subject:', data.emailContent?.subject || 'New Scope Chat Summary');
+      console.log('To:', data.emailContent?.to || 'yourindie101@gmail.com');
+      if (data.emailContent?.replyTo) {
+        console.log('Reply To:', data.emailContent.replyTo);
+      }
+      console.log('='.repeat(80));
+      console.log('\n--- Full HTML Content ---');
+      console.log(data.emailContent?.html || 'No HTML content');
+      console.log('\n--- Full Text Content ---');
+      console.log(data.emailContent?.text || 'No text content');
+      console.log('='.repeat(80));
+
+      setEmailSent(true);
+      // Reset success message after 5 seconds
+      setTimeout(() => setEmailSent(false), 5000);
+    } catch (err) {
+      console.error('Failed to generate summary email', err);
+      setError(err instanceof Error ? err.message : 'Failed to generate summary email. Please try again.');
+    } finally {
+      setIsSendingEmail(false);
+    }
+  };
+
   const sendMessage = async () => {
     if ((!input.trim() && attachedImages.length === 0) || isLoading) return;
 
@@ -271,7 +424,11 @@ export function ScopeChat() {
       const response = await fetch('/api/scope-chat', {
         method: 'POST',
         headers: { 'Content-Type': 'application/json' },
-        body: JSON.stringify({ messages: nextMessages }),
+        body: JSON.stringify({ 
+          messages: nextMessages,
+          userEmail: userEmail || undefined, // Pass current email state so AI knows if it's already filled
+          contactInfo: contactInfo || undefined, // Pass current contact info state
+        }),
       });
 
       if (!response.ok) {
@@ -286,6 +443,20 @@ export function ScopeChat() {
         nextSteps: data.nextSteps,
         missingInfo: data.missingInfo,
       });
+
+      // Handle function calls - fill in email and contact info if provided
+      if (data.functionCall && data.functionCall.name === 'fillContactInfo') {
+        const { email, contactInfo: contactInfoArg } = data.functionCall.arguments;
+        
+        if (email && validateEmail(email)) {
+          setUserEmail(email);
+          setEmailError(null);
+        }
+        
+        if (contactInfoArg) {
+          setContactInfo(contactInfoArg);
+        }
+      }
 
       setMessages((prev) => [
         ...prev,
@@ -409,8 +580,7 @@ export function ScopeChat() {
     <div className="glass-panel rounded-2xl border border-cyan-500/20 bg-black/60 p-6 md:p-8 shadow-[0_20px_60px_rgba(6,182,212,0.25)]">
       <div className="flex flex-col gap-2 mb-6">
         <div className="flex items-center gap-3 text-cyan-300 text-sm uppercase tracking-[0.25em]">
-          <Sparkles className="w-4 h-4" />
-          <span>AI Scope Chat</span>
+          <span>Scope Chat</span>
         </div>
         <div className="flex items-baseline justify-between gap-4">
           <h3 className="text-2xl md:text-3xl font-semibold text-white">Scope your build instantly</h3>
@@ -423,6 +593,50 @@ export function ScopeChat() {
           Share what you want to build or automate. The assistant will map it to the closest service tier, give a budget range,
           and list next steps.
         </p>
+      </div>
+
+      {/* Email and Contact Information Inputs */}
+      <div className="mb-6 space-y-4">
+        <div>
+          <label htmlFor="user-email" className="block text-sm font-medium text-cyan-200 mb-2">
+            Email Address <span className="text-red-400">*</span>
+          </label>
+          <input
+            id="user-email"
+            type="email"
+            value={userEmail}
+            onChange={(e) => {
+              setUserEmail(e.target.value);
+              setEmailError(null);
+            }}
+            className={cn(
+              "w-full px-4 py-2.5 rounded-lg border bg-black/40 text-white placeholder-slate-500",
+              "focus:outline-none focus:ring-2 focus:ring-cyan-500/50 focus:border-cyan-500/50",
+              "transition-colors",
+              emailError
+                ? "border-red-500/50 focus:ring-red-500/50 focus:border-red-500/50"
+                : "border-cyan-500/30"
+            )}
+            placeholder="your.email@example.com"
+            required
+          />
+          {emailError && (
+            <p className="mt-1.5 text-sm text-red-400">{emailError}</p>
+          )}
+        </div>
+        <div>
+          <label htmlFor="contact-info" className="block text-sm font-medium text-cyan-200 mb-2">
+            Contact Information <span className="text-slate-500 text-xs">(Optional)</span>
+          </label>
+          <input
+            id="contact-info"
+            type="text"
+            value={contactInfo}
+            onChange={(e) => setContactInfo(e.target.value)}
+            className="w-full px-4 py-2.5 rounded-lg border border-cyan-500/30 bg-black/40 text-white placeholder-slate-500 focus:outline-none focus:ring-2 focus:ring-cyan-500/50 focus:border-cyan-500/50 transition-colors"
+            placeholder="Phone number, company name, etc."
+          />
+        </div>
       </div>
 
       <div className="flex flex-wrap gap-3 mb-4">
@@ -482,6 +696,42 @@ export function ScopeChat() {
               </ul>
             </div>
           )}
+        </div>
+      )}
+
+      {messages.length > 1 && 
+       lastEstimate?.budgetRange && 
+       lastEstimate?.recommendedPackage && 
+       userEmail && 
+       userEmail.trim().length > 0 && (
+        <div className="mb-4 flex justify-center">
+          <Button
+            onClick={sendSummaryEmail}
+            disabled={isSendingEmail || emailSent}
+            className={cn(
+              'px-6',
+              emailSent
+                ? 'bg-emerald-500/20 border-emerald-400/60 text-emerald-200 hover:bg-emerald-500/30'
+                : 'border border-cyan-500/30 bg-cyan-500/10 text-cyan-200 hover:bg-cyan-500/20'
+            )}
+          >
+            {isSendingEmail ? (
+              <>
+                <Loader2 className="w-4 h-4 mr-2 animate-spin" />
+                Sending Summary...
+              </>
+            ) : emailSent ? (
+              <>
+                <CheckCircle2 className="w-4 h-4 mr-2" />
+                Summary Sent!
+              </>
+            ) : (
+              <>
+                <Mail className="w-4 h-4 mr-2" />
+                Email Summary
+              </>
+            )}
+          </Button>
         </div>
       )}
 

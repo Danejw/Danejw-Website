@@ -16,6 +16,13 @@ type ScopeResponse = {
   recommendedPackage?: string;
   nextSteps?: string[];
   missingInfo?: string[];
+  functionCall?: {
+    name: 'fillContactInfo';
+    arguments: {
+      email?: string;
+      contactInfo?: string;
+    };
+  };
 };
 
 const serviceCatalog = `Available services and typical starting budgets:
@@ -36,7 +43,7 @@ export async function POST(request: Request) {
     );
   }
 
-  let body: { messages?: ChatMessage[] };
+  let body: { messages?: ChatMessage[]; userEmail?: string; contactInfo?: string };
   try {
     body = await request.json();
   } catch {
@@ -56,7 +63,39 @@ export async function POST(request: Request) {
   const openai = new OpenAI({ apiKey });
 
   try {
+    // Get current email and contact info state
+    const currentEmail = body.userEmail?.trim() || '';
+    const currentContactInfo = body.contactInfo?.trim() || '';
+    const hasEmail = currentEmail.length > 0;
+    const hasContactInfo = currentContactInfo.length > 0;
+
+    // Build dynamic context about current contact information
+    let contactContext = '';
+    if (hasEmail && hasContactInfo) {
+      contactContext = `CURRENT CONTACT INFORMATION:
+- Email Address: ${currentEmail} (already provided)
+- Contact Information: ${currentContactInfo} (already provided)
+You don't need to ask for email or contact information again.`;
+    } else if (hasEmail) {
+      contactContext = `CURRENT CONTACT INFORMATION:
+- Email Address: ${currentEmail} (already provided)
+- Contact Information: Not provided yet
+You don't need to ask for email again, but you can ask for additional contact information if relevant.`;
+    } else {
+      contactContext = `CURRENT CONTACT INFORMATION:
+- Email Address: NOT PROVIDED - You MUST ask the user for their email address so we can send them a summary.
+- Contact Information: ${hasContactInfo ? currentContactInfo + ' (already provided)' : 'Not provided yet'}
+IMPORTANT: The email address is required. Politely ask for it in your next response if the user hasn't provided it yet.`;
+    }
+
     const systemPrompt = `You are a scoping assistant for Dane Willacker (Danejw), a full-stack builder focused on web apps, AI integrations, and automations. Keep replies concise, friendly, and action-oriented. Always share a budget range and the nearest service tier. Ask for missing details if needed.
+
+${contactContext}
+
+FUNCTION CALLING - fillContactInfo:
+- When the user provides their email address in the conversation, you MUST use the fillContactInfo function to automatically fill in the email field for them.
+- Also use fillContactInfo if they provide contact information like phone number or company name.
+- After calling fillContactInfo, acknowledge that you've filled in their information (e.g., "Got it! I've filled in your email address.").
 
 When users provide images (screenshots, mockups, wireframes, designs, or other visual materials), carefully analyze them to understand:
 - The design style, layout, and functionality shown
@@ -86,7 +125,7 @@ ${serviceCatalog}`;
     }
 
     const response = await openai.responses.create({
-      model: hasImages ? 'gpt-4o' : 'gpt-4o-mini',
+      model: 'gpt-5',
       input: [
         {
           role: 'system',
@@ -175,6 +214,35 @@ ${serviceCatalog}`;
                 items: { type: 'string' },
                 description: 'Questions to clarify remaining scope gaps',
               },
+              functionCall: {
+                type: 'object',
+                description: 'Optional function call to fill in contact information when user provides email or contact details',
+                properties: {
+                  name: {
+                    type: 'string',
+                    enum: ['fillContactInfo'],
+                    description: 'The name of the function to call',
+                  },
+                  arguments: {
+                    type: 'object',
+                    description: 'Arguments for the fillContactInfo function',
+                    properties: {
+                      email: {
+                        type: 'string',
+                        description: 'The user\'s email address to fill into the email input field. Must be a valid email format. Only include if the user provided an email address in their message.',
+                      },
+                      contactInfo: {
+                        type: 'string',
+                        description: 'Optional contact information such as phone number, company name, or other details to fill into the contact information field. Only include if the user provided this information.',
+                      },
+                    },
+                    required: [],
+                    additionalProperties: false,
+                  },
+                },
+                required: ['name', 'arguments'],
+                additionalProperties: false,
+              },
             },
             required: ['reply', 'budgetRange'],
             additionalProperties: false,
@@ -213,6 +281,7 @@ ${serviceCatalog}`;
       recommendedPackage: parsed.recommendedPackage,
       nextSteps: parsed.nextSteps ?? [],
       missingInfo: parsed.missingInfo ?? [],
+      functionCall: parsed.functionCall,
     });
   } catch (error) {
     console.error('Failed to contact OpenAI', error);
