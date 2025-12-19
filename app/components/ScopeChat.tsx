@@ -816,8 +816,8 @@ export function ScopeChat({ questionAnswers }: ScopeChatProps = {}) {
             onChange={(event) => setInput(event.target.value)}
             onKeyDown={handleKeyDown}
             onPaste={handlePaste}
-            placeholder="Describe what you want to build, who it serves, and any deadlines... (Paste images here)"
-            className="w-full rounded-xl bg-white/5 border border-white/10 focus:border-cyan-500 focus:ring-2 focus:ring-cyan-500/40 text-white p-4 pr-12 placeholder:text-slate-500 transition resize-none overflow-y-auto min-h-[80px] max-h-[300px]"
+            placeholder="Describe what you want to build..."
+            className="w-full text-xs rounded-xl bg-white/5 border border-white/10 focus:border-cyan-500 focus:ring-2 focus:ring-cyan-500/40 text-white p-4 pr-12 placeholder:text-slate-500 transition resize-none overflow-y-auto min-h-[80px] max-h-[300px]"
             style={{ height: 'auto' }}
           />
           <Button
@@ -831,7 +831,7 @@ export function ScopeChat({ questionAnswers }: ScopeChatProps = {}) {
           >
             <Plus className="w-4 h-4 text-white" />
           </Button>
-          <div className="absolute right-12 bottom-3 flex items-center gap-2 text-xs text-slate-400 pointer-events-none">
+          <div className="hidden text-xs md:flex absolute left-1/2 -translate-x-1/2 bottom-3 items-center gap-2 text-2xs text-slate-400 pointer-events-none">
             <span className="text-cyan-500/50">Enter to send</span>
             <span className="h-1 w-1 rounded-full bg-slate-600/50" />
             <span className="text-cyan-500/50">Shift + Enter for new line</span>

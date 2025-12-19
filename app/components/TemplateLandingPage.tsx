@@ -291,7 +291,7 @@ const portfolio: PortfolioItem[] = [
   },
   {
     title: 'ImprovForms.com',
-    description: 'Translate your game UI with a single click',
+    description: 'Create and fill forms with a conversational flow',
     fullDescription: 'ImprovForms is a platform for creating and sharing forms with AI. It allows you to create forms with AI-powered questions and answers, and share them with your friends and family.',
     tech: 'NEXT.JS / TYPESCRIPT / PYTHON / FASTAPI / OPENAI / SUPABASE',
     img: '/photos/ImprovForms.jpg',
@@ -1175,6 +1175,40 @@ export const TemplateLandingPage: React.FC = () => {
             );
           }
         }
+
+        // Animate maintenance costs text words from left to right
+        const maintenanceCostsWords = servicesRef.current?.querySelectorAll('.maintenance-costs-word');
+        if (maintenanceCostsWords && maintenanceCostsWords.length > 0) {
+          // Find the parent container element
+          const firstWord = maintenanceCostsWords[0] as HTMLElement;
+          const maintenanceContainer = firstWord.closest('.flex.items-center.justify-center') as HTMLElement;
+          
+          if (maintenanceContainer) {
+            gsap.set(maintenanceCostsWords, { x: 200, opacity: 0, filter: 'blur(8px)' });
+            
+            gsap.to(
+              maintenanceCostsWords,
+              {
+                x: 0,
+                opacity: 1,
+                filter: 'blur(0px)',
+                ease: 'power3.out',
+                duration: 0.6,
+                stagger: {
+                  amount: 1.5,
+                  from: 'start',
+                },
+                scrollTrigger: {
+                  trigger: maintenanceContainer,
+                  start: 'top 85%',
+                  end: 'top 45%',
+                  scrub: 1.2,
+                  toggleActions: 'play none none reverse',
+                },
+              },
+            );
+          }
+        }
       }
 
       // Animate questions section
@@ -1909,7 +1943,13 @@ export const TemplateLandingPage: React.FC = () => {
 
           <div className="flex items-center justify-center">
             <div className="inline-flex items-center text-center justify-center gap-3 px-6 text-sm text-cyan-400/60">
-              <span>Maintenance costs apply, including AI token usage, website, database, and automation hosting</span>
+              <span>
+                {'Maintenance costs apply, including AI token usage, website, database, and automation hosting'.split(' ').map((word, wordIdx) => (
+                  <span key={wordIdx} className="maintenance-costs-word">
+                    {word}{' '}
+                  </span>
+                ))}
+              </span>
             </div>
           </div>
 
