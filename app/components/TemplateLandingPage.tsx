@@ -1954,6 +1954,12 @@ ${formData.name}`;
             ))}
           </div>
 
+          <div className="flex items-center justify-center">
+            <div className="inline-flex items-center gap-3 px-6 text-sm text-cyan-400/60">
+              <span>Maintenance costs apply, including AI token usage, website, database, and automation hosting</span>
+            </div>
+          </div>
+
           <div className="service-card relative grid grid-cols-1 lg:grid-cols-3 gap-6 items-center rounded-2xl border border-cyan-500/20 bg-gradient-to-r from-cyan-500/10 via-black/70 to-black/60 p-8 shadow-[0_20px_60px_rgba(0,0,0,0.6)]">
             <div className="lg:col-span-2 space-y-3">
               <p className="text-xs uppercase tracking-[0.3em] text-cyan-300">How pricing works</p>
