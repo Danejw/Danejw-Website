@@ -1588,7 +1588,7 @@ export const TemplateLandingPage: React.FC = () => {
             
             {/* Text Content - Always below the image */}
             <div className="space-y-6 w-full text-center lg:text-left">
-              <p className="hero-line text-cyan-400 tracking-[0.2em] text-xs uppercase">Architecting Digital Experiences</p>
+              <p className="hero-line text-cyan-400 tracking-[0.2em] text-xs uppercase">The Architect Of Digital Experiences</p>
               <h1 className="text-4xl sm:text-5xl md:text-6xl lg:text-7xl xl:text-8xl font-semibold text-white tracking-tight leading-[0.9]">
                 <span className="hero-name hero-name-first block">DANE</span>
                 <span className="hero-name hero-name-second block bg-cyan-500 text-black px-2 inline-block mt-2">WILLACKER</span>
