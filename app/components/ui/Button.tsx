@@ -52,7 +52,7 @@ export const Button: React.FC<ButtonProps> = ({
     ghost: 'text-slate-300 hover:text-white hover:bg-white/5',
   };
 
-  const sizeStyles = 'px-6 py-3 text-sm rounded';
+  const sizeStyles = 'px-6 py-3 text-sm rounded-md';
   
   const hoverScale = 'hover:scale-105 active:scale-100';
 
