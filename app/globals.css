@@ -270,6 +270,23 @@
     animation: fadeIn 0.2s ease-out forwards;
   }
 
+  @keyframes shimmer {
+    0% {
+      transform: translateX(-100%);
+      opacity: 0;
+    }
+    50% {
+      opacity: 1;
+    }
+    100% {
+      transform: translateX(100%);
+      opacity: 0;
+    }
+  }
+  .animate-shimmer {
+    animation: shimmer 2s ease-in-out infinite;
+  }
+
   @keyframes scaleIn {
     from {
       opacity: 0;

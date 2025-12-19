@@ -1,9 +1,10 @@
 'use client';
 
 import { useMemo, useRef, useState, useEffect } from 'react';
-import { ArrowUpRight, Loader2, Sparkles, Wand2, Image as ImageIcon, X, Plus, Mail, CheckCircle2 } from 'lucide-react';
+import { Sparkles, Wand2, X, Plus, Mail, CheckCircle2 } from 'lucide-react';
 import ReactMarkdown from 'react-markdown';
 import { Button } from './ui/Button';
+import { ThreeDotLoader } from './ui/ThreeDotLoader';
 import { cn } from '@/lib/utils';
 
 type Role = 'user' | 'assistant';
@@ -113,10 +114,10 @@ export function ScopeChat() {
     }
   }, [input]);
 
-  // Auto-scroll to bottom when new messages arrive
+  // Auto-scroll to bottom when new messages arrive or loading state changes
   useEffect(() => {
     messagesEndRef.current?.scrollIntoView({ behavior: 'smooth' });
-  }, [messages]);
+  }, [messages, isLoading]);
 
   // Save messages to localStorage whenever they change
   useEffect(() => {
@@ -664,6 +665,16 @@ export function ScopeChat() {
         }}
       >
         {conversation.map(renderMessage)}
+        {isLoading && (
+          <div className="flex w-full gap-3 justify-start text-left">
+            <div className="mt-1 h-8 w-8 rounded-full bg-cyan-500/20 border border-cyan-500/50 flex items-center justify-center text-cyan-300">
+              <Sparkles className="w-4 h-4 animate-pulse" />
+            </div>
+            <div className="max-w-[80%] rounded-2xl px-4 py-3 bg-white/5 border border-white/10 flex items-center">
+              <ThreeDotLoader size="md" dotColor="rgb(6 182 212)" className="text-cyan-500" />
+            </div>
+          </div>
+        )}
         <div ref={messagesEndRef} />
       </div>
 
@@ -709,15 +720,15 @@ export function ScopeChat() {
             onClick={sendSummaryEmail}
             disabled={isSendingEmail || emailSent}
             className={cn(
-              'px-6',
+              'px-6 rounded-md',
               emailSent
                 ? 'bg-emerald-500/20 border-emerald-400/60 text-emerald-200 hover:bg-emerald-500/30'
-                : 'border border-cyan-500/30 bg-cyan-500/10 text-cyan-200 hover:bg-cyan-500/20'
+                : ''
             )}
           >
             {isSendingEmail ? (
               <>
-                <Loader2 className="w-4 h-4 mr-2 animate-spin" />
+                <ThreeDotLoader size="sm" className="mr-2" />
                 Sending Summary...
               </>
             ) : emailSent ? (
@@ -728,7 +739,7 @@ export function ScopeChat() {
             ) : (
               <>
                 <Mail className="w-4 h-4 mr-2" />
-                Email Summary
+                When You're Ready Send Your Email Summary By Clicking Here
               </>
             )}
           </Button>
@@ -774,20 +785,21 @@ export function ScopeChat() {
             className="w-full rounded-xl bg-white/5 border border-white/10 focus:border-cyan-500 focus:ring-2 focus:ring-cyan-500/40 text-white p-4 pr-12 placeholder:text-slate-500 transition resize-none overflow-y-auto min-h-[80px] max-h-[300px]"
             style={{ height: 'auto' }}
           />
-          <button
+          <Button
             type="button"
+            variant="ghost"
             onClick={() => fileInputRef.current?.click()}
             disabled={isLoading || attachedImages.length >= 3}
-            className="absolute right-3 top-3 w-8 h-8 rounded-lg bg-white/10 hover:bg-white/20 border border-white/20 flex items-center justify-center transition disabled:opacity-50 disabled:cursor-not-allowed z-10"
+            className="absolute right-3 top-3 w-8 h-8 p-0 rounded-lg bg-white/10 hover:bg-white/20 border border-white/20 hover:scale-150 hover:border-cyan-500/50 active:scale-100 z-10"
             aria-label="Upload image"
             title={attachedImages.length >= 3 ? 'Maximum 3 images allowed' : 'Upload image'}
           >
             <Plus className="w-4 h-4 text-white" />
-          </button>
+          </Button>
           <div className="absolute right-12 bottom-3 flex items-center gap-2 text-xs text-slate-400 pointer-events-none">
-            <span>Enter to send</span>
-            <span className="h-1 w-1 rounded-full bg-slate-600" />
-            <span>Shift + Enter for new line</span>
+            <span className="text-cyan-500/50">Enter to send</span>
+            <span className="h-1 w-1 rounded-full bg-slate-600/50" />
+            <span className="text-cyan-500/50">Shift + Enter for new line</span>
           </div>
         </div>
         <input
@@ -800,16 +812,16 @@ export function ScopeChat() {
           aria-label="Upload images"
         />
         <div className="flex justify-end">
-          <Button onClick={sendMessage} isLoading={isLoading} disabled={isLoading || (!input.trim() && attachedImages.length === 0)} className="px-5">
+          <Button onClick={sendMessage} disabled={isLoading || (!input.trim() && attachedImages.length === 0)} className="px-5 rounded-md">
             {isLoading ? (
               <>
-                <Loader2 className="w-4 h-4 animate-spin" />
-                Sending
+                <ThreeDotLoader size="sm" />
+                Thinking
               </>
             ) : (
               <>
                 Send
-                <ArrowUpRight className="w-4 h-4" />
+                {/* <ArrowUpRight className="w-4 h-4" /> */}
               </>
             )}
           </Button>
