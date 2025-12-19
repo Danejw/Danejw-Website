@@ -1714,7 +1714,6 @@ export const TemplateLandingPage: React.FC = () => {
         <div className="max-w-7xl mx-auto px-6">
           <div className="flex items-end justify-between mb-16 pb-4">
             <h3 className="work-title text-4xl md:text-5xl lg:text-6xl font-semibold text-white leading-tight">The <span className="bg-cyan-500 text-black px-1 inline-block">Work</span></h3>
-            <span className="text-cyan-500 font-mono text-xs">PORTFOLIO</span>
           </div>
           <div className="columns-1 md:columns-2 lg:columns-3 gap-8 space-y-8">
             {portfolio.map((item) => (
