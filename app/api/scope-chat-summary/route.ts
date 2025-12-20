@@ -25,6 +25,197 @@ type Estimate = {
   missingInfo?: string[];
 };
 
+type AirtableRecordFields = {
+  'Email': string;
+  'Contact Information'?: string;
+  'Subject': string;
+  'Overview': string;
+  'Budget Estimate'?: string;
+  'Tier': string;
+  'Next Steps'?: string;
+  'Additional Questions'?: string;
+  'Conversation History': string;
+};
+
+async function createAirtableRecord(fields: AirtableRecordFields) {
+  const airtableApiKey = process.env.AIRTABLE_API_KEY;
+  const airtableBaseId = process.env.AIRTABLE_BASE_ID;
+  const airtableTableId = process.env.AIRTABLE_TABLE_ID;
+
+  if (!airtableApiKey) {
+    throw new Error('Airtable API key is not configured. Set AIRTABLE_API_KEY.');
+  }
+
+  if (!airtableBaseId) {
+    throw new Error('Airtable base ID is not configured. Set AIRTABLE_BASE_ID.');
+  }
+
+  const response = await fetch(
+    `https://api.airtable.com/v0/${airtableBaseId}/${airtableTableId}`,
+    {
+      method: 'POST',
+      headers: {
+        Authorization: `Bearer ${airtableApiKey}`,
+        'Content-Type': 'application/json',
+      },
+      body: JSON.stringify({
+        records: [
+          {
+            fields,
+          },
+        ],
+        typecast: true,
+      }),
+    },
+  );
+
+  if (!response.ok) {
+    const errorPayload = await response.text();
+    throw new Error(`Airtable API request failed (${response.status}): ${errorPayload}`);
+  }
+
+  const data = (await response.json()) as {
+    records?: Array<{ id: string }>;
+  };
+
+  const createdRecordId = data.records?.[0]?.id;
+  console.log('Airtable record created successfully:', createdRecordId || 'unknown record id');
+  return createdRecordId;
+}
+
+/**
+ * Extracts base64 data and content type from a data URI
+ */
+function parseDataUri(dataUri: string): { base64: string; contentType: string } | null {
+  const match = dataUri.match(/^data:([^;]+);base64,(.+)$/);
+  if (!match) return null;
+  
+  return {
+    contentType: match[1] || 'image/png',
+    base64: match[2],
+  };
+}
+
+/**
+ * Downloads an image from a URL and converts it to base64
+ */
+async function downloadImageAsBase64(url: string): Promise<{ base64: string; contentType: string } | null> {
+  try {
+    const response = await fetch(url);
+    if (!response.ok) {
+      console.warn(`Failed to download image from ${url}: ${response.status}`);
+      return null;
+    }
+    
+    const arrayBuffer = await response.arrayBuffer();
+    const base64 = Buffer.from(arrayBuffer).toString('base64');
+    const contentType = response.headers.get('content-type') || 'image/png';
+    
+    return { base64, contentType };
+  } catch (error) {
+    console.error(`Error downloading image from ${url}:`, error);
+    return null;
+  }
+}
+
+/**
+ * Uploads an image to Airtable using the Content API
+ */
+async function uploadImageToAirtable(
+  recordId: string,
+  imageUrl: string,
+  filename: string,
+  index: number,
+): Promise<boolean> {
+  const airtablePat = process.env.AIRTABLE_PAT || process.env.AIRTABLE_API_KEY;
+  const airtableBaseId = process.env.AIRTABLE_BASE_ID;
+  const attachmentFieldName = 'Attachments';
+
+  if (!airtablePat) {
+    console.error('Airtable PAT/API key is not configured. Set AIRTABLE_PAT or AIRTABLE_API_KEY.');
+    return false;
+  }
+
+  if (!airtableBaseId) {
+    console.error('Airtable base ID is not configured. Set AIRTABLE_BASE_ID.');
+    return false;
+  }
+
+  try {
+    // Handle data URI (base64)
+    let base64: string;
+    let contentType: string;
+    let finalFilename: string;
+
+    if (imageUrl.startsWith('data:')) {
+      const parsed = parseDataUri(imageUrl);
+      if (!parsed) {
+        console.warn(`Invalid data URI format for image ${index + 1}`);
+        return false;
+      }
+      base64 = parsed.base64;
+      contentType = parsed.contentType;
+      // Extract extension from content type
+      const ext = contentType.split('/')[1]?.split(';')[0] || 'png';
+      finalFilename = filename || `image_${index + 1}.${ext}`;
+    } else {
+      // Download HTTP URL
+      const downloaded = await downloadImageAsBase64(imageUrl);
+      if (!downloaded) {
+        console.warn(`Failed to download image ${index + 1} from ${imageUrl}`);
+        return false;
+      }
+      base64 = downloaded.base64;
+      contentType = downloaded.contentType;
+      // Try to extract filename from URL or use default
+      try {
+        const urlObj = new URL(imageUrl);
+        const pathname = urlObj.pathname;
+        const urlFilename = pathname.split('/').pop() || `image_${index + 1}`;
+        finalFilename = filename || urlFilename;
+      } catch {
+        const ext = contentType.split('/')[1]?.split(';')[0] || 'png';
+        finalFilename = filename || `image_${index + 1}.${ext}`;
+      }
+    }
+
+    // Sanitize filename
+    finalFilename = finalFilename.replace(/\s+/g, '_').replace(/[^a-zA-Z0-9._-]/g, '');
+
+    // Upload to Airtable Content API
+    const uploadUrl = `https://content.airtable.com/v0/${airtableBaseId}/${recordId}/${encodeURIComponent(
+      attachmentFieldName
+    )}/uploadAttachment`;
+
+    const uploadResponse = await fetch(uploadUrl, {
+      method: 'POST',
+      headers: {
+        Authorization: `Bearer ${airtablePat}`,
+        'Content-Type': 'application/json',
+        Accept: 'application/json',
+      },
+      body: JSON.stringify({
+        contentType: contentType || 'image/png',
+        file: base64,
+        filename: finalFilename,
+      }),
+    });
+
+    if (!uploadResponse.ok) {
+      const errorText = await uploadResponse.text();
+      console.error(`Airtable upload error for image ${index + 1}:`, uploadResponse.status, errorText);
+      return false;
+    }
+
+    const result = await uploadResponse.json();
+    console.log(`✅ Successfully uploaded image ${index + 1} (${finalFilename}) to Airtable`);
+    return true;
+  } catch (error) {
+    console.error(`Error uploading image ${index + 1} to Airtable:`, error);
+    return false;
+  }
+}
+
 export async function POST(request: Request) {
   const apiKey = process.env.OPENAI_API_KEY;
   // const resendApiKey = process.env.RESEND_API_KEY; // Email service commented out
@@ -128,7 +319,7 @@ Write this as a quick overview that someone can read in 30 seconds to understand
     
     // Log the raw summary for debugging
     console.log('='.repeat(80));
-    console.log('🤖 AI-GENERATED OVERVIEW (RAW):');
+    console.log('🤖 OVERVIEW (RAW):');
     console.log('='.repeat(80));
     console.log(rawSummary);
     console.log('='.repeat(80));
@@ -201,6 +392,37 @@ Write this as a quick overview that someone can read in 30 seconds to understand
     const sanitizedEmail = userEmail ? escapeHtml(userEmail) : null;
     const sanitizedContactInfo = userContactInfo ? escapeHtml(userContactInfo) : null;
 
+    const nextStepsPlainText =
+      nextSteps.length > 0 ? nextSteps.map((step, idx) => `${idx + 1}. ${step}`).join('\n') : undefined;
+
+    const missingInfoPlainText =
+      missingInfo.length > 0 ? missingInfo.map((info, idx) => `${idx + 1}. ${info}`).join('\n') : undefined;
+
+    const questionAnswersPlainText =
+      formattedQuestionAnswers.length > 0
+        ? formattedQuestionAnswers
+            .map((qa, idx) => `${idx + 1}. ${qa.question}\nAnswer: ${qa.answer}`)
+            .join('\n\n')
+        : undefined;
+
+    const combinedAdditionalQuestionsSections = [
+      missingInfoPlainText ? `Missing Information / Follow-up Questions:\n${missingInfoPlainText}` : null,
+      questionAnswersPlainText ? `Questionnaire Responses:\n${questionAnswersPlainText}` : null,
+    ].filter((section): section is string => Boolean(section));
+
+    const additionalQuestionsPlainText =
+      combinedAdditionalQuestionsSections.length > 0 ? combinedAdditionalQuestionsSections.join('\n\n') : undefined;
+
+    const conversationHistory = conversationText || 'No conversation captured.';
+    const subjectParts = ['Scope Chat Summary'];
+    if (userEmail) {
+      subjectParts.push(`for ${userEmail}`);
+    }
+    if (recommendedPackage) {
+      subjectParts.push(`(${recommendedPackage})`);
+    }
+    const airtableSubject = subjectParts.join(' ');
+
     // Build email content - includes summary/overview in both HTML and text versions
     // The summary is prominently displayed at the top of the email
     const emailHtml = `
@@ -211,7 +433,7 @@ Write this as a quick overview that someone can read in 30 seconds to understand
           </h2>
           
           <div style="margin-top: 20px; background: linear-gradient(135deg, #f0f9ff 0%, #e0f2fe 100%); padding: 20px; border-radius: 8px; border-left: 4px solid #06b6d4;">
-            <h3 style="color: #0c4a6e; margin: 0 0 12px 0; font-size: 16px; font-weight: 600;">Quick Overview</h3>
+            <h3 style="color: #0c4a6e; margin: 0 0 12px 0; font-size: 16px; font-weight: 600;">Overview</h3>
             <div style="color: #1e293b; line-height: 1.7; font-size: 14px;">
               ${sanitizedSummary.replace(/\n/g, '<br>')}
             </div>
@@ -298,7 +520,7 @@ Write this as a quick overview that someone can read in 30 seconds to understand
 Scope Chat Summary
 
 ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
-QUICK OVERVIEW
+OVERVIEW
 ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
 
 ${summary}
@@ -327,7 +549,7 @@ ${conversationText}
     const summaryInText = emailText.includes(summary);
     
     console.log('='.repeat(80));
-    console.log('📋 QUICK OVERVIEW - CONVERSATION SUMMARY:');
+    console.log('📋 OVERVIEW:');
     console.log('='.repeat(80));
     console.log(summary);
     console.log('='.repeat(80));
@@ -362,6 +584,55 @@ ${conversationText}
     });
     console.log('='.repeat(80));
 
+    // Ensure Email and Tier are never null/undefined for Airtable
+    const airtableEmail = userEmail || 'No email provided';
+    const airtableTier = recommendedPackage || 'Not specified';
+
+    // Extract all image URLs from messages for Airtable attachments
+    const imageUrls: string[] = [];
+    body.messages.forEach((msg) => {
+      if (Array.isArray(msg.content)) {
+        msg.content.forEach((item) => {
+          if (item.type === 'input_image' && item.image_url) {
+            imageUrls.push(item.image_url);
+          }
+        });
+      }
+    });
+
+    // Create Airtable record first (without attachments - we'll upload them separately)
+    const recordId = await createAirtableRecord({
+      'Email': airtableEmail,
+      'Contact Information': userContactInfo || undefined,
+      'Subject': airtableSubject,
+      'Overview': summary,
+      'Budget Estimate': budgetRange,
+      'Tier': airtableTier,
+      'Next Steps': nextStepsPlainText,
+      'Additional Questions': additionalQuestionsPlainText,
+      'Conversation History': conversationText,
+    });
+
+    // Upload images using Airtable Content API if we have images and a record ID
+    if (imageUrls.length > 0 && recordId) {
+      console.log(`📸 Uploading ${imageUrls.length} image(s) to Airtable record ${recordId}...`);
+      
+      const uploadPromises = imageUrls.map((imageUrl, index) => 
+        uploadImageToAirtable(recordId, imageUrl, `chat_image_${index + 1}`, index)
+      );
+      
+      const uploadResults = await Promise.all(uploadPromises);
+      const successCount = uploadResults.filter(Boolean).length;
+      
+      console.log(`✅ Successfully uploaded ${successCount}/${imageUrls.length} image(s) to Airtable`);
+      
+      if (successCount < imageUrls.length) {
+        console.warn(`⚠️ Warning: ${imageUrls.length - successCount} image(s) failed to upload`);
+      }
+    } else if (imageUrls.length > 0) {
+      console.warn('⚠️ Warning: Images found but no record ID available. Skipping image uploads.');
+    }
+
     return NextResponse.json({
       success: true,
       message: 'Email summary generated and logged to console',
@@ -381,9 +652,11 @@ ${conversationText}
       },
     });
   } catch (error) {
-    console.error('Error generating summary or sending email:', error);
+    console.error('Error generating summary, sending email, or syncing to Airtable:', error);
+    const message =
+      error instanceof Error ? error.message : 'Failed to generate summary or send email.';
     return NextResponse.json(
-      { error: 'Failed to generate summary or send email.' },
+      { error: message },
       { status: 500 },
     );
   }
