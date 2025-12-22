@@ -128,7 +128,6 @@ ${serviceCatalog}`;
         }
         return count;
       }, 0);
-      console.log(`Processing request with ${imageCount} image(s) using gpt-4o model`);
     }
 
     const response = await openai.responses.create({

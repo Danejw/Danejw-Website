@@ -318,11 +318,11 @@ Write this as a quick overview that someone can read in 30 seconds to understand
     const rawSummary = summaryResponse.choices[0]?.message?.content || 'No summary available.';
     
     // Log the raw summary for debugging
-    console.log('='.repeat(80));
-    console.log('🤖 OVERVIEW (RAW):');
-    console.log('='.repeat(80));
-    console.log(rawSummary);
-    console.log('='.repeat(80));
+    // console.log('='.repeat(80));
+    // console.log('🤖 OVERVIEW (RAW):');
+    // console.log('='.repeat(80));
+    // console.log(rawSummary);
+    // console.log('='.repeat(80));
     
     // Ensure we have a valid summary
     const summary = (rawSummary && rawSummary.trim().length > 0 && rawSummary !== 'No summary available.') 
@@ -548,41 +548,42 @@ ${conversationText}
     const summaryInHtml = emailHtml.includes(sanitizedSummary);
     const summaryInText = emailText.includes(summary);
     
-    console.log('='.repeat(80));
-    console.log('📋 OVERVIEW:');
-    console.log('='.repeat(80));
-    console.log(summary);
-    console.log('='.repeat(80));
-    console.log('✅ Verification - Summary included in email HTML payload:', summaryInHtml);
-    console.log('✅ Verification - Summary included in email Text payload:', summaryInText);
+    // console.log('='.repeat(80));
+    // console.log('📋 OVERVIEW:');
+    // console.log('='.repeat(80));
+    // console.log(summary);
+    // console.log('='.repeat(80));
+    // console.log('✅ Verification - Summary included in email HTML payload:', summaryInHtml);
+    // console.log('✅ Verification - Summary included in email Text payload:', summaryInText);
     if (!summaryInHtml || !summaryInText) {
       console.error('❌ ERROR: Summary is missing from email payload!');
     }
-    console.log('='.repeat(80));
-    console.log('📧 EMAIL SUMMARY - ESTIMATE INFORMATION:');
-    console.log('='.repeat(80));
+    // console.log('='.repeat(80));
+    // console.log('📧 EMAIL SUMMARY - ESTIMATE INFORMATION:');
+    // console.log('='.repeat(80));
     if (budgetRange) console.log('💰 Budget Estimate:', budgetRange);
     if (recommendedPackage) console.log('📦 Recommended Tier:', recommendedPackage);
     if (nextSteps.length > 0) console.log('✅ Next Steps:', nextSteps);
     if (missingInfo.length > 0) console.log('❓ Missing Info:', missingInfo);
     if (userEmail) console.log('📮 Client Email:', userEmail);
-    console.log('='.repeat(80));
-    console.log('EMAIL SUMMARY - HTML CONTENT:');
-    console.log('='.repeat(80));
-    console.log(emailHtml);
-    console.log('='.repeat(80));
-    console.log('EMAIL SUMMARY - TEXT CONTENT:');
-    console.log('='.repeat(80));
-    console.log(emailText);
-    console.log('='.repeat(80));
-    console.log('EMAIL METADATA:');
-    console.log({
-      from: 'Scope Chat <onboarding@resend.dev>',
-      to: ['yourindie101@gmail.com'],
-      replyTo: userEmail || undefined,
-      subject: 'New Scope Chat Summary',
-    });
-    console.log('='.repeat(80));
+    
+    // console.log('='.repeat(80));
+    // console.log('EMAIL SUMMARY - HTML CONTENT:');
+    // console.log('='.repeat(80));
+    // console.log(emailHtml);
+    // console.log('='.repeat(80));
+    // console.log('EMAIL SUMMARY - TEXT CONTENT:');
+    // console.log('='.repeat(80));
+    // console.log(emailText);
+    // console.log('='.repeat(80));
+    // console.log('EMAIL METADATA:');
+    // console.log({
+    //   from: 'Scope Chat <onboarding@resend.dev>',
+    //   to: ['yourindie101@gmail.com'],
+    //   replyTo: userEmail || undefined,
+    //   subject: 'New Scope Chat Summary',
+    // });
+    // console.log('='.repeat(80));
 
     // Ensure Email and Tier are never null/undefined for Airtable
     const airtableEmail = userEmail || 'No email provided';
