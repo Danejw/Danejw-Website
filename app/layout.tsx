@@ -34,7 +34,7 @@ export const metadata: Metadata = {
     "Hawaii",
   ],
   openGraph: {
-    title: "Dane Willacker | AI + XR Developer",
+    title: "Dane Willacker | Your Indie Developer",
     description:
       "Portfolio of Dane Willacker (Danejw), an independent AI + Web + XR developer based in Hawai&#39;i.",
     url: "https://danejw.com",
@@ -53,7 +53,7 @@ export const metadata: Metadata = {
   twitter: {
     card: "summary_large_image",
     site: "@Djw_learn",
-    title: "Dane Willacker | AI + Web + XR Developer",
+    title: "Dane Willacker | Your Indie Developer",
     description:
       "Portfolio of Dane Willacker (Danejw), an independent AI + Web + XR developer based in Hawai&#39;i.",
     images: ["/favicon_io/android-chrome-192x192.png"],
