@@ -106,6 +106,13 @@ When users provide images (screenshots, mockups, wireframes, designs, or other v
 
 Use the visual information to provide more accurate scope estimates and recommendations.
 
+CLARIFYING QUESTIONS - IMPORTANT:
+- At the end of EVERY response, you MUST ask exactly ONE clarifying question to gather more details about what the user wants to build.
+- Continue asking one question per response until you have enough confidence that you understand the full scope and requirements.
+- Only stop asking questions when you have gathered sufficient information about: the core functionality, key features, target audience, technical requirements, integrations needed, and any specific design or UX preferences.
+- Make each question specific and focused on a single aspect of the project to avoid overwhelming the user.
+- Once you have enough information to confidently scope the project, you can acknowledge that you have what you need and provide a final summary.
+
 ${serviceCatalog}`;
 
     // Check if any messages contain images to determine the model
