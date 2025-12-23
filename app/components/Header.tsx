@@ -17,6 +17,9 @@ export const Header: FC = () => {
   const pathname = usePathname()
   const [mobileMenuOpen, setMobileMenuOpen] = useState(false)
 
+  const toggleMobileMenu = () => setMobileMenuOpen((prev) => !prev)
+  const closeMobileMenu = () => setMobileMenuOpen(false)
+
   return (
     <header className="relative z-20 border-b border-border/40 bg-background/80 backdrop-blur-sm">
       <div className="max-w-6xl mx-auto px-4 sm:px-6 lg:px-8">
@@ -50,9 +53,13 @@ export const Header: FC = () => {
 
           {/* Mobile menu button */}
           <div className="md:hidden">
-            <button 
-              onClick={() => setMobileMenuOpen(!mobileMenuOpen)}
-              className="p-2 rounded-lg text-muted-foreground hover:text-accent hover:bg-muted/50 transition-all duration-200 border border-transparent hover:border-border/40"
+            <button
+              type="button"
+              aria-expanded={mobileMenuOpen}
+              aria-controls="mobile-navigation"
+              aria-label={mobileMenuOpen ? 'Close navigation menu' : 'Open navigation menu'}
+              onClick={toggleMobileMenu}
+              className="p-2 rounded-lg text-muted-foreground hover:text-accent hover:bg-muted/50 transition-all duration-200 border border-transparent hover:border-border/40 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-accent focus-visible:ring-offset-2 focus-visible:ring-offset-background"
             >
               {mobileMenuOpen ? (
                 <X className="w-6 h-6" />
@@ -65,16 +72,19 @@ export const Header: FC = () => {
 
         {/* Mobile Navigation */}
         {mobileMenuOpen && (
-          <div className="md:hidden border-t border-border/40 bg-background/95 backdrop-blur-sm">
-            <nav className="py-4 space-y-2">
+          <div
+            id="mobile-navigation"
+            className="md:hidden border-t border-border/40 bg-background/95 backdrop-blur-sm shadow-[0_12px_40px_rgba(0,0,0,0.12)] rounded-b-2xl"
+          >
+            <nav className="py-4 space-y-2" aria-label="Mobile navigation">
               {navigation.map((item) => (
                 <Link
                   key={item.name}
                   href={item.href}
-                  onClick={() => setMobileMenuOpen(false)}
+                  onClick={closeMobileMenu}
                   className={cn(
                     'block px-4 py-2 text-sm font-medium transition-all duration-200 rounded-lg mx-2',
-                    'hover:bg-muted/50 hover:text-accent',
+                    'hover:bg-muted/50 hover:text-accent shadow-[0_1px_0_rgba(7,178,196,0.25)]',
                     pathname === item.href
                       ? 'text-primary bg-primary/10 border-l-2 border-primary'
                       : 'text-muted-foreground'
