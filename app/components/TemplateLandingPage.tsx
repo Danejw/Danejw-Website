@@ -195,6 +195,22 @@ type PortfolioItem = {
 
 const portfolio: PortfolioItem[] = [
   {
+    title: 'OtherHalfOf.me',
+    description: 'Private AI-assisted matchmaking service',
+    fullDescription: 'The Other Half Of Me is a private AI-assisted matchmaking service for dating and finding your other half. Built with modern tools to create meaningful connections through intelligent matching.',
+    tech: 'VITE / TYPESCRIPT / SUPABASE',
+    img: '/photos/Otherhalfofme.png',
+    link: 'https://otherhalfof.me',
+  },
+  {
+    title: 'Ebauche.io',
+    description: 'AI-powered design tool for construction and remodeling',
+    fullDescription: 'Ebauche augments the design process of construction and remodeling projects. Turn sketches into clean floor plans and visualizations that help clients understand spatial concepts with clarity.',
+    tech: 'NEXT.JS / TYPESCRIPT / SUPABASE',
+    img: '/photos/Ebauche.png',
+    link: 'https://www.ebauche.io',
+  },
+  {
     title: 'ViziVibes.com',
     description: 'Generates data-driven infographics',
     fullDescription: 'Transform your data into stunning, shareable infographics with AI-powered design. Perfect for presentations, social media, and visual storytelling.',
