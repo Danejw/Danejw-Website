@@ -195,6 +195,30 @@ type PortfolioItem = {
 
 const portfolio: PortfolioItem[] = [
   {
+    title: 'ViewBait.app',
+    description: 'AI-powered thumbnail studio for creators',
+    fullDescription: 'ViewBait helps creators generate eye-catching, conversion-focused thumbnails in seconds. Users can describe a concept, upload their face, and create scroll-stopping thumbnail variations with AI-powered guidance.',
+    tech: 'NEXT.JS / TYPESCRIPT / AI',
+    img: '/photos/ViewBait.jpg',
+    link: 'https://viewbait.app',
+  },
+  {
+    title: 'MotionFX.app',
+    description: 'Motion graphics made easy in the browser',
+    fullDescription: 'MotionFX is an agentic motion design studio built for the browser. It helps users create custom animated graphics, preview polished visuals, refine timing and layout, and export finished motion content without the usual motion-design overhead.',
+    tech: 'VITE / TYPESCRIPT / AI',
+    img: '/photos/MotionFX.png',
+    link: 'https://motionfx.app',
+  },
+  {
+    title: 'UltimateFightIQ.com',
+    description: 'Fantasy UFC pools with your friends',
+    fullDescription: 'Ultimate Fight IQ is a fantasy UFC platform for running fight pools with friends. It gives players a focused way to track picks, compete around live events, and turn UFC fandom into a social game experience.',
+    tech: 'VITE / TYPESCRIPT / WEB APP',
+    img: '/photos/UltimateFightIQ.webp',
+    link: 'https://ultimatefightiq.com',
+  },
+  {
     title: 'OtherHalfOf.me',
     description: 'Private AI-assisted matchmaking service',
     fullDescription: 'The Other Half Of Me is a private AI-assisted matchmaking service for dating and finding your other half. Built with modern tools to create meaningful connections through intelligent matching.',
