@@ -59,7 +59,7 @@ export async function POST(request: NextRequest) {
       },
       body: JSON.stringify({
         from: 'Contact Form <onboarding@resend.dev>', // Update this with your verified domain in production
-        to: ['yourindie101@gmail.com'],
+        to: ['danejw@yourindie.dev'],
         replyTo: email, // Allow replying directly to the sender
         subject: `New Contact Form Submission from ${sanitizedName}`,
         html: `

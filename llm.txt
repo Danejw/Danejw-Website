@@ -5,7 +5,7 @@
 ## Documentation Overview
 
 - Portfolio Site: https://yourindie.dev (or current domain)
-- Contact: yourindie101@gmail.com
+- Contact: danejw@yourindie.dev
 - Location: Based in Hawai'i — available remotely
 
 ## Services
@@ -99,6 +99,6 @@ Available for:
 
 ## Contact
 
-- Email: yourindie101@gmail.com
+- Email: danejw@yourindie.dev
 - Location: Based in Hawai'i — available remotely
 - Reach out via email or through any project site above.

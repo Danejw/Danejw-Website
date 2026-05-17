@@ -404,7 +404,7 @@ export function ScopeChat({ questionAnswers }: ScopeChatProps = {}) {
       console.log('📧 EMAIL METADATA:');
       console.log('='.repeat(80));
       console.log('Subject:', data.emailContent?.subject || 'New Scope Chat Summary');
-      console.log('To:', data.emailContent?.to || 'yourindie101@gmail.com');
+      console.log('To:', data.emailContent?.to || 'danejw@yourindie.dev');
       if (data.emailContent?.replyTo) {
         console.log('Reply To:', data.emailContent.replyTo);
       }
