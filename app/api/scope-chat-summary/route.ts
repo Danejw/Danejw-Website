@@ -579,7 +579,7 @@ ${conversationText}
     // console.log('EMAIL METADATA:');
     // console.log({
     //   from: 'Scope Chat <onboarding@resend.dev>',
-    //   to: ['yourindie101@gmail.com'],
+    //   to: ['danejw@yourindie.dev'],
     //   replyTo: userEmail || undefined,
     //   subject: 'New Scope Chat Summary',
     // });
@@ -648,7 +648,7 @@ ${conversationText}
         html: emailHtml,
         text: emailText,
         subject: 'New Scope Chat Summary',
-        to: 'yourindie101@gmail.com',
+        to: 'danejw@yourindie.dev',
         replyTo: userEmail || undefined,
       },
     });

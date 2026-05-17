@@ -16,7 +16,7 @@ export default function AICustomerSupportArticle() {
       
       <h3 className="text-xl font-semibold">1. Email Processing Pipeline</h3>
       <p>
-        The system monitors Gmail every minute using automated triggers, immediately processing new emails related to the Supabase Integration asset. AI classification determines email relevance, filtering out spam and unrelated messages while ensuring only legitimate customer inquiries from external users (excluding yourindie101@gmail.com) receive automated responses.
+        The system monitors Gmail every minute using automated triggers, immediately processing new emails related to the Supabase Integration asset. AI classification determines email relevance, filtering out spam and unrelated messages while ensuring only legitimate customer inquiries from external users (excluding danejw@yourindie.dev) receive automated responses.
       </p>
 
       <h3 className="text-xl font-semibold">2. Knowledge Base (RAG System)</h3>
