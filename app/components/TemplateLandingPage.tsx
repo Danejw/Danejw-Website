@@ -1,6 +1,7 @@
 /* Landing template adapted from reference HTML; uses remote assets and lucide icons. */
 'use client';
 
+import Link from 'next/link';
 import React, { useCallback, useEffect, useMemo, useRef, useState } from 'react';
 import Image from 'next/image';
 import Lenis from 'lenis';
@@ -201,6 +202,14 @@ const portfolio: PortfolioItem[] = [
     tech: 'NEXT.JS / TYPESCRIPT / AI',
     img: '/photos/ViewBait.jpg',
     link: 'https://viewbait.app',
+  },
+  {
+    title: 'GoGolfLeagues.com',
+    description: 'Map-first golf league management system',
+    fullDescription: 'Go Golf Leagues replaces the group-chat-and-spreadsheet loop for recreational golf leagues. Organizers open rounds, members enter scores from the course, and season standings persist in a map-first PWA built for mobile.',
+    tech: 'NEXT.JS / TYPESCRIPT / SUPABASE / PWA',
+    img: '/photos/GoGolfLeagues.png',
+    link: 'https://gogolfleagues.com',
   },
   {
     title: 'MotionFX.app',
@@ -1610,6 +1619,12 @@ export const TemplateLandingPage: React.FC = () => {
             >
               Work
             </a>
+            <Link
+              href="/articles"
+              className="hover:text-cyan-400 hover:scale-150 transition-all duration-300 ease-in-out"
+            >
+              Articles
+            </Link>
             <a
               href="#contact"
               onClick={(event) => handleNavClick(event, 'contact')}
@@ -1654,6 +1669,13 @@ export const TemplateLandingPage: React.FC = () => {
             >
               Work
             </a>
+            <Link
+              href="/articles"
+              onClick={() => setMobileMenuOpen(false)}
+              className="hover:text-cyan-400 hover:scale-150 transition-all duration-300 ease-in-out origin-left"
+            >
+              Articles
+            </Link>
             <a
               href="#contact"
               onClick={(event) => {

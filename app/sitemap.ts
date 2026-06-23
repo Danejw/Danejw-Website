@@ -1,8 +1,10 @@
 import { MetadataRoute } from 'next'
+import { getAllArticles } from '@/lib/articles/loader'
 
 export default function sitemap(): MetadataRoute.Sitemap {
   const baseUrl = 'https://danejw.com'
   const currentDate = new Date().toISOString().split('T')[0]
+  const articles = getAllArticles()
 
   // Static pages
   const staticPages = [
@@ -60,44 +62,19 @@ export default function sitemap(): MetadataRoute.Sitemap {
     },
   ]
 
-  // Articles
-  const articles = [
+  const articlePages: MetadataRoute.Sitemap = [
     {
       url: `${baseUrl}/articles`,
       lastModified: currentDate,
       changeFrequency: 'weekly' as const,
       priority: 0.8,
     },
-    {
-      url: `${baseUrl}/articles/automating-repetitive-administrative-tasks`,
-      lastModified: '2025-06-03',
+    ...articles.map((article) => ({
+      url: `${baseUrl}/articles/${article.slug}`,
+      lastModified: article.date,
       changeFrequency: 'monthly' as const,
       priority: 0.7,
-    },
-    {
-      url: `${baseUrl}/articles/enhancing-customer-interaction-and-support`,
-      lastModified: '2025-06-03',
-      changeFrequency: 'monthly' as const,
-      priority: 0.7,
-    },
-    {
-      url: `${baseUrl}/articles/improving-bid-accuracy-and-turnaround`,
-      lastModified: '2025-06-03',
-      changeFrequency: 'monthly' as const,
-      priority: 0.7,
-    },
-    {
-      url: `${baseUrl}/articles/ai-customer-support-for-supabase-integration`,
-      lastModified: '2025-06-05',
-      changeFrequency: 'monthly' as const,
-      priority: 0.7,
-    },
-    {
-      url: `${baseUrl}/articles/automating-ai-music-video-publishing`,
-      lastModified: '2025-06-08',
-      changeFrequency: 'monthly' as const,
-      priority: 0.7,
-    },
+    })),
   ]
 
   // Utility pages (lower priority)
@@ -125,7 +102,7 @@ export default function sitemap(): MetadataRoute.Sitemap {
   return [
     ...staticPages,
     ...servicePages,
-    ...articles,
+    ...articlePages,
     ...utilityPages,
   ]
 }
