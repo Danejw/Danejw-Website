@@ -1,4 +1,4 @@
-# How We Optimize UFIQ's Agent Skill for Making AI Picks
+# How We Optimize UFIQ's Agent Skill for making AI Picks
 
 **Project:** Ultimate Fight IQ (UFIQ)
 **Link:** [https://ultimatefightiq.com](https://ultimatefightiq.com)
@@ -6,7 +6,7 @@
 **Case study type:** Product build
 **The task:** Improve AI-generated UFC fantasy picks over time without invisible prompt drift, model-skill confounding, or changes that leak into live member picks.
 **What we learned:** Treat picking logic as a versioned skill, score it in blind historical backtests, and let humans accept bounded edits only after side-by-side validation.
-**Last updated:** June 22, 2026
+**Last updated:** June 23, 2026
 
 ## Case study at a glance
 
@@ -15,9 +15,9 @@
 | ------------------- | ------------------------------------------------------------------------------------------------------------------------------------------------------------------------ |
 | **The task**        | Build an admin workflow to run, score, suggest, test, and accept improvements to the AI Picks evaluation skill                                                           |
 | **Who it was for**  | UFIQ admins tuning fantasy pick quality before any draft influences public surfaces                                                                                      |
-| **Main constraint** | Fantasy sandbox only: no writes to member picks, leaderboards, or standings; no unbounded prompt rewrites                                                                |
+| **Main constraint** | Fantasy-only sandbox: no writes to member picks, leaderboards, or standings; no unbounded prompt rewrites                                                                |
 | **What we built**   | Versioned `ai-picks-fight-evaluation` skill, blind backtest mode, `ai-skill-suggest` miss analysis, Skill Optimization Lab UI, and a human-in-the-loop optimization loop |
-| **Outcome**         | Admins can compare model × skill_version on the same events, draft candidate skills from real miss patterns, and accept or reject edits with a full audit trail          |
+| **Outcome**         | Admins can compare model Ã— skill_version on the same events, draft candidate skills from real miss patterns, and accept or reject edits with a full audit trail          |
 
 
 ## Background
@@ -82,7 +82,7 @@ flowchart TD
 
 **Decision:** The skill is the unit of change, not the model prompt blob.
 
-**Why:** When accuracy shifts, we need a diffable artifact. Version rows on `ai_pick_runs` (`skill_name`, `skill_version`, `skill_hash`) make the scoreboard a true `model × skill_version` matrix.
+**Why:** When accuracy shifts, we need a diffable artifact. Version rows on `ai_pick_runs` (`skill_name`, `skill_version`, `skill_hash`) make the scoreboard a true `model Ã— skill_version` matrix.
 
 ### Step 2: Persist versions and candidates in Postgres
 
@@ -118,7 +118,7 @@ flowchart TD
 
 ### Step 6: Add the Optimization Loop for end-to-end runs
 
-**What we did:** `OptimizationLoop` in `/admin/ai-picks` walks a queue of events: baseline run → score → `generateSkillSuggestionFromRun` → candidate run on the same event and model → score → pause for accept/reject → carry the accepted version forward to the next event.
+**What we did:** `OptimizationLoop` in `/admin/ai-picks` walks a queue of events: baseline run â†’ score â†’ `generateSkillSuggestionFromRun` â†’ candidate run on the same event and model â†’ score â†’ pause for accept/reject â†’ carry the accepted version forward to the next event.
 
 **Decision:** Automate the steps, not the judgment.
 
@@ -141,8 +141,8 @@ flowchart TD
 | `ai_pick_skill_versions` / `ai_pick_skill_candidates` | Version storage and proposal queue                                   |
 | `ai-pick-event`                                       | Loads skill by version, blind backtest modes, run attribution        |
 | `ai-skill-suggest`                                    | Miss analysis, bounded edit plans, candidate content generation      |
-| `OptimizationLoop`                                    | Event queue: baseline → learn → candidate → human decision           |
-| Admin AI Picks cockpit                                | Model × skill scoreboard, validation toggles, candidate review cards |
+| `OptimizationLoop`                                    | Event queue: baseline â†’ learn â†’ candidate â†’ human decision           |
+| Admin AI Picks cockpit                                | Model Ã— skill scoreboard, validation toggles, candidate review cards |
 | `docs/skill-opt/ai-picks-skill-optimization.md`       | Operator guide for the full workflow                                 |
 
 
