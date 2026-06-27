@@ -189,12 +189,35 @@ type PortfolioItem = {
   img: string;
   video?: string;
   tall?: boolean;
+  aspectRatio?: '16/9';
   link?: string;
   productHunt?: boolean;
   productHuntUrl?: string;
 };
 
+function getPortfolioMediaClass(item: PortfolioItem): string {
+  const base = 'portfolio-media relative w-full overflow-hidden';
+  if (item.aspectRatio === '16/9') return `${base} aspect-video`;
+  return base;
+}
+
+function getPortfolioMediaSizingClass(item: PortfolioItem): string {
+  if (item.tall) return 'h-[500px]';
+  if (item.aspectRatio) return 'h-full';
+  return 'h-auto';
+}
+
 const portfolio: PortfolioItem[] = [
+  {
+    title: 'Auglet.com',
+    description: 'Marketplace for agent-ready AI assets',
+    fullDescription:
+      'Auglet is a marketplace for prompts, prompt sets, and agent-ready assets that upgrade what AI agents can do. Browse by goal, preview before you buy, and ship Auglets straight into your agent through files or the Auglet MCP server.',
+    tech: 'NEXT.JS / TYPESCRIPT / MCP',
+    img: '/photos/Auglet.png',
+    aspectRatio: '16/9',
+    link: 'https://auglet.com',
+  },
   {
     title: 'ViewBait.app',
     description: 'AI-powered thumbnail studio for creators',
@@ -225,6 +248,7 @@ const portfolio: PortfolioItem[] = [
     fullDescription: 'Ultimate Fight IQ is a fantasy UFC platform for running fight pools with friends. It gives players a focused way to track picks, compete around live events, and turn UFC fandom into a social game experience.',
     tech: 'VITE / TYPESCRIPT / WEB APP',
     img: '/photos/UltimateFightIQ.webp',
+    aspectRatio: '16/9',
     link: 'https://ultimatefightiq.com',
   },
   {
@@ -1867,7 +1891,7 @@ export const TemplateLandingPage: React.FC = () => {
                 onClick={() => setSelectedProject(item)}
               >
                 <div className="absolute inset-0 bg-cyan-500/0 group-hover:bg-cyan-500/10 transition-colors z-20 border-2 border-transparent group-hover:border-cyan-400/50 rounded-xl" />
-                  <div className="portfolio-media relative w-full overflow-hidden">
+                  <div className={getPortfolioMediaClass(item)}>
                     {item.productHunt && (
                       <div className="absolute top-3 right-3 z-40 grayscale group-hover:grayscale-0 transition-all duration-700">
                         <ProductHuntBadge url={item.productHuntUrl} />
@@ -1876,13 +1900,13 @@ export const TemplateLandingPage: React.FC = () => {
                     <img
                       src={item.img}
                       alt={item.title}
-                      className={`w-full ${item.tall ? 'h-[500px]' : 'h-auto'} object-cover transform transition-transform duration-700 grayscale ${
+                      className={`w-full ${getPortfolioMediaSizingClass(item)} object-cover transform transition-transform duration-700 grayscale ${
                         videoReady[item.title] ? 'opacity-0 scale-100' : 'opacity-100 group-hover:scale-105 group-hover:grayscale-0'
                       }`}
                     />
                     {item.video && (
                       <video
-                        className={`absolute inset-0 w-full ${item.tall ? 'h-[500px]' : 'h-auto'} object-cover transition-opacity duration-500 ${
+                        className={`absolute inset-0 w-full ${getPortfolioMediaSizingClass(item)} object-cover transition-opacity duration-500 ${
                           videoReady[item.title] ? 'opacity-100' : 'opacity-0 pointer-events-none'
                         }`}
                         src={item.video}
